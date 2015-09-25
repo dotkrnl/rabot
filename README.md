@@ -6,7 +6,7 @@ RaBot is a project aiming at creating a vivid and interactive environment for ch
 The programming language children use to control the rabbit will be [CoffeeScript](http://coffeescript.org/) (or something based on it). Users need to program their rabbit to accomplish various tasks, and finally let them eat carrots~
 
 ## Team members
-* ÁÎÒàÑô
-* ÁºÔóÓî
-* Áõ¼Ò²ı
-* Ì·Ë¼éª
+* å»–äº¦é˜³
+* æ¢æ³½å®‡
+* åˆ˜å®¶æ˜Œ
+* è°­æ€æ¥ 
