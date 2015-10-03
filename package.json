@@ -1,0 +1,15 @@
+{
+  "name": "all-and-everything",
+  "version": "1.0.0",
+  "description": "RaBot is a project aiming at creating a vivid and interactive environment for children to learn computer programming, it's also our project for the course <Software Engineering> and it might be used by JiSuanKe.com for further development.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://UpcomingCloseCombatUltility@stash.secoder.net/scm/rab/all-and-everything.git"
+  },
+  "author": "",
+  "license": "BSD"
+}

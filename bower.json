@@ -1,0 +1,19 @@
+{
+  "name": "all-and-everything",
+  "version": "0.0.0",
+  "authors": [
+    "Crystala <crystalian@126.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "BSD",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
