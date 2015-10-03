@@ -15,5 +15,9 @@
     "bower_components",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "jquery": "jQuery#~2.1.4",
+    "bootstrap": "~3.3.5"
+  }
 }
