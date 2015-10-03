@@ -35,10 +35,47 @@ module.exports = (grunt) ->
         dest: './public/js'
         expand: true
 
+    bower:
+      install:
+        dest: 'public'
+        js_dest: 'public/js'
+        css_dest: 'public/css'
+        fonts_dest: 'public/fonts'
+        options:
+          packageSpecific:
+            bootstrap:
+              keepExpandedHierarchy: false
+              files: [
+                "dist/js/bootstrap.min.js",
+                "dist/css/bootstrap.min.css",
+                "dist/css/bootstrap-theme.min.css"
+                "dist/fonts/*"
+              ]
+            'coffee-script':
+              keepExpandedHierarchy: false
+              files: [
+                "extras/coffee-script.js"
+              ]
+            jquery:
+              keepExpandedHierarchy: false
+              files: [
+                "dist/jquery.min.js"
+              ]
+            'Snap.svg':
+              keepExpandedHierarchy: false
+              files: [
+                "dist/snap.svg-min.js"
+              ]
+            codemirror:
+              keepExpandedHierarchy: false
+              files: [
+                "lib/*"
+              ]
   grunt.loadNpmTasks 'grunt-contrib-sass'
   grunt.loadNpmTasks 'grunt-contrib-jade'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
+  grunt.loadNpmTasks 'grunt-bower'
 
-  grunt.registerTask 'compile', ['jade', 'sass', 'coffee']
+  grunt.registerTask 'compile', ['jade', 'sass', 'coffee', 'bower']
   grunt.registerTask 'dev', ['compile']
   grunt.registerTask 'default', ['dev']

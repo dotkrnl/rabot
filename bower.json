@@ -18,6 +18,9 @@
   ],
   "dependencies": {
     "jquery": "jQuery#~2.1.4",
-    "bootstrap": "~3.3.5"
+    "bootstrap": "~3.3.5",
+    "coffee-script": "coffeescript#~1.10.0",
+    "Snap.svg": "snap.svg#~0.4.1",
+    "codemirror": "CodeMirror#~5.7.0"
   }
 }
