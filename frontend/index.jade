@@ -1,7 +1,39 @@
 doctype html
 html
   head
+    link(rel='stylesheet' href='css/bootstrap.min.css')
+    link(rel='stylesheet' href='css/index.css')
+    link(rel="stylesheet" href="css/codemirror.css")
     title Rabot
-    script(type='text/javascript').
   body
-    h1 Jade works!
+    nav.navbar.navbar-inverse.navbar-fixed-top
+      div.container
+        div.navbar-header
+          button.navbar-toggle.collapsed(type='button' data-toggle='collapse' data-target='#navbar' aria-expanded='false' aria-controls='navbar')
+            span.sr-only Toggle navigation
+          a.navbar-brand(href='#') Rabot
+        div#navbar.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li.active
+              a(href='#') Home
+            li
+              a(href='#game') The Game
+    div#container-play
+    div#container-code
+      div#container-code-editor
+        textarea#code-editor
+      div#container-code-assistant
+    script(type='text/javascript' src='js/jquery.min.js')
+    script(type='text/javascript' src='js/bootstrap.min.js')
+    script(type='text/javascript' src='js/codemirror.js')
+    script(type='text/javascript' src='js/codemirror.js')
+    script(type='text/javascript').
+      $(function(){
+        var editorCodeMirror = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
+          lineNumbers: true
+        });
+        editorCodeMirror.setSize($('#container-code-editor').width(), $('#container-code-editor').height());
+        $(window).resize(function(){
+          editorCodeMirror.setSize($('#container-code-editor').width(), $('#container-code-editor').height());
+        })
+      })
