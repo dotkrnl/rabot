@@ -38,29 +38,4 @@ html
     script(type='text/javascript' src='js/codemirror.js')
     script(type='text/javascript' src='js/snap.svg-min.js')
     script(type='text/javascript' src='js/coffee-script.js')
-    script(type='text/javascript').
-      $(function(){
-        var editorCodeMirror = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
-          lineNumbers: true
-        });
-        var canvas = Snap("#play-canvas");
-
-        editorCodeMirror.setSize($('#container-code-editor').width(), $('#container-code-editor').height());
-        $("#play-canvas").width($("#container-play").width())
-        $("#play-canvas").height($("#container-play").height());
-        $(window).resize(function(){
-          editorCodeMirror.setSize($('#container-code-editor').width(), $('#container-code-editor').height());
-        })
-
-        var bigCircle = canvas.circle(50, 50, 100);
-        bigCircle.attr({
-            fill: "#bada55",
-            stroke: "#000",
-            strokeWidth: 5
-        });
-
-        $("#button-run-code").click(function(){
-          var jsCode = CoffeeScript.compile(editorCodeMirror.getValue());
-          eval(jsCode);
-        })
-      })
+    script(type='text/javascript' src='js/index.js')
