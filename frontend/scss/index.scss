@@ -56,3 +56,10 @@ $primary-color: #333;
   width:100%;
   height:100%;
 }
+
+#play-canvas
+{
+  @extend .absolute-full-width;
+  @extend .absolute-full-height;
+  background:white;  
+}

@@ -19,6 +19,7 @@ html
             li
               a(href='#game') The Game
     div#container-play
+      svg#play-canvas
     div#container-code
       div#container-code-editor
         textarea#code-editor
@@ -27,13 +28,25 @@ html
     script(type='text/javascript' src='js/bootstrap.min.js')
     script(type='text/javascript' src='js/codemirror.js')
     script(type='text/javascript' src='js/codemirror.js')
+    script(type='text/javascript' src='js/snap.svg-min.js')
     script(type='text/javascript').
       $(function(){
         var editorCodeMirror = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
           lineNumbers: true
         });
+        var canvas = Snap("#play-canvas");
+
         editorCodeMirror.setSize($('#container-code-editor').width(), $('#container-code-editor').height());
+        $("#play-canvas").width($("#container-play").width())
+        $("#play-canvas").height($("#container-play").height());
         $(window).resize(function(){
           editorCodeMirror.setSize($('#container-code-editor').width(), $('#container-code-editor').height());
         })
+
+        var bigCircle = canvas.circle(50, 50, 100);
+        bigCircle.attr({
+            fill: "#bada55",
+            stroke: "#000",
+            strokeWidth: 5
+        });
       })
