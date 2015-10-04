@@ -53,7 +53,7 @@ $containerCodeAssistantHeight:	75px;
   @extend .absolute-full-width;
   height:$containerCodeAssistantHeight;
   bottom:0;
-  background:yellow;
+  background:#aaa;
 }
 
 #code-editor
@@ -68,5 +68,15 @@ $containerCodeAssistantHeight:	75px;
 {
   @extend .absolute-full-width;
   @extend .absolute-full-height;
-  background:white;  
+  background:white;
+}
+
+#container-code-control
+{
+  position:fixed;
+  right: 0px;
+  width: 300px;
+  bottom: 100px;
+  height: 75px;
+  background: #aaa;
 }

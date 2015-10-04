@@ -24,11 +24,20 @@ html
       div#container-code-editor
         textarea#code-editor
       div#container-code-assistant
+      div#container-code-control
+        p
+          button#button-run-code.btn.btn-primary(type='button')
+            span.glyphicon.glyphicon-play
+            span Run
+          button#button-stop-code.btn.btn-warning(type='button')
+            span.glyphicon.glyphicon-stop
+            span Pause
     script(type='text/javascript' src='js/jquery.min.js')
     script(type='text/javascript' src='js/bootstrap.min.js')
     script(type='text/javascript' src='js/codemirror.js')
     script(type='text/javascript' src='js/codemirror.js')
     script(type='text/javascript' src='js/snap.svg-min.js')
+    script(type='text/javascript' src='js/coffee-script.js')
     script(type='text/javascript').
       $(function(){
         var editorCodeMirror = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
@@ -49,4 +58,9 @@ html
             stroke: "#000",
             strokeWidth: 5
         });
+
+        $("#button-run-code").click(function(){
+          var jsCode = CoffeeScript.compile(editorCodeMirror.getValue());
+          eval(jsCode);
+        })
       })
