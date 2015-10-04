@@ -86,6 +86,11 @@ module.exports = (grunt) ->
               files: [
                 "angular-mocks.js",
               ]
+            'iced-coffee-script':
+              keepExpandedHierarchy: false
+              files: [
+                "extras/iced-coffee-script-108.0.8-min.js",
+              ]
   grunt.loadNpmTasks 'grunt-contrib-sass'
   grunt.loadNpmTasks 'grunt-contrib-jade'
   grunt.loadNpmTasks 'grunt-contrib-coffee'

@@ -24,6 +24,7 @@
     "codemirror": "CodeMirror#~5.7.0",
     "angular": "angularjs#~1.4.7",
     "angular-mocks": "~1.4.7",
-    "angular-route": "~1.4.7"
+    "angular-route": "~1.4.7",
+    "iced-coffee-script": "~108.0.8"
   }
 }
