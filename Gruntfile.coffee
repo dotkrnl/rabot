@@ -71,6 +71,21 @@ module.exports = (grunt) ->
               files: [
                 "lib/*"
               ]
+            angular:
+              keepExpandedHierarchy: false
+              files: [
+                "angular.min.js",
+              ]
+            'angular-route':
+              keepExpandedHierarchy: false
+              files: [
+                "angular-route.min.js",
+              ]
+            'angular-mocks':
+              keepExpandedHierarchy: false
+              files: [
+                "angular-mocks.js",
+              ]
   grunt.loadNpmTasks 'grunt-contrib-sass'
   grunt.loadNpmTasks 'grunt-contrib-jade'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
