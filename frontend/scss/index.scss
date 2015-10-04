@@ -1,5 +1,12 @@
 $font-stack:    Helvetica, sans-serif;
 $primary-color: #333;
+$containerPlayWidth:	600px;
+$containerTop:	50px;
+$containerCodeLeft:	600px;
+$containerCodeTop:	50px;
+$containerCodeEditorBottom:	75px;
+$containerCodeAssistantHeight:	75px;
+
 
 .absolute-full-width
 {
@@ -19,8 +26,8 @@ $primary-color: #333;
 {
   position:absolute;
   left:0;
-  width:600px;
-  top:50px;
+  width:$containerPlayWidth;
+  top:$containerTop;
   bottom:0;
   background:blue;
 }
@@ -28,9 +35,9 @@ $primary-color: #333;
 #container-code
 {
   position:absolute;
-  left:600px;
+  left:$containerCodeLeft;
   right:0;
-  top:50px;
+  top:$containerCodeTop;
   bottom:0;
 }
 
@@ -38,13 +45,13 @@ $primary-color: #333;
 {
   @extend .absolute-full-width;
   top:0;
-  bottom:75px;
+  bottom:$containerCodeEditorBottom;
 }
 
 #container-code-assistant
 {
   @extend .absolute-full-width;
-  height:75px;
+  height:$containerCodeAssistantHeight;
   bottom:0;
   background:yellow;
 }
