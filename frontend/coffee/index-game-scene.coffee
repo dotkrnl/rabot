@@ -47,3 +47,11 @@ class @GameScene
     @rabbitCenter.x += x
     @rabbitCenter.y += y
     @updateRabbitTransform(duration, callback)
+
+  isWin: () ->
+    carrotBBox = @carrot.getBBox()
+    if @rabbitCenter.x > carrotBBox.x && @rabbitCenter.x < carrotBBox.x2 && \
+    @rabbitCenter.y > carrotBBox.y && @rabbitCenter.y < carrotBBox.y2
+      return true
+    else
+      return false

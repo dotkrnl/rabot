@@ -23,3 +23,10 @@
     this[key] = undefined
   @gameScene = undefined
   return undefined
+
+@userCodeFinished = ->
+  if @gameScene.isWin()
+    alert "You win!"
+  else
+    alert "You lose"
+  disableUerInterface()
