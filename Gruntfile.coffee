@@ -13,8 +13,6 @@ module.exports = (grunt) ->
         expand: true
         options:
           doctype: 'html'
-          #filters:
-          #  'coffee-script': require('coffee-script').compile
     sass:
       install:
         options:
@@ -50,11 +48,6 @@ module.exports = (grunt) ->
                 "dist/css/bootstrap.min.css",
                 "dist/css/bootstrap-theme.min.css"
                 "dist/fonts/*"
-              ]
-            'coffee-script':
-              keepExpandedHierarchy: false
-              files: [
-                "extras/coffee-script.js"
               ]
             jquery:
               keepExpandedHierarchy: false

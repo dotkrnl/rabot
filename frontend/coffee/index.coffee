@@ -9,15 +9,8 @@ $ ->
     $('#play-canvas').height $('#container-play').height()
   gameScene = new GameScene "#play-canvas"
   $('#button-run-code').click ->
-    gameScene.moveRabbit 0, -100, 1000, ->
-      gameScene.rotateRabbit 90, 1000, ->
-        gameScene.moveRabbit 100, 0, 1000, ->
-          gameScene.rotateRabbit 90, 1000, ->
-            gameScene.moveRabbit 0, 100, 1000, ->
-              gameScene.rotateRabbit 90, 1000, ->
-                gameScene.moveRabbit -100, 0, 1000, ->
-                  gameScene.rotateRabbit 90, 1000
-    jsCode = CoffeeScript.compile(editorCodeMirror.getValue())
-    eval jsCode
+    enableUserInterface(gameScene)
+    jsCode = CoffeeScript.compile(editorCodeMirror.getValue(), {runtime:"none"})
+    executeUserCode(jsCode)
   $('#button-stop-code').click ->
     gameScene.rotateRabbit 90, 1000
