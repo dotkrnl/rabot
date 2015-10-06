@@ -10,7 +10,10 @@ $ ->
   gameScene = new GameScene "#play-canvas"
   $('#button-run-code').click ->
     enableUserInterface(gameScene)
-    jsCode = CoffeeScript.compile(editorCodeMirror.getValue(), {runtime:"none"})
-    executeUserCode(jsCode)
+    coffeeCode = editorCodeMirror.getValue()
+    preprocessedCode = preprocessUserCode(coffeeCode)
+    jsCode = CoffeeScript.compile(preprocessedCode, {runtime:"none"})
+    #console.log preprocessedCode
+    executeUserCode jsCode
   $('#button-stop-code').click ->
     gameScene.rotateRabbit 90, 1000

@@ -1,5 +1,4 @@
-@preprocessUserCode = ->
-	code = editorCodeMirror.getValue()
+@preprocessUserCode = (code) ->
 	code += '\n'
 
 	beginning = true
@@ -14,7 +13,7 @@
 			if detected
 				afterCode += ", defer param"
 			else
-				
+
 			afterCode += ch
 			buffer = ""
 			beginning = true

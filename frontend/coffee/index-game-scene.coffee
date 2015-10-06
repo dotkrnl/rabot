@@ -13,7 +13,7 @@ class @GameScene
       strokeWidth : 5
     @rabbitCenter =
       x: 300
-      y: 380
+      y: 370
     @rabbitOffset =
       x: 0
       y: 0
@@ -24,7 +24,9 @@ class @GameScene
     return true
 
   rabbitTStr: () ->
-    "r" + @rabbitAngle + "," + @rabbitCenter.x + "," + @rabbitCenter.y + " t" + @rabbitOffset.x + "," + @rabbitOffset.y
+    #The 0.01 is a very ugly work-around to prevent some misbehaviour with Snap.svg
+    "r" + @rabbitAngle + "," + @rabbitCenter.x + "," + @rabbitCenter.y + \
+    " t" + (@rabbitOffset.x + 0.01) + "," + (@rabbitOffset.y + 0.01)
 
   updateRabbitTransform: (duration, callback) ->
     @rabbit.animate
