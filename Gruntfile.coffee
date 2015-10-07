@@ -1,8 +1,9 @@
-#This file includes codes from LiuJiaChang's previous project
+# This file includes codes from Jason Lau's previous project
 
 module.exports = (grunt) ->
   grunt.initConfig
     pkg: grunt.file.readJSON 'package.json'
+
     jade:
       install:
         cwd: './frontend'
@@ -13,6 +14,7 @@ module.exports = (grunt) ->
         expand: true
         options:
           doctype: 'html'
+
     sass:
       install:
         options:
@@ -84,11 +86,32 @@ module.exports = (grunt) ->
               files: [
                 "extras/iced-coffee-script-108.0.8-min.js",
               ]
+
+    connect:
+      server:
+        options:
+          base: "./public"
+          port: 9000
+
+    watch:
+      jade:
+        files: ['frontend/**/*.jade']
+        tasks: ['jade']
+      sass:
+        files: ['./frontend/scss/**/*.scss']
+        tasks: ['sass']
+      coffee:
+        files: ['frontend/coffee/**/*.coffee']
+        tasks: ['coffee']
+
   grunt.loadNpmTasks 'grunt-contrib-sass'
   grunt.loadNpmTasks 'grunt-contrib-jade'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
+  grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-contrib-connect'
   grunt.loadNpmTasks 'grunt-bower'
 
   grunt.registerTask 'compile', ['jade', 'sass', 'coffee', 'bower']
+  grunt.registerTask 'serve', ['compile', 'connect', 'watch']
   grunt.registerTask 'dev', ['compile']
   grunt.registerTask 'default', ['dev']

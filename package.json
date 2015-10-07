@@ -1,17 +1,15 @@
 {
-  "name": "all-and-everything",
+  "name": "rabot",
   "version": "1.0.0",
   "description": "RaBot is a project aiming at creating a vivid and interactive environment for children to learn computer programming, it's also our project for the course <Software Engineering> and it might be used by JiSuanKe.com for further development.",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "grunt serve",
+    "build": "bower install && grunt",
+    "test": "echo \"Error: test not implemented\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "http://UpcomingCloseCombatUltility@stash.secoder.net/scm/rab/all-and-everything.git"
-  },
-  "author": "",
-  "license": "BSD",
+  "author": "RaBot Group",
+  "license": "BSD-3-Clause",
+  "private": true,
   "dependencies": {
     "coffee-script": "^1.10.0",
     "grunt": "^0.4.5",
@@ -19,5 +17,9 @@
     "grunt-contrib-coffee": "^0.13.0",
     "grunt-contrib-jade": "^0.15.0",
     "grunt-contrib-sass": "gruntjs/grunt-contrib-sass"
+  },
+  "devDependencies": {
+    "grunt-contrib-connect": "^0.11.2",
+    "grunt-contrib-watch": "^0.6.1"
   }
 }

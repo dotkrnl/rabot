@@ -13,9 +13,11 @@ Use the following commands to build:
 
 `npm install`
 
-`bower install`
+`npm run build`
 
-`grunt`
+Use the following command to serve the frontend:
+
+`npm run server`
 
 ## Team members
 * 廖亦阳

@@ -1,5 +1,28 @@
-bower_components/
-node_modules/
-public/
-.sass-cache/
+# Logs
+logs
+log
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Grunt intermediate storage
+.grunt
+
+# Dependency directory
+node_modules
+bower_components
+
+# Distribution
+public
+
+# Temp files
+*.swp
+tmp
+.sass-cache
 cwd
+
+# Redis dump file
+dump.rdb
