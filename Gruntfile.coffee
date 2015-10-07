@@ -3,6 +3,7 @@
 module.exports = (grunt) ->
   grunt.initConfig
     pkg: grunt.file.readJSON 'package.json'
+
     jade:
       install:
         cwd: './frontend'
@@ -13,6 +14,7 @@ module.exports = (grunt) ->
         expand: true
         options:
           doctype: 'html'
+
     sass:
       install:
         options:
@@ -84,6 +86,7 @@ module.exports = (grunt) ->
               files: [
                 "extras/iced-coffee-script-108.0.8-min.js",
               ]
+
   grunt.loadNpmTasks 'grunt-contrib-sass'
   grunt.loadNpmTasks 'grunt-contrib-jade'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
