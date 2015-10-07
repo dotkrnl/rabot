@@ -12,8 +12,9 @@ $ ->
     enableUserInterface(gameScene)
     coffeeCode = editorCodeMirror.getValue()
     preprocessedCode = preprocessUserCode(coffeeCode)
-    jsCode = CoffeeScript.compile(preprocessedCode, {runtime:"none"})
+    jsCode = CoffeeScript.compile(preprocessedCode, {runtime:"inline"})
     #console.log preprocessedCode
+    #console.log jsCode
     executeUserCode jsCode
   $('#button-stop-code').click ->
     alert('not implemented')
