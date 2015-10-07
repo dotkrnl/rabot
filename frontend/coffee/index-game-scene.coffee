@@ -19,10 +19,6 @@ class @GameScene
     @rabbitAngle = 0
     @updateRabbitTransform 0
 
-  isVictory: ->
-    rabbitBoundingBox = @rabbit.getBBox()
-    return true
-
   rabbitTStr: () ->
     "t#{@rabbitCenter.x},#{@rabbitCenter.y}r#{@rabbitAngle},0,0"
 
@@ -44,11 +40,9 @@ class @GameScene
     @updateRabbitTransform(duration, callback)
 
   isWin: () ->
-    carrotBBox = @carrot.getBBox()
-    if @rabbitCenter.x > carrotBBox.x && \
-        @rabbitCenter.x < carrotBBox.x2 && \
-        @rabbitCenter.y > carrotBBox.y && \
-        @rabbitCenter.y < carrotBBox.y2
-      return true
-    else
-      return false
+    carbox = @carrot.getBBox()
+    rabbox = @rabbit.getBBox()
+    return !(rabbox.x  > carbox.x2 ||
+             rabbox.x2 < carbox.x  ||
+             rabbox.y  > carbox.y2 ||
+             rabbox.y2 < carbox.y)
