@@ -12,8 +12,6 @@
 			afterCode += buffer
 			if detected
 				afterCode += ", defer param"
-			else
-
 			afterCode += ch
 			buffer = ""
 			beginning = true
@@ -28,7 +26,7 @@
 			beginning = false
 			detected = true
 		else
-			afterCode += "await "
+			afterCode += buffer
 			afterCode += ch
 			buffer = ""
 	afterCode += "\nuserCodeFinished()\n"
