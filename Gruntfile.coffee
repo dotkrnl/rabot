@@ -87,11 +87,17 @@ module.exports = (grunt) ->
                 "extras/iced-coffee-script-108.0.8-min.js",
               ]
 
+    connect:
+      install:
+        base: "./public"
+
   grunt.loadNpmTasks 'grunt-contrib-sass'
   grunt.loadNpmTasks 'grunt-contrib-jade'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-bower'
+  grunt.loadNpmTasks 'grunt-connect'
 
   grunt.registerTask 'compile', ['jade', 'sass', 'coffee', 'bower']
+  grunt.registerTask 'serve', ['compile', 'connect']
   grunt.registerTask 'dev', ['compile']
   grunt.registerTask 'default', ['dev']

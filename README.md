@@ -15,6 +15,10 @@ Use the following commands to build:
 
 `npm run build`
 
+Use the following command to serve the frontend:
+
+`npm run server`
+
 ## Team members
 * 廖亦阳
 * 梁泽宇

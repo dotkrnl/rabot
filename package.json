@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "RaBot is a project aiming at creating a vivid and interactive environment for children to learn computer programming, it's also our project for the course <Software Engineering> and it might be used by JiSuanKe.com for further development.",
   "scripts": {
+    "server": "grunt serve",
     "build": "bower install && grunt",
     "test": "echo \"Error: test not implemented\" && exit 1"
   },
@@ -16,5 +17,8 @@
     "grunt-contrib-coffee": "^0.13.0",
     "grunt-contrib-jade": "^0.15.0",
     "grunt-contrib-sass": "gruntjs/grunt-contrib-sass"
+  },
+  "devDependencies": {
+    "grunt-connect": "^0.2.0"
   }
 }
