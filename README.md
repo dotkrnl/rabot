@@ -13,9 +13,7 @@ Use the following commands to build:
 
 `npm install`
 
-`bower install`
-
-`grunt`
+`npm run build`
 
 ## Team members
 * 廖亦阳
