@@ -16,4 +16,4 @@ $ ->
     #console.log preprocessedCode
     executeUserCode jsCode
   $('#button-stop-code').click ->
-    gameScene.rotateRabbit 90, 1000
+    alert('not implemented')
