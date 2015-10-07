@@ -1,50 +1,57 @@
 class @GameScene
   constructor: (dom) ->
+    # Setup model
+    @carrot =
+      x: 300, y: 50
+      angle: 0
+
+    @rabbit =
+      x: 300, y: 370
+      angle: 0
+
+    # Setup view
     @canvas = Snap(dom)
-    @carrot = @canvas.circle(300, 50, 20)
-    @carrot.attr
+
+    @carrotElem = @canvas.circle(0, 0, 20)
+    @carrotElem.attr
       fill: '#ff5555'
       stroke: '#000'
       strokeWidth: 5
+      display: 'none'
+    @updateTransform @carrotElem, @carrot, 0, =>
+      # carrot in place, display it
+      @carrotElem.attr 'display', ''
 
-    @rabbit = @canvas.polygon(0, -70, 30, 30, -30, 30)
-    @rabbit.attr
+    @rabbitElem = @canvas.polygon(0, -70, 30, 30, -30, 30)
+    @rabbitElem.attr
       fill: '#aaaaff'
       stroke: '#000'
       strokeWidth : 5
-      # display after prepared properly
       display: 'none'
+    @updateTransform @rabbitElem, @rabbit, 0, =>
+      # rabbit in place, display it
+      @rabbitElem.attr 'display', ''
 
-    @rabbitCenter =
-      x: 300
-      y: 370
-    @rabbitAngle = 0
-    @updateRabbitTransform 0, =>
-      # rabit in place, display it
-      @rabbit.attr 'display', ''
+  getTStr: (info) ->
+    "t#{info.x},#{info.y}r#{info.angle},0,0"
 
-  rabbitTStr: () ->
-    "t#{@rabbitCenter.x},#{@rabbitCenter.y}r#{@rabbitAngle},0,0"
-
-  updateRabbitTransform: (duration, callback) ->
-    @rabbit.animate
-      transform: @rabbitTStr()
-      duration,
-      mina.linear,
-      callback
+  updateTransform: (elem, info, duration, callback) ->
+    elem.animate
+      transform: @getTStr(info)
+      duration, mina.linear, callback
 
   rotateRabbit: (angle, duration, callback) ->
-    @rabbitAngle += angle
-    @updateRabbitTransform(duration, callback)
+    @rabbit.angle += angle
+    @updateTransform(@rabbitElem, @rabbit, duration, callback)
 
   moveRabbit: (x, y, duration, callback) ->
-    @rabbitCenter.x += x
-    @rabbitCenter.y += y
-    @updateRabbitTransform(duration, callback)
+    @rabbit.x += x
+    @rabbit.y += y
+    @updateTransform(@rabbitElem, @rabbit, duration, callback)
 
   isWin: () ->
-    carbox = @carrot.getBBox()
-    rabbox = @rabbit.getBBox()
+    carbox = @carrotElem.getBBox()
+    rabbox = @rabbitElem.getBBox()
     return !(rabbox.x  > carbox.x2 ||
              rabbox.x2 < carbox.x  ||
              rabbox.y  > carbox.y2 ||
