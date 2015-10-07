@@ -88,16 +88,30 @@ module.exports = (grunt) ->
               ]
 
     connect:
-      install:
-        base: "./public"
+      server:
+        options:
+          base: "./public"
+          port: 9000
+
+    watch:
+      jade:
+        files: ['frontend/**/*.jade']
+        tasks: ['jade']
+      sass:
+        files: ['./frontend/scss/**/*.scss']
+        tasks: ['sass']
+      coffee:
+        files: ['frontend/coffee/**/*.coffee']
+        tasks: ['coffee']
 
   grunt.loadNpmTasks 'grunt-contrib-sass'
   grunt.loadNpmTasks 'grunt-contrib-jade'
   grunt.loadNpmTasks 'grunt-contrib-coffee'
+  grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-contrib-connect'
   grunt.loadNpmTasks 'grunt-bower'
-  grunt.loadNpmTasks 'grunt-connect'
 
   grunt.registerTask 'compile', ['jade', 'sass', 'coffee', 'bower']
-  grunt.registerTask 'serve', ['compile', 'connect']
+  grunt.registerTask 'serve', ['compile', 'connect', 'watch']
   grunt.registerTask 'dev', ['compile']
   grunt.registerTask 'default', ['dev']
