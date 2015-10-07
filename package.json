@@ -6,12 +6,9 @@
     "build": "bower install && grunt",
     "test": "echo \"Error: test not implemented\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "http://UpcomingCloseCombatUltility@stash.secoder.net/scm/rab/all-and-everything.git"
-  },
   "author": "RaBot Group",
   "license": "BSD-3-Clause",
+  "private": true,
   "dependencies": {
     "coffee-script": "^1.10.0",
     "grunt": "^0.4.5",
