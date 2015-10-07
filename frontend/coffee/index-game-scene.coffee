@@ -12,12 +12,16 @@ class @GameScene
       fill: '#aaaaff'
       stroke: '#000'
       strokeWidth : 5
+      # display after prepared properly
+      display: 'none'
 
     @rabbitCenter =
       x: 300
       y: 370
     @rabbitAngle = 0
-    @updateRabbitTransform 0
+    @updateRabbitTransform 0, =>
+      # rabit in place, display it
+      @rabbit.attr 'display', ''
 
   rabbitTStr: () ->
     "t#{@rabbitCenter.x},#{@rabbitCenter.y}r#{@rabbitAngle},0,0"
@@ -26,9 +30,8 @@ class @GameScene
     @rabbit.animate
       transform: @rabbitTStr()
       duration,
-      mina.linear
-      ->
-        callback() if callback?
+      mina.linear,
+      callback
 
   rotateRabbit: (angle, duration, callback) ->
     @rabbitAngle += angle
