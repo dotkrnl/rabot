@@ -1,59 +1,58 @@
 class @GameScene
   constructor: (dom) ->
+    # Setup model
+    @carrot =
+      x: 300, y: 50
+      angle: 0
+
+    @rabbit =
+      x: 300, y: 370
+      angle: 0
+
+    # Setup view
     @canvas = Snap(dom)
-    @carrot = @canvas.circle(300, 50, 20)
-    @carrot.attr
+
+    @carrotElem = @canvas.circle(0, 0, 20)
+    @carrotElem.attr
       fill: '#ff5555'
       stroke: '#000'
       strokeWidth: 5
-    @rabbit = @canvas.polygon(300,300,330,400,270,400)
-    @rabbit.attr
+      display: 'none'
+    @updateTransform @carrotElem, @carrot, 0, =>
+      # carrot in place, display it
+      @carrotElem.attr 'display', ''
+
+    @rabbitElem = @canvas.polygon(0, -70, 30, 30, -30, 30)
+    @rabbitElem.attr
       fill: '#aaaaff'
       stroke: '#000'
       strokeWidth : 5
-    @rabbitCenter =
-      x: 300
-      y: 370
-    @rabbitOffset =
-      x: 0
-      y: 0
-    @rabbitAngle = 0
+      display: 'none'
+    @updateTransform @rabbitElem, @rabbit, 0, =>
+      # rabbit in place, display it
+      @rabbitElem.attr 'display', ''
 
-  isVictory: ->
-    rabbitBoundingBox = @rabbit.getBBox()
-    return true
+  getTStr: (info) ->
+    "t#{info.x},#{info.y}r#{info.angle},0,0"
 
-  rabbitTStr: () ->
-    #The 0.01 is a very ugly work-around to prevent some misbehaviour with Snap.svg
-    "r" + @rabbitAngle + "," + @rabbitCenter.x + "," + @rabbitCenter.y + \
-    " t" + (@rabbitOffset.x + 0.01) + "," + (@rabbitOffset.y + 0.01)
+  updateTransform: (elem, info, duration, callback) ->
+    elem.animate
+      transform: @getTStr(info)
+      duration, mina.linear, callback
 
-  updateRabbitTransform: (duration, callback) ->
-    @rabbit.animate
-      transform: @rabbitTStr()
-      1000
-      mina.linear
-      ->
-        callback() if callback?
   rotateRabbit: (angle, duration, callback) ->
-    #This is a important work-around to prevent SnapSvg performing point-to-point linear transform.
-    @rabbit.transform @rabbitTStr()
-    @rabbitAngle += angle
-    @updateRabbitTransform(duration, callback)
+    @rabbit.angle += angle
+    @updateTransform(@rabbitElem, @rabbit, duration, callback)
 
   moveRabbit: (x, y, duration, callback) ->
-    #This is a important work-around to prevent SnapSvg performing point-to-point linear transform.
-    @rabbit.transform @rabbitTStr()
-    @rabbitOffset.x += x
-    @rabbitOffset.y += y
-    @rabbitCenter.x += x
-    @rabbitCenter.y += y
-    @updateRabbitTransform(duration, callback)
+    @rabbit.x += x
+    @rabbit.y += y
+    @updateTransform(@rabbitElem, @rabbit, duration, callback)
 
   isWin: () ->
-    carrotBBox = @carrot.getBBox()
-    if @rabbitCenter.x > carrotBBox.x && @rabbitCenter.x < carrotBBox.x2 && \
-    @rabbitCenter.y > carrotBBox.y && @rabbitCenter.y < carrotBBox.y2
-      return true
-    else
-      return false
+    carbox = @carrotElem.getBBox()
+    rabbox = @rabbitElem.getBBox()
+    return !(rabbox.x  > carbox.x2 ||
+             rabbox.x2 < carbox.x  ||
+             rabbox.y  > carbox.y2 ||
+             rabbox.y2 < carbox.y)
