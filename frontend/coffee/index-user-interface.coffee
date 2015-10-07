@@ -5,9 +5,9 @@
   move: (step, callback) ->
     stepX = step * Math.sin(gameScene.rabbitAngle / 180.0 * Math.PI)
     stepY = step * Math.cos(gameScene.rabbitAngle / 180.0 * Math.PI)
-    gameScene.moveRabbit stepX, -stepY, 100 * step, callback
+    gameScene.moveRabbit stepX, -stepY, Math.abs(5 * step), callback
   turn: (angle, callback) ->
-    gameScene.rotateRabbit angle, 10 * angle, callback
+    gameScene.rotateRabbit angle, Math.abs(5 * angle), callback
 
 @enableUserInterface = (gameScene) ->
   @gameScene = gameScene
