@@ -1,4 +1,4 @@
-#This file includes codes from LiuJiaChang's previous project
+# This file includes codes from Jason Lau's previous project
 
 module.exports = (grunt) ->
   grunt.initConfig
