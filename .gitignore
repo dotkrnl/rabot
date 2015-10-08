@@ -1,3 +1,6 @@
+# This file is created with the assistance of https://www.gitignore.io
+
+### Frontend ###
 # Logs
 logs
 log
@@ -26,3 +29,15 @@ cwd
 
 # Redis dump file
 dump.rdb
+
+### Python Backend ###
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# virtualenv
+venv
+
+# Sqlite database
+*.sqlite3
