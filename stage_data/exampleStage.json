@@ -1,0 +1,22 @@
+//A stage is made up of object(s), and object(s) only.
+//An object has one or more properties. Usually not only one.
+//Descriptions of different properties will be given with examples.
+
+//Moer will be added, but it does mot mean that it will be added to/supported by the game.
+
+//Type: what the object is.
+//Type "Rabbit": it is a rabbit, the charactor for player to control.
+//Position: where the object is.
+//Angle: where the object is facing. "0" means the object is facing the x axis' positive side. Values [0,360).
+{Type:"Rabbit", Position:["100","200"], Angle:"0"}
+
+//Type "Carrot": what the rabbit want to get. Getting(let rabbit reach) all carrots will pass the stage.
+//Passable: describes whether if the rabbit can pass the object.
+//Leathal: describes whether if the rabbit will fall when stepping on the object.
+{Type:"Carrot", Passable:"true", Leathal:"false", Position:["300", "150"]}
+
+//Type "Rotator": when stepped on, the rabbit will stop moving, rotate a given angle, then move again.
+//Rotation: Rotator-only property. Describes the angle the rabbit will turn when stepping on this Rotator.
+{Type:"Rotator", Passable:"true", Leathal:"false", Position:["350", "160"], Rotation:"90"}
+
+//More Coming
