@@ -2,7 +2,7 @@
 //An object has one or more properties. Usually not only one.
 //Descriptions of different properties will be given with examples.
 
-//Moer will be added, but it does mot mean that it will be added to/supported by the game.
+//More will be added, but it does mot mean that it will be added to/supported by the game.
 
 //Type: what the object is.
 //Type "Rabbit": it is a rabbit, the charactor for player to control.
@@ -12,7 +12,7 @@
 
 //Type "Carrot": what the rabbit want to get. Getting(let rabbit reach) all carrots will pass the stage.
 //Passable: describes whether if the rabbit can pass the object.
-//Leathal: describes whether if the rabbit will fall when stepping on the object.
+//Lethal: describes whether if the rabbit will fall when stepping on the object.
 {Type:"Carrot", Passable:"true", Leathal:"false", Position:["300", "150"]}
 
 //Type "Rotator": when stepped on, the rabbit will stop moving, rotate a given angle, then move again.
