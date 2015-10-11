@@ -1,44 +1,10 @@
 module.exports = (code) ->
 	code += '\n'
-		
+
 	beginning = true
 	detected = false
 	buffer = ""
-	afterCode = """
-    left = -90
-    right = 90
-
-    __rabot_nop = ->
-
-    __rabot_continue = __rabot_nop
-
-    move = (step, callback) ->
-      __rabot_continue = ->
-        __rabot_continue = __rabot_nop
-        callback()
-      @postMessage
-        action: 'move'
-        step: step
-
-    turn = (angle, callback) ->
-      __rabot_continue = ->
-        __rabot_continue = __rabot_nop
-        callback()
-      @postMessage
-        action: 'turn'
-        angle: angle
-
-    __rabot_finished = ->
-      @postMessage
-        action: 'userCodeFinished'
-
-    @onmessage = (e) ->
-      e = e.data if e?
-      if e? and e.action? and \
-          e.action == 'continue'
-        __rabot_continue()
-
-    """
+	afterCode = ""
 
 	for ch in code
 		#单词未结束
@@ -68,7 +34,7 @@ module.exports = (code) ->
 			afterCode += "await "
 			afterCode += buffer
 			afterCode += ch
-			buffer = ""	
+			buffer = ""
 			detected = true
 		#检测到for, if
 		else if ((buffer == "for") || (buffer == "if")) && detected
@@ -83,5 +49,4 @@ module.exports = (code) ->
 			afterCode += ch
 			buffer = ""
 
-	afterCode += "\n__rabot_finished()\n"
 	return afterCode

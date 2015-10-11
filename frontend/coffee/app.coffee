@@ -1,6 +1,6 @@
-GameScene = require './game-scene.coffee'
-UserCodeWorker = require './usercode-worker.coffee'
-userLib = require './usercode-lib.coffee'
+Game = require './models/game.coffee'
+GameScene = require './views/gamescene.coffee'
+UserWorker = require './worker/worker.coffee'
 
 $ ->
   editorCodeMirror = CodeMirror.fromTextArea(document.getElementById('code-editor'), lineNumbers: true)
@@ -12,12 +12,23 @@ $ ->
     $('#play-canvas').width $('#container-play').width()
     $('#play-canvas').height $('#container-play').height()
 
-  window.gameScene = new GameScene "#play-canvas"
+  game = new Game
+  gameScene = new GameScene "#play-canvas"
+  game.register gameScene
+  userWorker = null
+
+  game.on 'win', ->
+    $('#status').text('Win')
+  game.on 'lost', ->
+    $('#status').text('Lost')
+
+  game.on 'finish', ->
+    userWorker.terminate() if userWorker?
+    userWorker = null
 
   $('#button-run-code').click ->
     code = editorCodeMirror.getValue()
-    window.userWorker = new UserCodeWorker code \
-      if not window.userWorkerk
+    userWorker = new UserWorker game, code
 
   $('#button-stop-code').click ->
-    userLib.finished()
+    game.finish()
