@@ -58,21 +58,6 @@ module.exports = (grunt) ->
               files: [
                 "lib/*"
               ]
-            angular:
-              keepExpandedHierarchy: false
-              files: [
-                "angular.min.js",
-              ]
-            'angular-route':
-              keepExpandedHierarchy: false
-              files: [
-                "angular-route.min.js",
-              ]
-            'angular-mocks':
-              keepExpandedHierarchy: false
-              files: [
-                "angular-mocks.js",
-              ]
             'iced-coffee-script':
               keepExpandedHierarchy: false
               files: [
