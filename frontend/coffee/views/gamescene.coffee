@@ -31,12 +31,18 @@ class GameScene
 
   update: (scale, callback) ->
     if @game?
+      done_count = 0
+      finished_one = () ->
+        done_count += 1
+        if done_count == 2
+          callback() if callback?
+
       @rabbitElem.animate
         transform: @tStrFor(@game.rabbit)
-        scaleToTime(scale), mina.linear, callback
+        scaleToTime(scale), mina.linear, finished_one
       @carrotElem.animate
         transform: @tStrFor(@game.carrot)
-        scaleToTime(scale), mina.linear, callback
+        scaleToTime(scale), mina.linear, finished_one
     else
       callback() if callback?
     return
