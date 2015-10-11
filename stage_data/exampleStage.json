@@ -8,15 +8,17 @@
 //Type "Rabbit": it is a rabbit, the charactor for player to control.
 //Position: where the object is.
 //Angle: where the object is facing. "0" means the object is facing the x axis' positive side. Values [0,360).
-{Type:"Rabbit", Position:["100","200"], Angle:"0"}
+[
+  {"Type": "Rabbit", "Position" :["100","200"], "Angle" :"0"},
 
-//Type "Carrot": what the rabbit want to get. Getting(let rabbit reach) all carrots will pass the stage.
-//Passable: describes whether if the rabbit can pass the object.
-//Lethal: describes whether if the rabbit will fall when stepping on the object.
-{Type:"Carrot", Passable:"true", Leathal:"false", Position:["300", "150"]}
+  //Type "Carrot": what the rabbit want to get. Getting(let rabbit reach) all carrots will pass the stage.
+  //Passable: describes whether if the rabbit can pass the object.
+  //Lethal: describes whether if the rabbit will fall when stepping on the object.
+  {"Type": "Carrot", "Passable": "true", "Lethal": "false", "Position": ["300", "150"]},
 
-//Type "Rotator": when stepped on, the rabbit will stop moving, rotate a given angle, then move again.
-//Rotation: Rotator-only property. Describes the angle the rabbit will turn when stepping on this Rotator.
-{Type:"Rotator", Passable:"true", Leathal:"false", Position:["350", "160"], Rotation:"90"}
+  //Type "Rotator": when stepped on, the rabbit will stop moving, rotate a given angle, then move again.
+  //Rotation: Rotator-only property. Describes the angle the rabbit will turn when stepping on this Rotator.
+  {"Type": "Rotator", "Passable": "true", "Lethal":"false", "Position": ["350", "160"], "Rotation": "90"}
 
-//More Coming
+  //More Coming
+]
