@@ -1,4 +1,4 @@
-window.preprocessUserCode = (code) ->
+module.exports = (code) ->
 	code += '\n'
 		
 	beginning = true

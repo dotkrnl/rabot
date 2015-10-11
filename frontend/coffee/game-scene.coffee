@@ -1,4 +1,4 @@
-class @GameScene
+class GameScene
   constructor: (dom) ->
     # Setup model
     @carrot =
@@ -56,3 +56,5 @@ class @GameScene
              rabbox.x2 < carbox.x  ||
              rabbox.y  > carbox.y2 ||
              rabbox.y2 < carbox.y)
+
+module.exports = GameScene

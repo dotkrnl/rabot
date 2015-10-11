@@ -27,14 +27,6 @@ module.exports = (grunt) ->
           ext: '.css'
         }]
 
-    coffee:
-      install:
-        cwd: './frontend/coffee'
-        src: ['./**/*.coffee']
-        ext: '.js'
-        dest: './public/js'
-        expand: true
-
     bower:
       install:
         dest: 'public'
@@ -87,6 +79,13 @@ module.exports = (grunt) ->
                 "extras/iced-coffee-script-108.0.8-min.js",
               ]
 
+    browserify:
+      install:
+        files:
+          'public/js/site.js': ['frontend/coffee/**/app.coffee']
+        options:
+          transform: ['coffeeify']
+
     connect:
       server:
         options:
@@ -100,9 +99,9 @@ module.exports = (grunt) ->
       sass:
         files: ['./frontend/scss/**/*.scss']
         tasks: ['sass']
-      coffee:
+      browserify:
         files: ['frontend/coffee/**/*.coffee']
-        tasks: ['coffee']
+        tasks: ['browserify']
 
   grunt.loadNpmTasks 'grunt-contrib-sass'
   grunt.loadNpmTasks 'grunt-contrib-jade'
@@ -110,8 +109,9 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-connect'
   grunt.loadNpmTasks 'grunt-bower'
+  grunt.loadNpmTasks 'grunt-browserify'
 
-  grunt.registerTask 'compile', ['jade', 'sass', 'coffee', 'bower']
+  grunt.registerTask 'compile', ['jade', 'sass', 'bower', 'browserify']
   grunt.registerTask 'serve', ['compile', 'connect', 'watch']
   grunt.registerTask 'dev', ['compile']
   grunt.registerTask 'default', ['dev']
