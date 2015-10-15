@@ -41,3 +41,7 @@ venv
 
 # Sqlite database
 *.sqlite3
+
+#Idea config
+.idea
+
