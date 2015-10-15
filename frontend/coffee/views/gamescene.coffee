@@ -33,6 +33,7 @@ class GameScene
         fill: '#aaaaff'
         stroke: '#000'
         strokeWidth : 5
+        display: 'none'
       @unitElems.push
         unit: rabbit
         element: rabbitElem
@@ -43,11 +44,15 @@ class GameScene
         fill: '#ff5555'
         stroke: '#000'
         strokeWidth: 5
+        display: 'none'
       @unitElems.push
         unit: carrot
         element: carrotElem
 
-    @update(0)
+    @update 0, =>
+      elem.element.attr 'display', '' \
+        for elem in @unitElems
+
     return
 
   # Update the game view according to the game model.
@@ -60,20 +65,19 @@ class GameScene
   # passing a scale of 0 will do the job.
   update: (scale, callback) ->
     if @game?
-      done_count = 0
+      remaining = @unitElems.length
 
       # A helper function to record how many objects finished animation is necessary.
       # The callback will only be called when all animations are all finished.
       finished_one = () ->
-        console.log(done_count)
-        done_count += 1
-        if done_count == @unitElems.length
+        remaining -= 1
+        if remaining == 0
           callback() if callback?
 
       for unitElem in @unitElems
         unitElem.element.animate
           transform: @tStrFor(unitElem.unit)
-          scaleToTime(scale), mina.linear, finished_one.bind(@)
+          scaleToTime(scale), mina.linear, finished_one
 
     else
       callback() if callback?
