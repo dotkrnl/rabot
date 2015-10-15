@@ -52,10 +52,9 @@ class GameScene
     if @game?
       done_count = 0
 
-      # To keep the animation in order, the transform will be accomplished by
-      # 2 steps (rotation and translation), hence A helper function to record
-      # how many transforms s finished is necessary. The callback will only be
-      # called when 2 steps are all finished.
+      # There are currently only 2 objects in the scene, A helper function to record
+      # how many objects finished animation is necessary. The callback will only be
+      # called when 2 animations are all finished.
 
       finished_one = () ->
         done_count += 1
