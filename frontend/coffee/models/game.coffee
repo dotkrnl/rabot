@@ -36,7 +36,7 @@ class Game extends Emitter
     sceneObj = [
       {"Type": "Rabbit", "Position" :["300","370"], "Angle" :"0"}
       {"Type": "Carrot", "Passable": "true", "Lethal": "false", "Position": ["300", "50"]}
-      {"Type": "Carrot", "Passable": "true", "Lethal": "false", "Position": ["300", "90"]}
+      {"Type": "Carrot", "Passable": "true", "Lethal": "false", "Position": ["300", "180"]}
     ]
     for unit in sceneObj
       @addUnit(unit)
@@ -84,7 +84,15 @@ class Game extends Emitter
   # win / lost check, triggering the corresponding event, as well as the finish
   # event. Currently the check is just a collision detection at the end of the game.
   finish: ->
-    if @scene.collided()
+    victory = false
+    rabbit = @units.Rabbit[0]
+
+    for carrot in @units.Carrot
+      if @scene.collided(rabbit, carrot)
+        victory = true
+        break
+
+    if victory
       @trigger('win')
     else
       @trigger('lost')

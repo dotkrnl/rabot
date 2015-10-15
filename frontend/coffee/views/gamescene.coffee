@@ -13,31 +13,41 @@ class GameScene
   constructor: (canvas_dom) ->
     @canvas = Snap(canvas_dom)
     @game = null
+    @unitElems = []
 
-    @carrotElem = @canvas.circle(0, 0, 20)
-    @carrotElem.attr
-      fill: '#ff5555'
-      stroke: '#000'
-      strokeWidth: 5
-      display: 'none'
-
-    @rabbitElem = @canvas.polygon(0, -70, 30, 30, -30, 30)
-    @rabbitElem.attr
-      fill: '#aaaaff'
-      stroke: '#000'
-      strokeWidth : 5
-      display: 'none'
+  # Find an corresponding svg element by unit in game model.
+  getElementByUnit: (unit) ->
+    for unitElem in @unitElems
+      return unitElem.element if unitElem.unit == unit
+    return undefined
 
   # Bind the game scene with a model. Note that all elements in the scene will
   # become visible and synchronized with the model immediately.
   # @param game The game model to bind.
   _register: (game) ->
     @game = game
-    # update with game
-    @update 0, =>
-      # items in place, display them
-      @rabbitElem.attr 'display', ''
-      @carrotElem.attr 'display', ''
+
+    for rabbit in @game.units.Rabbit
+      rabbitElem = @canvas.polygon(0, -70, 30, 30, -30, 30)
+      rabbitElem.attr
+        fill: '#aaaaff'
+        stroke: '#000'
+        strokeWidth : 5
+      @unitElems.push
+        unit: rabbit
+        element: rabbitElem
+
+    for carrot in @game.units.Carrot
+      carrotElem = @canvas.circle(0, 0, 20)
+      carrotElem.attr
+        fill: '#ff5555'
+        stroke: '#000'
+        strokeWidth: 5
+      @unitElems.push
+        unit: carrot
+        element: carrotElem
+
+    @update(0)
     return
 
   # Update the game view according to the game model.
@@ -52,41 +62,37 @@ class GameScene
     if @game?
       done_count = 0
 
-      # There are currently only 2 objects in the scene, A helper function to record
-      # how many objects finished animation is necessary. The callback will only be
-      # called when 2 animations are all finished.
-
+      # A helper function to record how many objects finished animation is necessary.
+      # The callback will only be called when all animations are all finished.
       finished_one = () ->
+        console.log(done_count)
         done_count += 1
-        if done_count == 2
+        if done_count == @unitElems.length
           callback() if callback?
 
-      @rabbitElem.animate
-        transform: @tStrFor(@game.units.Rabbit[0])
-        scaleToTime(scale), mina.linear, finished_one
-      @carrotElem.animate
-        transform: @tStrFor(@game.units.Carrot[0])
-        scaleToTime(scale), mina.linear, finished_one
+      for unitElem in @unitElems
+        unitElem.element.animate
+          transform: @tStrFor(unitElem.unit)
+          scaleToTime(scale), mina.linear, finished_one.bind(@)
+
     else
       callback() if callback?
     return
 
-  # Collision detection by judging whether the carrot's and the rabbit's
-  # bounding box have overlapped.
+  # Collision detection by judging whether the bounding box of 2 models in the
+  # game unit have overlapped.
   # This function is implemented in view because to get the bounding box,
   # access to Snap.svg objects is required.
-  collided: () ->
-    carbox = @carrotElem.getBBox()
-    rabbox = @rabbitElem.getBBox()
-    not (rabbox.x  > carbox.x2 or
-         rabbox.x2 < carbox.x  or
-         rabbox.y  > carbox.y2 or
-         rabbox.y2 < carbox.y)
+  collided: (unit1, unit2) ->
+    box1 = @getElementByUnit(unit1).getBBox()
+    box2 = @getElementByUnit(unit2).getBBox()
+    not (box1.x  > box2.x2 or
+         box1.x2 < box2.x  or
+         box1.y  > box2.y2 or
+         box1.y2 < box2.y)
 
   # Generate a Snap.svg transform string from an object.
   tStrFor: (info) ->
-    ret = "t#{info.x},#{info.y}r#{info.angle},0,0"
-    return ret
-
+    "t#{info.x},#{info.y}r#{info.angle},0,0"
 
 module.exports = GameScene
