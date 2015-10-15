@@ -6,17 +6,20 @@ scaleToTime = (scale) ->
 # The class GameScene defines a game scene
 class GameScene
 
-  # The scene need to be constructed with an svg element to use Snap.svg. When
-  # created, the game scene is not related to any game models and all elements
-  # will be invisible. To bind a game model, calling _register is required.
-  # @param canvas_dom Specify the svg element used to init Snap.svg.
+  # Construct the scene with Snap.svg on canvas_dom
+  # After constructed, the game scene is not related to any game models
+  #   therefore no element will be visible nor existed
+  # Call game.register(game_scene) to bind scene to a game
+  # @param canvas_dom Specify the svg element used to init the scene
   constructor: (canvas_dom) ->
     @canvas = Snap(canvas_dom)
     @game = null
     @elems = []
 
-  # Bind the game scene with a model. Note that all elements in the scene will
-  # become visible and synchronized with the model immediately.
+  # Bind the game scene with a model. 
+  # The scene will be synchronized with the model
+  # This function should only be called by register of Game
+  # See game.register(game_scene) for details
   # @param game The game model to bind.
   _register: (game) ->
     @game = game
@@ -44,25 +47,25 @@ class GameScene
       @elems.push elem
 
     @update 0, =>
+      # in place, display
       for elem in @elems
         elem.attr('display', '')
 
     return
 
   # Update the game view according to the game model.
-  # @param scale This function will update the game scene with animation
-  # according to scale. The longer the scale is, the slower the animation will be.
-  # @param callback: When transform is finished, the callback will be called.
+  # @param scale: This function will update the game scene with animation
+  # according to scale. The time used will be a linear function of scale
+  # @param callback: The function to call when transform is finished
   # This parameter is optional. If the view is not bound with a model,
-  # callback will be called immediately if exists.
-  # Note: if you want the view be synchronized with the model immediately,
-  # passing a scale of 0 will do the job.
+  # callback will be called immediately
+  # Note: use scale 0 to synchronize scene with the model immediately
   update: (scale, callback) ->
     if @game?
       remaining = @elems.length
 
-      # A helper function to record how many objects finished animation is necessary.
-      # The callback will only be called when all animations are all finished.
+      # A helper function to record how many objects finished animation
+      # The callback will be called when all animations are all finished.
       finished_one = () ->
         remaining -= 1
         if remaining == 0
@@ -77,8 +80,8 @@ class GameScene
       callback() if callback?
     return
 
-  # Collision detection by judging whether the bounding box of 2 models in the
-  # game sprite have overlapped.
+  # Collision detection by judging whether the bounding box of 2 sprite
+  # have overlapped.
   # This function is implemented in view because to get the bounding box,
   # access to Snap.svg objects is required.
   collided: (sprite1, sprite2) ->

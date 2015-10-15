@@ -7,7 +7,7 @@ toRad = (degrees) ->
 # The Game class defines the model for the Rabot game
 class Game extends Emitter
 
-  # Construct the game model. Currently the position of all objects are hard-coded.
+  # Construct the game model.
   # No game scene is related with the game model when it's constructed.
   constructor: ->
     @sprites = []
@@ -31,7 +31,7 @@ class Game extends Emitter
     @sprites.push(sprite)
 
   # Get sprites that satisfied 'filter'
-  # @param filter: e.g. {position: [300,370]}
+  # @param filter: e.g. {x: 300, y: 370}
   filterSprites: (filter) ->
     results = []
     for sprite in @sprites
@@ -53,22 +53,22 @@ class Game extends Emitter
   getRabbit: ->
     return @getSprites('rabbit')[0]
 
-  # Load an stage with json. the format is defined in stage_data/exampleStage.json
+  # Load an stage with json.
+  # format specified in stage_data/exampleStage.json
   loadStage: (json) ->
     data = JSON.parse(json)
     for sprite in data
       @addSprite(sprite)
 
-  # Register the model to a game scene by calling the _register function of the
-  # game scene.
+  # Associate with game scene and register the game model to it
   # @param gameScene the game scene to register to.
   register: (gameScene) ->
     @scene = gameScene
     @scene._register(@)
 
-  # This function is called whenever a change is made to the model, to notify the
-  # game scene to keep synchronized with the model (with an animation), by calling
-  # GameScene.update. It will also triggers "update" event.
+  # Should be called whenever a change is made to the model, to notify the
+  # game scene to keep synchronized with the model (with an animation).
+  # It will also triggers "update" event.
   update: (scale, callback) ->
     @trigger('update')
     if @scene?
@@ -90,7 +90,7 @@ class Game extends Emitter
 
   # Turn the orientation of the rabbit by angle, in degree, clockwisely.
   # This function will call @update, producing animation in the game scene.
-  # @param step to move, currently in pixels.
+  # @param angle to turn, in degree
   # @param callback, function to call when animation is finished.
   turn: (angle, callback) ->
     rabbit = @getRabbit()
@@ -98,9 +98,10 @@ class Game extends Emitter
     @update(angle, callback)
     return
 
-  # This function is called when the game is finished. This function will perform
-  # win / lost check, triggering the corresponding event, as well as the finish
-  # event. Currently the check is just a collision detection at the end of the game.
+  # This function is called when the game is finished.
+  # This function will perform win / lost check,
+  # triggering the corresponding event, as well as the finish event
+  # TODO: the check shouldn't be just a collision detection
   finish: ->
     victory = false
     rabbit = @getRabbit()
@@ -114,7 +115,6 @@ class Game extends Emitter
       @trigger('win')
     else
       @trigger('lost')
-
     @trigger('finish')
     return
 

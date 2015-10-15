@@ -27,7 +27,8 @@ class Emitter
       @cbs[name].remove(cb) if @cbs[name]?
     return
 
-  # Trigeer all events in names. The arguments beginning from the second one
+  # Trigeer all events in names.
+  # The arguments beginning from the second one
   # will be passed to the callback functions.
   trigger: (names) ->
     names = names.split(' ')
