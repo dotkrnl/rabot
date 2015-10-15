@@ -6,20 +6,20 @@ scaleToTime = (scale) ->
 # The class GameScene defines a game scene
 class GameScene
 
-  # Construct the scene with Snap.svg on canvas_dom
+  # Construct the scene with Snap.svg on canvasOom
   # After constructed, the game scene is not related to any game models
   #   therefore no element will be visible nor existed
-  # Call game.register(game_scene) to bind scene to a game
-  # @param canvas_dom Specify the svg element used to init the scene
-  constructor: (canvas_dom) ->
-    @canvas = Snap(canvas_dom)
+  # Call game.register(gamescene) to bind scene to a game
+  # @param canvasDom Specify the svg element used to init the scene
+  constructor: (canvasDom) ->
+    @canvas = Snap(canvasDom)
     @game = null
     @elems = []
 
   # Bind the game scene with a model. 
   # The scene will be synchronized with the model
   # This function should only be called by register of Game
-  # See game.register(game_scene) for details
+  # See game.register(gamescene) for details
   # @param game The game model to bind.
   _register: (game) ->
     @game = game
@@ -66,7 +66,7 @@ class GameScene
 
       # A helper function to record how many objects finished animation
       # The callback will be called when all animations are all finished.
-      finished_one = () ->
+      finishedOne = () ->
         remaining -= 1
         if remaining == 0
           callback() if callback?
@@ -74,7 +74,7 @@ class GameScene
       for elem, uid in @elems
         elem.animate
           transform: @tStrFor(@game.sprites[uid])
-          scaleToTime(scale), mina.linear, finished_one
+          scaleToTime(scale), mina.linear, finishedOne
 
     else
       callback() if callback?
