@@ -10,36 +10,54 @@ class Game extends Emitter
   # Construct the game model. Currently the position of all objects are hard-coded.
   # No game scene is related with the game model when it's constructed.
   constructor: ->
-    @units = {}
-    @nextUnitId = 0
+    @sprites = []
     @scene = null
-    @loadStage()
+    # TODO: load stage from server/local storage
+    @loadStage("""[
+      {"type":"carrot","x":300,"y":50},
+      {"type":"rabbit","x":300,"y":370,"angle":0}
+    ]""")
     super()
 
-  # Add a unit with the format defined in stage_data/exampleStage.json
-  # the defined format is not compatible with the current interface of game model
-  # so some conversion work is needed.
-  # TODO: Reducing property conversion.
-  addUnit: (unit) ->
-    @units[unit.Type] = [] if not @units[unit.Type]?
-    parsedUnit =
-      x: parseInt(unit.Position[0])
-      y: parseInt(unit.Position[1])
-      angle: if unit.angle? then parseInt(unit.angle) else 0
-      id: @nextUnitId
-    @nextUnitId++
-    @units[unit.Type].push(parsedUnit)
+  # Add a sprite with the format defined in stage_data/exampleStage.json
+  addSprite: (sprite) ->
+    console.error('no sprite type') if not sprite.type?
+    sprite.x = 0 if not sprite.x?
+    sprite.y = 0 if not sprite.y?
+    sprite.angle = 0 if not sprite.angle?
+    sprite.lethal = false if not sprite.lethal?
+    sprite.passabel = true if not sprite.passabel?
+    sprite.uid = @sprites.length
+    @sprites.push(sprite)
 
-  # Load an stage defined by the format defined in stage_data/exampleStage.json
-  # TODO: Currenly the object is hard-coded.
-  loadStage: () ->
-    sceneObj = [
-      {"Type": "Rabbit", "Position" :["300","370"], "Angle" :"0"}
-      {"Type": "Carrot", "Passable": "true", "Lethal": "false", "Position": ["300", "50"]}
-      {"Type": "Carrot", "Passable": "true", "Lethal": "false", "Position": ["300", "180"]}
-    ]
-    for unit in sceneObj
-      @addUnit(unit)
+  # Get sprites that satisfied 'filter'
+  # @param filter: e.g. {position: [300,370]}
+  filterSprites: (filter) ->
+    results = []
+    for sprite in @sprites
+      satisfied = true
+      for name, attr of filter
+        if sprite[name] != attr
+          satisfied = false
+          break
+      results.push sprite if satisfied
+    return results
+
+  # Get sprites which are 'type'
+  # @param type: the type of sprites to get
+  getSprites: (type) ->
+    @filterSprites
+      type: type
+
+  # Get rabit sprite
+  getRabbit: ->
+    return @getSprites('rabbit')[0]
+
+  # Load an stage with json. the format is defined in stage_data/exampleStage.json
+  loadStage: (json) ->
+    data = JSON.parse(json)
+    for sprite in data
+      @addSprite(sprite)
 
   # Register the model to a game scene by calling the _register function of the
   # game scene.
@@ -64,7 +82,7 @@ class Game extends Emitter
   # @param step to move, currently in pixels.
   # @param callback, function to call when animation is finished.
   move: (step, callback) ->
-    rabbit = @units.Rabbit[0]
+    rabbit = @getRabbit()
     rabbit.x += step * Math.sin(toRad(rabbit.angle))
     rabbit.y -= step * Math.cos(toRad(rabbit.angle))
     @update(step, callback)
@@ -75,7 +93,7 @@ class Game extends Emitter
   # @param step to move, currently in pixels.
   # @param callback, function to call when animation is finished.
   turn: (angle, callback) ->
-    rabbit = @units.Rabbit[0]
+    rabbit = @getRabbit()
     rabbit.angle += angle
     @update(angle, callback)
     return
@@ -85,9 +103,9 @@ class Game extends Emitter
   # event. Currently the check is just a collision detection at the end of the game.
   finish: ->
     victory = false
-    rabbit = @units.Rabbit[0]
+    rabbit = @getRabbit()
 
-    for carrot in @units.Carrot
+    for carrot in @getSprites('carrot')
       if @scene.collided(rabbit, carrot)
         victory = true
         break
@@ -96,6 +114,7 @@ class Game extends Emitter
       @trigger('win')
     else
       @trigger('lost')
+
     @trigger('finish')
     return
 
