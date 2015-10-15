@@ -1,37 +1,97 @@
-//A stage is made up of object(s), and object(s) only.
-//An object has one or more properties. Usually not only one.
-//Descriptions of different properties will be given with examples.
-
-//More will be added, but it does mot mean that it will be added to/supported by the game.
-
-//Type: what the object is.
-//Type "Rabbit": it is a rabbit, the charactor for player to control.
-//Position: where the object is.
-//Angle: where the object is facing. "0" means the object is facing the x axis' positive side. Values [0,360).
 [
-  {"Type": "Rabbit", "Position" :["100","200"], "Angle" :"0"},
+  {
+    "_global_comment": [
+      "a stage is made up of sprite(s) like this one.",
+      "a sprite has one or more properties. usually not only one."
+    ],
+    "_comment": [
+      "type: what the sprite is.",
+      "  'rabbit': it is a rabbit, the charactor for player to control.",
+      "x, y: where the sprite is.",
+      "angle: where the sprite is facing.",
+      "  '0' means the sprite is facing the x axis' positive side.",
+      "  values from 0 to 360"
+    ],
+    "type": "rabbit",
+    "x": 100, "y": 200,
+    "angle": 0
+  },
 
-  //Type "Carrot": what the rabbit want to get. Getting(let rabbit reach) all carrots will pass the stage.
-  //Passable: describes whether if the rabbit can pass the object.
-  //Lethal: describes whether if the rabbit will fall when stepping on the object.
-  {"Type": "Carrot", "Passable": "true", "Lethal": "false", "Position": ["300", "150"]},
+  {
+    "_comment": [
+      "type 'carrot': what the rabbit want to get.",
+      "  getting (let rabbit reach) all carrots will pass the stage.",
+      "passable: describes whether if the rabbit can pass the sprite.",
+      "lethal: describes whether if the rabbit will fall when stepping",
+      "  on the sprite."
+    ],
+    "type": "carrot",
+    "passable": true,
+    "lethal": false,
+    "x": 300, "y": 150
+  },
 
-  //Type "Rotator": when stepped on, the rabbit will stop moving, rotate a given angle, then move again.
-  //Rotation: Rotator-only property. Describes the angle the rabbit will turn when stepping on this Rotator.
-  {"Type": "Rotator", "Passable": "true", "Lethal":"false", "Position": ["350", "160"], "Rotation": "90"}
+  {
+    "_comment": [
+      "type 'rotator': when stepped on, the rabbit will stop moving,",
+      "  rotate a given angle, then move again.",
+      "rotation: rotator-only property.",
+      "  describes the angle rabbit will turn when stepping on."
+    ],
+    "type": "rotator",
+    "passable": true,
+    "lethal": false,
+    "x": 350, "y": 160,
+    "rotation": 90
+  },
 
-  //Type "Teleporter": when stepped on, the rabbit will stop moving, teleported to a given position, then move again.
-  //TeleportTo: Teleporter-only property. Describes the position the rabbit will be teleported to when stepping on this Teleporter.
-  {"Type":"Teleporter", "Passable":"true", "Leathal":"false", "Position":["12","450"], "TeleportTo":["54","120"]}
+  {
+    "_comment": [
+      "type 'teleporter': when stepped on, the rabbit will stop moving,",
+      "  be teleported to a given position, then move again.",
+      "'teleportTo': teleporter-only property.",
+      "  describes the position the rabbit will be teleported to"
+    ],
+    "type": "teleporter",
+    "passable": true,
+    "leathal": false,
+    "x": 12, "y": 450,
+    "teleportTo": [54, 120]
+  },
   
-  //Type "River": a part of a river, simply stops rabbit from moving.
-  {"Type":"River", "Passable":"false", "Leathal":"false", "Position":["123","224"]}
-  
-  //Type "Key": collectable item, as same as Carrot. Taking it allows the rabbit to open a Gate.
-  //Type "Gate": stops rabbit from moving, but not when the rabbit has the correct key.
-  //KeySerial: used to judge whether a key can open a gate(or something).
-  {"Type":"Key", "Passable":"true", "Leathal":"false", "Position":["456","789"], "KeySerial":"0"}
-  {"Type":"Gate", "Passable":"false", "Leathal":"false", "Position":["991","438"], "KeySerial":"0"}
-  
-  //More Coming
+  {
+    "_comment": [
+      "type 'river': a part of a river, simply stops rabbit from passing."
+    ],
+    "type": "river",
+    "passable": false,
+    "leathal": false,
+    "x": 123, "y": 224
+  },
+
+  {
+    "_comment": [
+      "type 'key': collectable item, as same as carrot.",
+      "  taking it allows the rabbit to open a gate.",
+      "keyID: used to judge whether a key can open a gate"
+    ],
+    "type": "key",
+    "passable": true,
+    "leathal": false,
+    "x": 456, "y": 789,
+    "keyID": 0
+  },
+
+  {
+    "_comment": [
+      "type 'gate': stops rabbit from moving, but not when the rabbit",
+      "  has the corresponding key.",
+      "keyID: used to judge which key can open this gate"
+    ],
+    "type": "gate",
+    "passable": false,
+    "leathal": false,
+    "x": 991, "y": 438,
+    "keyID": 0
+  }
 ]
