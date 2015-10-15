@@ -23,5 +23,15 @@
   //Type "Teleporter": when stepped on, the rabbit will stop moving, teleported to a given position, then move again.
   //TeleportTo: Teleporter-only property. Describes the position the rabbit will be teleported to when stepping on this Teleporter.
   {"Type":"Teleporter", "Passable":"true", "Leathal":"false", "Position":["12","450"], "TeleportTo":["54","120"]}
+  
+  //Type "River": a part of a river, simply stops rabbit from moving.
+  {"Type":"River", "Passable":"false", "Leathal":"false", "Position":["123","224"]}
+  
+  //Type "Key": collectable item, as same as Carrot. Taking it allows the rabbit to open a Gate.
+  //Type "Gate": stops rabbit from moving, but not when the rabbit has the correct key.
+  //KeySerial: used to judge whether a key can open a gate(or something).
+  {"Type":"Key", "Passable":"true", "Leathal":"false", "Position":["456","789"], "KeySerial":"0"}
+  {"Type":"Gate", "Passable":"false", "Leathal":"false", "Position":["991","438"], "KeySerial":"0"}
+  
   //More Coming
 ]
