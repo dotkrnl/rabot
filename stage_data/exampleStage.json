@@ -20,5 +20,8 @@
   //Rotation: Rotator-only property. Describes the angle the rabbit will turn when stepping on this Rotator.
   {"Type": "Rotator", "Passable": "true", "Lethal":"false", "Position": ["350", "160"], "Rotation": "90"}
 
+  //Type "Teleporter": when stepped on, the rabbit will stop moving, teleported to a given position, then move again.
+  //TeleportTo: Teleporter-only property. Describes the position the rabbit will be teleported to when stepping on this Teleporter.
+  {"Type":"Teleporter", "Passable":"true", "Leathal":"false", "Position":["12","450"], "TeleportTo":["54","120"]}
   //More Coming
 ]
