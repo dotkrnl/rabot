@@ -62,10 +62,10 @@ class GameScene
           callback() if callback?
 
       @rabbitElem.animate
-        transform: @tStrFor(@game.rabbit)
+        transform: @tStrFor(@game.units.Rabbit[0])
         scaleToTime(scale), mina.linear, finished_one
       @carrotElem.animate
-        transform: @tStrFor(@game.carrot)
+        transform: @tStrFor(@game.units.Carrot[0])
         scaleToTime(scale), mina.linear, finished_one
     else
       callback() if callback?
@@ -85,7 +85,8 @@ class GameScene
 
   # Generate a Snap.svg transform string from an object.
   tStrFor: (info) ->
-    "t#{info.x},#{info.y}r#{info.angle},0,0"
+    ret = "t#{info.x},#{info.y}r#{info.angle},0,0"
+    return ret
 
 
 module.exports = GameScene

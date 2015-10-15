@@ -10,14 +10,36 @@ class Game extends Emitter
   # Construct the game model. Currently the position of all objects are hard-coded.
   # No game scene is related with the game model when it's constructed.
   constructor: ->
-    @carrot =
-      x: 300, y: 50
-      angle: 0
-    @rabbit =
-      x: 300, y: 370
-      angle: 0
+    @units = {}
+    @nextUnitId = 0
     @scene = null
+    @loadStage()
     super()
+
+  # Add a unit with the format defined in stage_data/exampleStage.json
+  # the defined format is not compatible with the current interface of game model
+  # so some conversion work is needed.
+  # TODO: Reducing property conversion.
+  addUnit: (unit) ->
+    @units[unit.Type] = [] if not @units[unit.Type]?
+    parsedUnit =
+      x: parseInt(unit.Position[0])
+      y: parseInt(unit.Position[1])
+      angle: if unit.angle? then parseInt(unit.angle) else 0
+      id: @nextUnitId
+    @nextUnitId++
+    @units[unit.Type].push(parsedUnit)
+
+  # Load an stage defined by the format defined in stage_data/exampleStage.json
+  # TODO: Currenly the object is hard-coded.
+  loadStage: () ->
+    sceneObj = [
+      {"Type": "Rabbit", "Position" :["300","370"], "Angle" :"0"}
+      {"Type": "Carrot", "Passable": "true", "Lethal": "false", "Position": ["300", "50"]}
+      {"Type": "Carrot", "Passable": "true", "Lethal": "false", "Position": ["300", "90"]}
+    ]
+    for unit in sceneObj
+      @addUnit(unit)
 
   # Register the model to a game scene by calling the _register function of the
   # game scene.
@@ -42,8 +64,9 @@ class Game extends Emitter
   # @param step to move, currently in pixels.
   # @param callback, function to call when animation is finished.
   move: (step, callback) ->
-    @rabbit.x += step * Math.sin(toRad(@rabbit.angle))
-    @rabbit.y -= step * Math.cos(toRad(@rabbit.angle))
+    rabbit = @units.Rabbit[0]
+    rabbit.x += step * Math.sin(toRad(rabbit.angle))
+    rabbit.y -= step * Math.cos(toRad(rabbit.angle))
     @update(step, callback)
     return
 
@@ -52,7 +75,8 @@ class Game extends Emitter
   # @param step to move, currently in pixels.
   # @param callback, function to call when animation is finished.
   turn: (angle, callback) ->
-    @rabbit.angle += angle
+    rabbit = @units.Rabbit[0]
+    rabbit.angle += angle
     @update(angle, callback)
     return
 
