@@ -7,13 +7,13 @@
     "_comment": [
       "type: what the sprite is.",
       "  'rabbit': it is a rabbit, the charactor for player to control.",
-      "position: where the sprite is.",
+      "x, y: where the sprite is.",
       "angle: where the sprite is facing.",
       "  '0' means the sprite is facing the x axis' positive side.",
       "  values from 0 to 360"
     ],
     "type": "rabbit",
-    "position": [100, 200],
+    "x": 100, "y": 200,
     "angle": 0
   },
 
@@ -28,7 +28,7 @@
     "type": "carrot",
     "passable": true,
     "lethal": false,
-    "position": [300, 150]
+    "x": 300, "y": 150
   },
 
   {
@@ -41,7 +41,7 @@
     "type": "rotator",
     "passable": true,
     "lethal": false,
-    "position": [350, 160],
+    "x": 350, "y": 160,
     "rotation": 90
   },
 
@@ -55,7 +55,7 @@
     "type": "teleporter",
     "passable": true,
     "leathal": false,
-    "position": [12, 450],
+    "x": 12, "y": 450,
     "teleportTo": [54, 120]
   },
   
@@ -66,7 +66,7 @@
     "type": "river",
     "passable": false,
     "leathal": false,
-    "position": [123, 224]
+    "x": 123, "y": 224
   },
 
   {
@@ -78,7 +78,7 @@
     "type": "key",
     "passable": true,
     "leathal": false,
-    "position": [456, 789],
+    "x": 456, "y": 789,
     "keyID": 0
   },
 
@@ -91,7 +91,7 @@
     "type": "gate",
     "passable": false,
     "leathal": false,
-    "position": [991, 438],
+    "x": 991, "y": 438,
     "keyID": 0
   }
 ]
