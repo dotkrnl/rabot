@@ -13,12 +13,7 @@ class Game extends Emitter
     @sprites = []
     @scene = null
     @carrotGot = 0
-    # TODO: load stage from server/local storage
-    @loadStage("""[
-      {"type":"carrot","x":300,"y":50},
-      {"type":"rabbit","x":300,"y":370,"angle":0},
-      {"type":"carrot","x":300,"y":200,"angle":0}
-    ]""")
+    @stageData = ''
     super()
 
   # Add a sprite with the format defined in stage_data/exampleStage.json
@@ -31,6 +26,7 @@ class Game extends Emitter
     sprite.passabel = true if not sprite.passabel?
     sprite.uid = @sprites.length
     @sprites.push(sprite)
+    @update(0)
 
   # Remove a sprite in the game scene
   removeSprite: (sprite) ->
@@ -44,6 +40,8 @@ class Game extends Emitter
     @carrotGot = 0
     if @scene?
       @update(0, callback)
+    else
+      callback() if callback?
 
   # Get sprites that satisfied 'filter'
   # @param filter: e.g. {x: 300, y: 370}
@@ -73,9 +71,16 @@ class Game extends Emitter
   # Load an stage with json.
   # format specified in stage_data/exampleStage.json
   loadStage: (json) ->
-    data = JSON.parse(json)
-    for sprite in data
-      @addSprite(sprite)
+    @stageData = json
+    @clear =>
+      data = JSON.parse(@stageData)
+      for sprite in data
+        @addSprite(sprite)
+
+  # Resatrt the current stage.
+  restartStage:  ->
+    @clear =>
+      @loadStage(@stageData)
 
   # Associate with game scene and register the game model to it
   # @param gameScene the game scene to register to.
@@ -123,7 +128,6 @@ class Game extends Emitter
       if @scene.collided(rabbit, carrot)
         @removeSprite(carrot)
         @carrotGot++
-        console.log(@carrotGot)
         break
 
   # This function is called when the game is finished.

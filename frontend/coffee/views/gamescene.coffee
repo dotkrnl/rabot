@@ -36,6 +36,11 @@ class GameScene
   update: (scale, callback) ->
 
     scanLength =  Math.max(@elems.length, @game.sprites.length)
+    
+    # When the scene is empty the callback should also be called.
+    if scanLength == 0
+      callback() if callback?
+      return
 
     if @game?
       remaining = scanLength
@@ -54,7 +59,6 @@ class GameScene
             transform: @tStrFor(@game.sprites[uid])
             scaleToTime(scale), mina.linear, finishedOne
         else if @game.sprites[uid]? and not @elems[uid]?
-          remaining--
           sprite = @game.sprites[uid]
           elem = null
           switch sprite.type
@@ -75,12 +79,15 @@ class GameScene
           if elem?
             @elems[uid] = elem
             elem.transform @tStrFor(@game.sprites[uid])
+          finishedOne()
+
         else if not @game.sprites[uid]? and @elems[uid]?
-          remaining--
           @elems[uid].remove()
           @elems[uid] = null
-        else remaining--
-          
+          finishedOne()
+
+        else finishedOne()
+
     else
       callback() if callback?
     return
