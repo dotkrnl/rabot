@@ -107,8 +107,9 @@ class Game extends Emitter
     rabbit = @getRabbit()
     rabbit.x += step * Math.sin(toRad(rabbit.angle))
     rabbit.y -= step * Math.cos(toRad(rabbit.angle))
-    @stepFinished()
-    @update(step, callback)
+    @update step, =>
+      @stepFinished()
+      callback()
     return
 
   # Turn the orientation of the rabbit by angle, in degree, clockwisely.
@@ -119,7 +120,9 @@ class Game extends Emitter
     rabbit = @getRabbit()
     rabbit.angle += angle
     @stepFinished()
-    @update(angle, callback)
+    @update angle, =>
+      @stepFinished()
+      callback()
     return
 
   stepFinished: ->

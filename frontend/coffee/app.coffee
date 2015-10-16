@@ -59,12 +59,12 @@ $ ->
         menuHtml += "<li class=\"stage-dropdown-item\" id=\"stage-dropdow \
         n-item-#{stage}\"><a href=\"#\">#{stage}</a></li>"
       $('#stage-dropdown').html(menuHtml)
+
   $(".stage-dropdown-item").click ->
     arr = event.currentTarget.id.split('-')
     stageName = arr[arr.length - 1]
-    console.log stageName
     stageManager.getStage stageName, (result) ->
       if result.status == 'succeeded'
-        alert "Stub, succeeded!\n#{result.data}"
+        game.loadStage(result.data)
       else
         alert "Stub, failed!"
