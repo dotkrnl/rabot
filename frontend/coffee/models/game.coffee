@@ -38,6 +38,13 @@ class Game extends Emitter
       if _sprite == sprite
         @sprites[uid] = null
 
+  # Clear the game scene, remove all sprites
+  clear: (callback) ->
+    @sprites = []
+    @carrotGot = 0
+    if @scene?
+      @update(0, callback)
+
   # Get sprites that satisfied 'filter'
   # @param filter: e.g. {x: 300, y: 370}
   filterSprites: (filter) ->
@@ -116,6 +123,7 @@ class Game extends Emitter
       if @scene.collided(rabbit, carrot)
         @removeSprite(carrot)
         @carrotGot++
+        console.log(@carrotGot)
         break
 
   # This function is called when the game is finished.
@@ -123,14 +131,7 @@ class Game extends Emitter
   # triggering the corresponding event, as well as the finish event
   # TODO: the check shouldn't be just a collision detection
   finish: ->
-    victory = false
-    rabbit = @getRabbit()
-
-    for carrot in @getSprites('carrot')
-      if @scene.collided(rabbit, carrot)
-        victory = true
-        break
-
+    victory = @carrotGot > 0
     if victory
       @trigger('win')
     else

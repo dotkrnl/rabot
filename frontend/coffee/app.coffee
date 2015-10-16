@@ -28,7 +28,7 @@ $ ->
   # TODO: currently an element with text is used to indicate win/lost status
   # after relative events. UI will be more friendly in future.
   game.on 'win', ->
-    $('#status').text('Win')
+    $('#status').text('Win' + game.carrotGot)
   game.on 'lost', ->
     $('#status').text('Lost')
 

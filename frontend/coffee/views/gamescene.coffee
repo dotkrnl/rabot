@@ -80,7 +80,7 @@ class GameScene
           @elems[uid].remove()
           @elems[uid] = null
         else remaining--
-
+          
     else
       callback() if callback?
     return
