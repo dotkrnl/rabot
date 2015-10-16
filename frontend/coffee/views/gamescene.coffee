@@ -16,41 +16,14 @@ class GameScene
     @game = null
     @elems = []
 
-  # Bind the game scene with a model. 
+  # Bind the game scene with a model.
   # The scene will be synchronized with the model
   # This function should only be called by register of Game
   # See game.register(gamescene) for details
   # @param game The game model to bind.
   _register: (game) ->
     @game = game
-
-    for sprite in @game.sprites
-      elem = null
-      switch sprite.type
-        # TODO: specify in another individual file
-        when 'rabbit'
-          elem = @canvas.polygon(0, -70, 30, 30, -30, 30)
-          elem.attr
-            fill: '#aaaaff'
-            stroke: '#000'
-            strokeWidth : 5
-        when 'carrot'
-          elem = @canvas.circle(0, 0, 20)
-          elem.attr
-            fill: '#ff5555'
-            stroke: '#000'
-            strokeWidth: 5
-        else
-          continue
-      # avoid unprepared flash
-      elem.attr('display', 'none')
-      @elems.push elem
-
-    @update 0, =>
-      # in place, display
-      for elem in @elems
-        elem.attr('display', '')
-
+    @update 0
     return
 
   # Update the game view according to the game model.
@@ -61,8 +34,11 @@ class GameScene
   # callback will be called immediately
   # Note: use scale 0 to synchronize scene with the model immediately
   update: (scale, callback) ->
+
+    scanLength =  Math.max(@elems.length, @game.sprites.length)
+
     if @game?
-      remaining = @elems.length
+      remaining = scanLength
 
       # A helper function to record how many objects finished animation
       # The callback will be called when all animations are all finished.
@@ -71,10 +47,39 @@ class GameScene
         if remaining == 0
           callback() if callback?
 
-      for elem, uid in @elems
-        elem.animate
-          transform: @tStrFor(@game.sprites[uid])
-          scaleToTime(scale), mina.linear, finishedOne
+      uid = 0
+      for uid in [0..scanLength-1]
+        if @game.sprites[uid]? and @elems[uid]?
+          @elems[uid].animate
+            transform: @tStrFor(@game.sprites[uid])
+            scaleToTime(scale), mina.linear, finishedOne
+        else if @game.sprites[uid]? and not @elems[uid]?
+          remaining--
+          sprite = @game.sprites[uid]
+          elem = null
+          switch sprite.type
+            # TODO: specify in another individual file
+            when 'rabbit'
+              elem = @canvas.polygon(0, -70, 30, 30, -30, 30)
+              elem.attr
+                fill: '#aaaaff'
+                stroke: '#000'
+                strokeWidth : 5
+            when 'carrot'
+              elem = @canvas.circle(0, 0, 20)
+              elem.attr
+                fill: '#ff5555'
+                stroke: '#000'
+                strokeWidth: 5
+
+          if elem?
+            @elems[uid] = elem
+            elem.transform @tStrFor(@game.sprites[uid])
+        else if not @game.sprites[uid]? and @elems[uid]?
+          remaining--
+          @elems[uid].remove()
+          @elems[uid] = null
+        else remaining--
 
     else
       callback() if callback?
