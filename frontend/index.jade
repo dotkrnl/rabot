@@ -32,6 +32,11 @@ html
           button#button-stop-code.btn.btn-warning(type='button')
             span.glyphicon.glyphicon-stop
             span Stop
+          div.dropup
+            button.btn.btn-default.dropup-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+              span Levels
+              span.caret
+            ul.dropdown-menu#stage-dropdown
     script(type='text/javascript' src='js/jquery.min.js')
     script(type='text/javascript' src='js/bootstrap.min.js')
     script(type='text/javascript' src='js/codemirror.js')

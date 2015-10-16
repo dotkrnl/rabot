@@ -1,6 +1,7 @@
 Game = require './models/game.coffee'
 GameScene = require './views/gamescene.coffee'
 UserWorker = require './worker/worker.coffee'
+StageManager = require './models/stagemanager.coffee'
 
 $ ->
 
@@ -21,6 +22,9 @@ $ ->
   game.register gameScene
   userWorker = null
 
+  # Init the stage manager
+  stageManager = new StageManager
+
   # TODO: currently an element with text is used to indicate win/lost status
   # after relative events. UI will be more friendly in future.
   game.on 'win', ->
@@ -40,3 +44,20 @@ $ ->
 
   $('#button-stop-code').click ->
     game.finish()
+
+  stageManager.queryStageList (result) ->
+    if result.status == 'succeeded'
+      menuHtml = ''
+      for stage in result.data
+        menuHtml += "<li class=\"stage-dropdown-item\" id=\"stage-dropdow \
+        n-item-#{stage}\"><a href=\"#\">#{stage}</a></li>"
+      $('#stage-dropdown').html(menuHtml)
+  $(".stage-dropdown-item").click ->
+    arr = event.currentTarget.id.split('-')
+    stageName = arr[arr.length - 1]
+    console.log stageName
+    stageManager.getStage stageName, (result) ->
+      if result.status == 'succeeded'
+        alert "Stub, succeeded!\n#{result.data}"
+      else
+        alert "Stub, failed!"
