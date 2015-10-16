@@ -12,6 +12,7 @@ class Game extends Emitter
   constructor: ->
     @sprites = []
     @scene = null
+    @carrotGot = 0
     # TODO: load stage from server/local storage
     @loadStage("""[
       {"type":"carrot","x":300,"y":50},
@@ -31,11 +32,19 @@ class Game extends Emitter
     sprite.uid = @sprites.length
     @sprites.push(sprite)
 
+  # Remove a sprite in the game scene
+  removeSprite: (sprite) ->
+    for _sprite, uid in @sprites
+      if _sprite == sprite
+        @sprites[uid] = null
+
   # Get sprites that satisfied 'filter'
   # @param filter: e.g. {x: 300, y: 370}
   filterSprites: (filter) ->
     results = []
     for sprite in @sprites
+      if not sprite?
+        continue
       satisfied = true
       for name, attr of filter
         if sprite[name] != attr
@@ -86,6 +95,7 @@ class Game extends Emitter
     rabbit = @getRabbit()
     rabbit.x += step * Math.sin(toRad(rabbit.angle))
     rabbit.y -= step * Math.cos(toRad(rabbit.angle))
+    @stepFinished()
     @update(step, callback)
     return
 
@@ -96,8 +106,17 @@ class Game extends Emitter
   turn: (angle, callback) ->
     rabbit = @getRabbit()
     rabbit.angle += angle
+    @stepFinished()
     @update(angle, callback)
     return
+
+  stepFinished: ->
+    rabbit = @getRabbit()
+    for carrot in @getSprites('carrot')
+      if @scene.collided(rabbit, carrot)
+        @removeSprite(carrot)
+        @carrotGot++
+        break
 
   # This function is called when the game is finished.
   # This function will perform win / lost check,
