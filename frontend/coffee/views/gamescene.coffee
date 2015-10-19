@@ -1,7 +1,4 @@
-# A helper function to determine the duration of transform according to
-# its metric (i.e. length, angles, etc)
-scaleToTime = (scale) ->
-  Math.abs(scale * 5)
+GameElem = require('./gameelem.coffee')
 
 # The class GameScene defines a game scene
 class GameScene
@@ -23,7 +20,7 @@ class GameScene
   # @param game The game model to bind.
   _register: (game) ->
     @game = game
-    @update 0
+    @update(0)
     return
 
   # Update the game view according to the game model.
@@ -35,61 +32,46 @@ class GameScene
   # Note: use scale 0 to synchronize scene with the model immediately
   update: (scale, callback) ->
 
-    scanLength =  Math.max(@elems.length, @game.sprites.length)
-    
-    # When the scene is empty the callback should also be called.
-    if scanLength == 0
+    # no game registered
+    unless @game?
       callback() if callback?
       return
 
-    if @game?
-      remaining = scanLength
+    # Sprites could not be deleted nor replaced but defunct.
+    # So @elems array can only be increased
+    if @game.sprites.length > @elems.length
+      for uid in [@elems.length..@game.sprites.length-1]
+        # create elem associated with new sprite
+        @elems[uid] = new GameElem(@canvas, @game.sprites[uid])
 
-      # A helper function to record how many objects finished animation
-      # The callback will be called when all animations are all finished.
-      finishedOne = () ->
-        remaining -= 1
-        if remaining == 0
-          callback() if callback?
+    remaining = @elems.length
+    # A helper function to record how many objects finished animation
+    # The callback will be called when all animations are all finished.
+    finishedOne = () ->
+      remaining -= 1
+      if remaining == 0
+        callback() if callback?
 
-      uid = 0
-      for uid in [0..scanLength-1]
-        if @game.sprites[uid]? and @elems[uid]?
-          @elems[uid].animate
-            transform: @tStrFor(@game.sprites[uid])
-            scaleToTime(scale), mina.linear, finishedOne
-        else if @game.sprites[uid]? and not @elems[uid]?
-          sprite = @game.sprites[uid]
-          elem = null
-          switch sprite.type
-            # TODO: specify in another individual file
-            when 'rabbit'
-              elem = @canvas.polygon(0, -70, 30, 30, -30, 30)
-              elem.attr
-                fill: '#aaaaff'
-                stroke: '#000'
-                strokeWidth : 5
-            when 'carrot'
-              elem = @canvas.circle(0, 0, 20)
-              elem.attr
-                fill: '#ff5555'
-                stroke: '#000'
-                strokeWidth: 5
+    for elem, uid in @elems
+      unless @game.sprites[uid].defunct
+        # sprite not deleted then update
+        elem.update(scale, finishedOne)
+      else
+        # or also delete elem
+        elem.remove()
+        finishedOne()
 
-          if elem?
-            @elems[uid] = elem
-            elem.transform @tStrFor(@game.sprites[uid])
-          finishedOne()
+    # When the scene is empty the callback should also be called.
+    callback() if callback? and @elems.length == 0
+    return
 
-        else if not @game.sprites[uid]? and @elems[uid]?
-          @elems[uid].remove()
-          @elems[uid] = null
-          finishedOne()
-
-        else finishedOne()
-
-    else
-      callback() if callback?
+  # Sprites could not be deleted nor replaced but defunct.
+  # But sprites may be cleared to be reloaded, that means scene
+  # should initialize all sprites to get into the correct sharp.
+  # This function should be called after sprites cleared
+  clear: ->
+    elem.remove() for elem in @elems
+    @elems = []
     return
 
   # Collision detection by judging whether the bounding box of 2 sprite
@@ -97,15 +79,8 @@ class GameScene
   # This function is implemented in view because to get the bounding box,
   # access to Snap.svg objects is required.
   collided: (sprite1, sprite2) ->
-    box1 = @elems[sprite1.uid].getBBox()
-    box2 = @elems[sprite2.uid].getBBox()
-    not (box1.x  > box2.x2 or
-         box1.x2 < box2.x  or
-         box1.y  > box2.y2 or
-         box1.y2 < box2.y)
+    @elems[sprite1.uid]? and @elems[sprite2.uid]? and
+    @elems[sprite1.uid].collided(@elems[sprite2.uid])
 
-  # Generate a Snap.svg transform string from an object.
-  tStrFor: (info) ->
-    "t#{info.x},#{info.y}r#{info.angle},0,0"
 
 module.exports = GameScene

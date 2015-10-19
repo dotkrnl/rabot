@@ -18,38 +18,31 @@ class Game extends Emitter
 
   # Add a sprite with the format defined in stage_data/exampleStage.json
   addSprite: (sprite) ->
-    console.error('no sprite type') if not sprite.type?
-    sprite.x = 0 if not sprite.x?
-    sprite.y = 0 if not sprite.y?
-    sprite.angle = 0 if not sprite.angle?
-    sprite.lethal = false if not sprite.lethal?
-    sprite.passabel = true if not sprite.passabel?
+    console.error('no sprite type') unless sprite.type?
+    sprite.x = 0 unless sprite.x?
+    sprite.y = 0 unless sprite.y?
+    sprite.angle = 0 unless sprite.angle?
+    sprite.lethal = false unless sprite.lethal?
+    sprite.passabel = true unless sprite.passabel?
+    sprite.defunct = false unless sprite.defunct?
     sprite.uid = @sprites.length
     @sprites.push(sprite)
     @update(0)
+    return
 
   # Remove a sprite in the game scene
-  removeSprite: (sprite) ->
-    for _sprite, uid in @sprites
-      if _sprite == sprite
-        @sprites[uid] = null
-
-  # Clear the game scene, remove all sprites
-  clear: (callback) ->
-    @sprites = []
-    @carrotGot = 0
-    if @scene?
-      @update(0, callback)
-    else
-      callback() if callback?
+  removeSprite: (toRemove) ->
+    for sprite in @sprites
+      if sprite == toRemove
+        toRemove.defunct = true
+    @update(0)
+    return
 
   # Get sprites that satisfied 'filter'
   # @param filter: e.g. {x: 300, y: 370}
   filterSprites: (filter) ->
     results = []
     for sprite in @sprites
-      if not sprite?
-        continue
       satisfied = true
       for name, attr of filter
         if sprite[name] != attr
@@ -61,26 +54,26 @@ class Game extends Emitter
   # Get sprites which are 'type'
   # @param type: the type of sprites to get
   getSprites: (type) ->
-    @filterSprites
-      type: type
+    @filterSprites(type: type)
 
   # Get rabit sprite
   getRabbit: ->
-    return @getSprites('rabbit')[0]
+    @getSprites('rabbit')[0]
 
   # Load an stage with json.
   # format specified in stage_data/exampleStage.json
   loadStage: (json) ->
     @stageData = json
-    @clear =>
-      data = JSON.parse(@stageData)
-      for sprite in data
-        @addSprite(sprite)
+    @carrotGot = 0
+    @sprites = []
+    @scene.clear()
+    data = JSON.parse(@stageData)
+    @addSprite(sprite) for sprite in data
+    return
 
   # Resatrt the current stage.
   restartStage:  ->
-    @clear =>
-      @loadStage(@stageData)
+    @loadStage(@stageData)
 
   # Associate with game scene and register the game model to it
   # @param gameScene the game scene to register to.
@@ -130,11 +123,10 @@ class Game extends Emitter
   # carrots that player has got.
   stepFinished: ->
     rabbit = @getRabbit()
-    for carrot in @getSprites('carrot')
+    for carrot in @filterSprites(type: 'carrot', defunct: false)
       if @scene.collided(rabbit, carrot)
         @removeSprite(carrot)
         @carrotGot++
-        break
 
   # This function is called when the game is finished.
   # This function will perform win / lost check,
