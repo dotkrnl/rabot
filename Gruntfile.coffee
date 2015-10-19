@@ -76,6 +76,16 @@ module.exports = (grunt) ->
         options:
           base: "./public"
           port: 9000
+          middleware: (connect, options, defaultMiddleware) ->
+            return [require('grunt-connect-proxy/lib/utils').proxyRequest]. \
+              concat(defaultMiddleware)
+        proxies: [{
+          context: '/backend',
+          host: 'localhost',
+          port: 8000,
+          https: false,
+          xforward: false,
+        }]
 
     watch:
       jade:
@@ -95,8 +105,9 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-connect'
   grunt.loadNpmTasks 'grunt-bower'
   grunt.loadNpmTasks 'grunt-browserify'
+  grunt.loadNpmTasks 'grunt-connect-proxy'
 
   grunt.registerTask 'compile', ['jade', 'sass', 'bower', 'browserify']
-  grunt.registerTask 'serve', ['compile', 'connect', 'watch']
+  grunt.registerTask 'serve', ['compile', 'configureProxies:server', 'connect', 'watch']
   grunt.registerTask 'dev', ['compile']
   grunt.registerTask 'default', ['dev']
