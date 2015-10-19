@@ -125,6 +125,9 @@ class Game extends Emitter
       callback()
     return
 
+  # This function is called when each step (i.e user interface call),
+  # to perform collision detection and add update the number of
+  # carrots that player has got.
   stepFinished: ->
     rabbit = @getRabbit()
     for carrot in @getSprites('carrot')
