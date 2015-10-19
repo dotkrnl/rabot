@@ -12,23 +12,31 @@ class Game extends Emitter
   constructor: ->
     @sprites = []
     @scene = null
-    # TODO: load stage from server/local storage
-    @loadStage("""[
-      {"type":"carrot","x":300,"y":50},
-      {"type":"rabbit","x":300,"y":370,"angle":0}
-    ]""")
+    @carrotGot = 0
+    @stageData = ''
     super()
 
   # Add a sprite with the format defined in stage_data/exampleStage.json
   addSprite: (sprite) ->
-    console.error('no sprite type') if not sprite.type?
-    sprite.x = 0 if not sprite.x?
-    sprite.y = 0 if not sprite.y?
-    sprite.angle = 0 if not sprite.angle?
-    sprite.lethal = false if not sprite.lethal?
-    sprite.passabel = true if not sprite.passabel?
+    console.error('no sprite type') unless sprite.type?
+    sprite.x = 0 unless sprite.x?
+    sprite.y = 0 unless sprite.y?
+    sprite.angle = 0 unless sprite.angle?
+    sprite.lethal = false unless sprite.lethal?
+    sprite.passabel = true unless sprite.passabel?
+    sprite.defunct = false unless sprite.defunct?
     sprite.uid = @sprites.length
     @sprites.push(sprite)
+    @update(0)
+    return
+
+  # Remove a sprite in the game scene
+  removeSprite: (toRemove) ->
+    for sprite in @sprites
+      if sprite == toRemove
+        toRemove.defunct = true
+    @update(0)
+    return
 
   # Get sprites that satisfied 'filter'
   # @param filter: e.g. {x: 300, y: 370}
@@ -46,19 +54,26 @@ class Game extends Emitter
   # Get sprites which are 'type'
   # @param type: the type of sprites to get
   getSprites: (type) ->
-    @filterSprites
-      type: type
+    @filterSprites(type: type)
 
   # Get rabit sprite
   getRabbit: ->
-    return @getSprites('rabbit')[0]
+    @getSprites('rabbit')[0]
 
   # Load an stage with json.
   # format specified in stage_data/exampleStage.json
   loadStage: (json) ->
-    data = JSON.parse(json)
-    for sprite in data
-      @addSprite(sprite)
+    @stageData = json
+    @carrotGot = 0
+    @sprites = []
+    @scene.clear()
+    data = JSON.parse(@stageData)
+    @addSprite(sprite) for sprite in data
+    return
+
+  # Resatrt the current stage.
+  restartStage:  ->
+    @loadStage(@stageData)
 
   # Associate with game scene and register the game model to it
   # @param gameScene the game scene to register to.
@@ -85,7 +100,9 @@ class Game extends Emitter
     rabbit = @getRabbit()
     rabbit.x += step * Math.sin(toRad(rabbit.angle))
     rabbit.y -= step * Math.cos(toRad(rabbit.angle))
-    @update(step, callback)
+    @update step, =>
+      @stepFinished()
+      callback()
     return
 
   # Turn the orientation of the rabbit by angle, in degree, clockwisely.
@@ -95,22 +112,28 @@ class Game extends Emitter
   turn: (angle, callback) ->
     rabbit = @getRabbit()
     rabbit.angle += angle
-    @update(angle, callback)
+    @stepFinished()
+    @update angle, =>
+      @stepFinished()
+      callback()
     return
+
+  # This function is called when each step (i.e user interface call),
+  # to perform collision detection and add update the number of
+  # carrots that player has got.
+  stepFinished: ->
+    rabbit = @getRabbit()
+    for carrot in @filterSprites(type: 'carrot', defunct: false)
+      if @scene.collided(rabbit, carrot)
+        @removeSprite(carrot)
+        @carrotGot++
 
   # This function is called when the game is finished.
   # This function will perform win / lost check,
   # triggering the corresponding event, as well as the finish event
   # TODO: the check shouldn't be just a collision detection
   finish: ->
-    victory = false
-    rabbit = @getRabbit()
-
-    for carrot in @getSprites('carrot')
-      if @scene.collided(rabbit, carrot)
-        victory = true
-        break
-
+    victory = @carrotGot > 0
     if victory
       @trigger('win')
     else

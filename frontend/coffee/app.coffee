@@ -25,12 +25,19 @@ $ ->
   # Init the stage manager
   stageManager = new StageManager
 
+  # At the beginning, use level 1
+  stageManager.getStage 'level1', (result) ->
+    if result.status == 'succeeded'
+      game.loadStage(result.data)
+
   # TODO: currently an element with text is used to indicate win/lost status
   # after relative events. UI will be more friendly in future.
   game.on 'win', ->
-    $('#status').text('Win')
+    $('#status').text('Win' + game.carrotGot)
+    game.restartStage()
   game.on 'lost', ->
     $('#status').text('Lost')
+    game.restartStage()
 
   # Terminate worker for user code after game finished.
   game.on 'finish', ->
@@ -52,12 +59,12 @@ $ ->
         menuHtml += "<li class=\"stage-dropdown-item\" id=\"stage-dropdow \
         n-item-#{stage}\"><a href=\"#\">#{stage}</a></li>"
       $('#stage-dropdown').html(menuHtml)
+
   $(".stage-dropdown-item").click ->
     arr = event.currentTarget.id.split('-')
     stageName = arr[arr.length - 1]
-    console.log stageName
     stageManager.getStage stageName, (result) ->
       if result.status == 'succeeded'
-        alert "Stub, succeeded!\n#{result.data}"
+        game.loadStage(result.data)
       else
         alert "Stub, failed!"
