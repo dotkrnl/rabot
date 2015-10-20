@@ -39,6 +39,9 @@ __pycache__/
 # virtualenv
 venv
 
+# App migrations
+migrations
+
 # Sqlite database
 *.sqlite3
 
