@@ -2,5 +2,11 @@ from django.db import models
 
 # Create your models here.
 
-class StageObject(models.Model):
-    Text = models.TextField()
+
+class Stage(models.Model):
+    stage_id = models.IntegerField(default=-1)
+    info = models.TextField()
+
+    class Meta:
+        db_table = 'stage'
+        ordering = ['stage_id']
