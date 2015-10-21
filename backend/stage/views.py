@@ -7,11 +7,17 @@ def stage_info_view(request, stage_id):
 
     if request.method == 'GET':
         try:
-            target = Stage.objects.get(stage_id=stage_id)
+            target = Stage.objects.get(id=stage_id)
         except Stage.DoesNotExist:
-            raise Http404
+            return HttpResponse(json.dumps(
+                {'status' : 'not_exist'}
+            ))
 
-        return HttpResponse(target.info)
+        return HttpResponse(json.dumps({
+                'status' : 'succeeded',
+                'name' : target.name,
+                'info' : target.info
+        }))
 
     if request.method == 'POST':
         post = request.POST
@@ -23,12 +29,13 @@ def all_stages_info_view(request):
 
     if request.method == 'GET':
         all_stages = Stage.objects.all()
-        current_stage = {}
         results = []
 
-        for i in all_stages:
-            current_stage['id'] = i.stage_id
-            current_stage['info'] = i.info
-            results.append(json.dumps(current_stage))
+        for stage in all_stages:
+            current_stage =  {
+                'id' : stage.id,
+                'name' : stage.name
+            }
+            results.append(current_stage)
 
-        return HttpResponse(results)
+        return HttpResponse(json.dumps(results))
