@@ -15,9 +15,8 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from stage.models import Stage
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^backend/stage/(?P<stage_id>[0-9]+)/$'),
+    url(r'^backend/stage/(?P<stage_id>\d+)/$', 'stage.views.stage_info_view'),
 ]

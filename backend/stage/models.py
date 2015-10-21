@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Stage(models.Model):
-    stage_id = models.IntegerField(default=-1)
+    stage_id = models.IntegerField(default=0)
     info = models.TextField()
 
     class Meta:
