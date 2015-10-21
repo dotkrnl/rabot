@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^backend/stage/$', 'stage.views.all_stages_info_view'),
     url(r'^backend/stage/(?P<stage_id>\d+)/$', 'stage.views.stage_info_view'),
 ]

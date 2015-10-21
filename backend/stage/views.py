@@ -1,5 +1,6 @@
 from django.http import HttpResponse, Http404
 from stage.models import Stage
+import json
 
 
 def stage_info_view(request, stage_id):
@@ -17,3 +18,17 @@ def stage_info_view(request, stage_id):
         new_stage = Stage(stage_id=post['id'], info=post['info'])
         new_stage.save()
 
+
+def all_stages_info_view(request):
+
+    if request.method == 'GET':
+        all_stages = Stage.objects.all()
+        current_stage = {}
+        results = []
+
+        for i in all_stages:
+            current_stage['id'] = i.stage_id
+            current_stage['info'] = i.info
+            results.append(json.dumps(current_stage))
+
+        return HttpResponse(results)
