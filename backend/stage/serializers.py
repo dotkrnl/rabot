@@ -1,4 +1,3 @@
-from django.forms import widgets
 from rest_framework import serializers
 from stage.models import Stage
 

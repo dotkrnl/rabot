@@ -11,11 +11,17 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Login',
+            name='UserInfo',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('UserName', models.TextField()),
-                ('Passwd', models.TextField()),
+                ('user_id', models.IntegerField(default=-1)),
+                ('user_name', models.CharField(max_length=24)),
+                ('passwd', models.TextField()),
+                ('email', models.EmailField(max_length=254, null=True, blank=True)),
             ],
+            options={
+                'ordering': ['user_id'],
+                'db_table': 'user',
+            },
         ),
     ]

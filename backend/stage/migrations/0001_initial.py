@@ -11,10 +11,15 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='StageObject',
+            name='Stage',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('Text', models.TextField()),
+                ('stage_id', models.IntegerField(default=-1)),
+                ('info', models.TextField()),
             ],
+            options={
+                'ordering': ['stage_id'],
+                'db_table': 'stage',
+            },
         ),
     ]
