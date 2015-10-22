@@ -18,12 +18,17 @@ html
               a(href='#') Home
             li
               a#status(href='#game') Status
-          form.navbar-form.navbar-right
+          form#navbar_before_login.navbar-form.navbar-right
             div.form-group
               input#navbar_username.form-control(type='text' placeholder='Username')
             div.form-group
               input#navbar_password.form-control(type='password' placeholder='Password')
-            button#navbar_login_button.btn.btn-primary Login
+            button#navbar_login_button.btn.btn-primary(type='button') Login
+          div#navbar_after_login
+            form.navbar-form.navbar-right
+              button#navbar_login_button.btn.btn-danger(type='button') Logout
+            ul.nav.navbar-nav.navbar-right
+              p#navbar_message.navbar-text Welcome
     div#container-play
       svg#play-canvas
     div#container-code

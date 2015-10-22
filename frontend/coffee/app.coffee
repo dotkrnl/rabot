@@ -2,6 +2,7 @@ Game = require './models/game.coffee'
 GameScene = require './views/gamescene.coffee'
 UserWorker = require './worker/worker.coffee'
 StageManager = require './models/stagemanager.coffee'
+LoginManager = require './models/loginmanager.coffee'
 
 $ ->
 
@@ -24,6 +25,7 @@ $ ->
 
   # Init the stage manager
   stageManager = new StageManager
+  loginManager = new LoginManager
 
   # TODO: currently an element with text is used to indicate win/lost status
   # after relative events. UI will be more friendly in future.
@@ -73,8 +75,7 @@ $ ->
         else
           console.log("Stub, failed!")
 
-    # TODO: Handles user login
-    $("#navbar_login_button").click ->
-      alert "stub!username:" + $("#navbar_username").val() + \
-        "password:" + $("#navbar_password").val()
-      event.preventDefault();
+  # TODO: Handles user login
+  $("#navbar_login_button").click ->
+    loginManager.login($("#navbar_username").val(), $("#navbar_password").val())
+    event.preventDefault();
