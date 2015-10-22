@@ -7,11 +7,16 @@ LoginManager = require './models/loginmanager.coffee'
 $ ->
 
   # Init code editor object.
-  editorCodeMirror = CodeMirror.fromTextArea(document.getElementById('code-editor'), lineNumbers: true)
+  editorCodeMirror =
+    CodeMirror.fromTextArea \
+      document.getElementById('code-editor'),
+      lineNumbers: true
 
   # Set size for some objects whose size may be not adjusted with CSS.
   updateLayout = ->
-    editorCodeMirror.setSize $('#container-code-editor').width(), $('#container-code-editor').height()
+    editorCodeMirror.setSize \
+      $('#container-code-editor').width(),
+      $('#container-code-editor').height()
     $('#play-canvas').width $('#container-play').width()
     $('#play-canvas').height $('#container-play').height()
   updateLayout()
@@ -80,8 +85,8 @@ $ ->
 
   $("#navbar_login_button").click ->
     loginManager.login($("#navbar_username").val(), $("#navbar_password").val())
-    event.preventDefault();
+    event.preventDefault()
 
   $("#navbar_logout_button").click ->
-    loginManager.logout();
-    event.preventDefault();
+    loginManager.logout()
+    event.preventDefault()

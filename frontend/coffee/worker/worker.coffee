@@ -12,7 +12,7 @@ class UserCodeWorker
   constructor: (@game, @code) ->
     asyncCode = asyncify(@code)
 
-    # set "runtime" to be inlined instead of 
+    # set "runtime" to be inlined instead of node
     jsCode = CoffeeScript.compile \
       @USERSPACE_API + asyncCode + @USERSPACE_END,
       runtime: "inline"

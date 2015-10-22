@@ -21,9 +21,9 @@ describe 'Jest', ->
     expect(setTimeout.mock.calls[0][1]).toBe 10000
 
   it 'calls the callback when setTimeout are finished', ->
-    callback = jest.genMockFunction();
+    callback = jest.genMockFunction()
     callbackMethod(callback)
-    expect(callback).not.toBeCalled();
-    jest.runAllTimers();
+    expect(callback).not.toBeCalled()
+    jest.runAllTimers()
     expect(callback.mock.calls.length).toBe 1
     expect(callback).toBeCalledWith 'test done'
