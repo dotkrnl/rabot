@@ -37,7 +37,7 @@ def user_login_view(request):
         return HttpResponse(json.dumps(response_data))
 
     elif request.method == 'POST':
-        data = json.loads(request.body)
+        data = json.loads(request.body.decode())
         user_name = data['username']
         passwd = data['password']
 
@@ -57,9 +57,8 @@ def user_login_view(request):
                 'email': target.email,
             }
 
-            request.session['username'] = user_name
-            request.session['password'] = passwd
-
+        request.session['username'] = user_name
+        request.session['password'] = passwd
         return HttpResponse(json.dumps(response_data))
 
     else:

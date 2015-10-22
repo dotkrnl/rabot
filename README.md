@@ -19,6 +19,9 @@ Use the following command to serve the frontend:
 
 `npm run server`
 
+This will run a web server at port 9000, and it will contact with backend server
+via reverse proxy at port 8000.
+
 ## Test backend server
 
 Django support both Python2 and Python3. You can deploy the server in a virtualenv, note the folder name need to be **venv**.
@@ -34,6 +37,16 @@ Use the following commands to install python dependencies:
 Use the following command to run the development server:
 
 `python manage.py runserver`
+
+## Adding stages and users
+
+Currently, there is no interface yet to register or adding a stage, but Django
+management script is used to add some built-in users and stages. To perform them
+use:
+
+`python manage.py add_stages`
+
+`python manage.py addusers`
 
 ## Team members
 * 廖亦阳
