@@ -4,6 +4,15 @@ Emitter = require('../utils/emitter.coffee')
 toRad = (degrees) ->
   degrees * Math.PI / 180.0
 
+# A helper function to clone object
+cloned = (obj) ->
+  if not obj? or typeof obj != 'object'
+    return obj;
+  copy = {}
+  for key, value of obj
+    copy[key] = cloned(value)
+  return copy;
+
 # The Game class defines the model for the Rabot game
 class Game extends Emitter
 
@@ -16,14 +25,15 @@ class Game extends Emitter
     @stageData = ''
     super()
 
-  # Add a sprite with the format defined in stage_data/exampleStage.json
+  # Clone and add a sprite with the format defined in exampleStage.json
   addSprite: (sprite) ->
-    console.error('no sprite type') unless sprite.type?
+    sprite = cloned(sprite)
+    throw new Error('no sprite type') unless sprite.type?
     sprite.x = 0 unless sprite.x?
     sprite.y = 0 unless sprite.y?
     sprite.angle = 0 unless sprite.angle?
     sprite.lethal = false unless sprite.lethal?
-    sprite.passabel = true unless sprite.passabel?
+    sprite.passable = true unless sprite.passable?
     sprite.defunct = false unless sprite.defunct?
     sprite.uid = @sprites.length
     @sprites.push(sprite)
@@ -31,10 +41,8 @@ class Game extends Emitter
     return
 
   # Remove a sprite in the game scene
-  removeSprite: (toRemove) ->
-    for sprite in @sprites
-      if sprite == toRemove
-        toRemove.defunct = true
+  removeSprite: (uid) ->
+    @sprites[uid].defunct = true
     @update(0)
     return
 
@@ -52,9 +60,12 @@ class Game extends Emitter
     return results
 
   # Get sprites which are 'type'
-  # @param type: the type of sprites to get
+  # @param type: the type of sprites to get (optional)
   getSprites: (type) ->
-    @filterSprites(type: type)
+    if not type?
+      @filterSprites()
+    else
+      @filterSprites(type: type)
 
   # Get rabit sprite
   getRabbit: ->
@@ -66,7 +77,7 @@ class Game extends Emitter
     @stageData = json
     @carrotGot = 0
     @sprites = []
-    @scene.clear()
+    @scene.clear() if @scene
     data = JSON.parse(@stageData)
     @addSprite(sprite) for sprite in data
     return
@@ -125,7 +136,7 @@ class Game extends Emitter
     rabbit = @getRabbit()
     for carrot in @filterSprites(type: 'carrot', defunct: false)
       if @scene.collided(rabbit, carrot)
-        @removeSprite(carrot)
+        @removeSprite(carrot.uid)
         @carrotGot++
 
   # This function is called when the game is finished.
