@@ -60,9 +60,12 @@ class Game extends Emitter
     return results
 
   # Get sprites which are 'type'
-  # @param type: the type of sprites to get
+  # @param type: the type of sprites to get (optional)
   getSprites: (type) ->
-    @filterSprites(type: type)
+    if not type?
+      @filterSprites()
+    else
+      @filterSprites(type: type)
 
   # Get rabit sprite
   getRabbit: ->
@@ -74,7 +77,7 @@ class Game extends Emitter
     @stageData = json
     @carrotGot = 0
     @sprites = []
-    @scene.clear()
+    @scene.clear() if @scene
     data = JSON.parse(@stageData)
     @addSprite(sprite) for sprite in data
     return
