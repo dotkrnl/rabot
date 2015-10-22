@@ -129,7 +129,6 @@ class Game extends Emitter
     rabbit = @getRabbit()
     rabbit.angle += angle
     rabbit.angle = toNormalDeg(rabbit.angle)
-    @stepFinished()
     @update angle, =>
       @stepFinished()
       callback() if callback?
