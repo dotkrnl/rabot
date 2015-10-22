@@ -113,7 +113,7 @@ class Game extends Emitter
     rabbit.y -= step * Math.cos(toRad(rabbit.angle))
     @update step, =>
       @stepFinished()
-      callback()
+      callback() if callback?
     return
 
   # Turn the orientation of the rabbit by angle, in degree, clockwisely.
@@ -121,12 +121,18 @@ class Game extends Emitter
   # @param angle to turn, in degree
   # @param callback, function to call when animation is finished.
   turn: (angle, callback) ->
+    toNormalDeg = (deg) ->
+      deg -= 360 while deg >= 360
+      deg += 360 while deg < 0
+      return deg
+    angle = toNormalDeg(angle)
     rabbit = @getRabbit()
     rabbit.angle += angle
+    rabbit.angle = toNormalDeg(rabbit.angle)
     @stepFinished()
     @update angle, =>
       @stepFinished()
-      callback()
+      callback() if callback?
     return
 
   # This function is called when each step (i.e user interface call),
@@ -142,7 +148,6 @@ class Game extends Emitter
   # This function is called when the game is finished.
   # This function will perform win / lost check,
   # triggering the corresponding event, as well as the finish event
-  # TODO: the check shouldn't be just a collision detection
   finish: ->
     victory = @carrotGot > 0
     if victory
