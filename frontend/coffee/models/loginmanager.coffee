@@ -32,6 +32,21 @@ class LoginManager
         @username = ''
       @updateInterface()
 
+  logout: () ->
+    $.ajax
+      url : '/backend/login/'
+      type : 'POST'
+      data :
+        JSON.stringify
+          username : ''
+          password : ''
+      contentType: "application/json"
+      dataType: 'json'
+    .done (result) =>
+      @username = ''
+      @updateInterface()
+      $("#navbar_password").val('')
+
   loginCheck: () ->
     $.ajax
       url : '/backend/login/'
