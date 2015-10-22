@@ -9,18 +9,18 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         Stage.objects.all().delete()
-        stage = Stage(name = "Level 1", info = """[
+        stage = Stage(stage_id = 1, name = "Level 1", info = """[
             {"type":"carrot","x":300,"y":50},
             {"type":"rabbit","x":300,"y":370,"angle":0}
           ]""")
         stage.save();
-        stage = Stage(name = "Level 2", info = """[
+        stage = Stage(stage_id = 2, name = "Level 2", info = """[
             {"type":"carrot","x":300,"y":50},
             {"type":"carrot","x":300,"y":200,"angle":0},
             {"type":"rabbit","x":300,"y":370,"angle":0}
           ]""")
         stage.save();
-        stage = Stage(name ="Unsolvable", info = """[
+        stage = Stage(stage_id = 3, name ="Unsolvable", info = """[
             {"type":"carrot","x":300,"y":50}
           ]""")
         stage.save();
