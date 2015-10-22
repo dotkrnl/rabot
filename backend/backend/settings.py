@@ -75,7 +75,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Authentication backends
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
+    'userlogin.auth.AuthBackend',
 )
 
 ANONYMOUS_USER_ID = -1
