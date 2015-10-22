@@ -32,4 +32,16 @@ class LoginManager
         @username = ''
       @updateInterface()
 
+  loginCheck: () ->
+    $.ajax
+      url : '/backend/login/'
+      type : 'GET'
+      dataType: 'json'
+    .done (result) =>
+      if result.result == 'succeeded'
+        @username = result.username
+      else
+        @username = ''
+      @updateInterface()
+
 module.exports = LoginManager
