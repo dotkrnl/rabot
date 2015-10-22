@@ -13,11 +13,17 @@ html
             span.sr-only Toggle navigation
           a.navbar-brand(href='#') Rabot
         div#navbar.collapse.navbar-collapse
-          ul.nav.navbar-nav
+          ul.nav.navbar-nav.navbar-left
             li.active
               a(href='#') Home
             li
               a#status(href='#game') Status
+          form.navbar-form.navbar-right
+            div.form-group
+              input#navbar_username.form-control(type='text' placeholder='Username')
+            div.form-group
+              input#navbar_password.form-control(type='password' placeholder='Password')
+            button#navbar_login_button.btn.btn-primary Login
     div#container-play
       svg#play-canvas
     div#container-code

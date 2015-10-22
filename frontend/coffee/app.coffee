@@ -72,3 +72,9 @@ $ ->
           game.loadStage(result.info)
         else
           console.log("Stub, failed!")
+
+    # TODO: Handles user login
+    $("#navbar_login_button").click ->
+      alert "stub!username:" + $("#navbar_username").val() + \
+        "password:" + $("#navbar_password").val()
+      event.preventDefault();
