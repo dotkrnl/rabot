@@ -41,10 +41,8 @@ class Game extends Emitter
     return
 
   # Remove a sprite in the game scene
-  removeSprite: (toRemove) ->
-    for sprite in @sprites
-      if sprite == toRemove
-        toRemove.defunct = true
+  removeSprite: (uid) ->
+    @sprites[uid].defunct = true
     @update(0)
     return
 
@@ -135,7 +133,7 @@ class Game extends Emitter
     rabbit = @getRabbit()
     for carrot in @filterSprites(type: 'carrot', defunct: false)
       if @scene.collided(rabbit, carrot)
-        @removeSprite(carrot)
+        @removeSprite(carrot.uid)
         @carrotGot++
 
   # This function is called when the game is finished.
