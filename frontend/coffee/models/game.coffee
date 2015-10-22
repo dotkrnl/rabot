@@ -4,6 +4,15 @@ Emitter = require('../utils/emitter.coffee')
 toRad = (degrees) ->
   degrees * Math.PI / 180.0
 
+# A helper function to clone object
+cloned = (obj) ->
+  if not obj? or typeof obj != 'object'
+    return obj;
+  copy = {}
+  for key, value of obj
+    copy[key] = cloned(value)
+  return copy;
+
 # The Game class defines the model for the Rabot game
 class Game extends Emitter
 
@@ -16,14 +25,15 @@ class Game extends Emitter
     @stageData = ''
     super()
 
-  # Add a sprite with the format defined in stage_data/exampleStage.json
+  # Clone and add a sprite with the format defined in exampleStage.json
   addSprite: (sprite) ->
-    console.error('no sprite type') unless sprite.type?
+    sprite = cloned(sprite)
+    throw new Error('no sprite type') unless sprite.type?
     sprite.x = 0 unless sprite.x?
     sprite.y = 0 unless sprite.y?
     sprite.angle = 0 unless sprite.angle?
     sprite.lethal = false unless sprite.lethal?
-    sprite.passabel = true unless sprite.passabel?
+    sprite.passable = true unless sprite.passable?
     sprite.defunct = false unless sprite.defunct?
     sprite.uid = @sprites.length
     @sprites.push(sprite)
