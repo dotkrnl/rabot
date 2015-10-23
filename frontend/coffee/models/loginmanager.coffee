@@ -1,18 +1,14 @@
-#This class is currently a stub
+# The class LoginManager contacts with the backend via Ajax requests
+# to perform user log in/out and login status check.
 class LoginManager
   constructor: ->
+    @view = null
     @username = ''
-    @updateInterface()
+    @update()
 
-  updateInterface: () ->
-    $("#navbar_before_login").hide()
-    $("#navbar_after_login").hide()
-    if @username
-      $("#navbar_after_login").show()
-      $("#navbar_message").text("Welcome, " + @username)
-    else
-      $("#navbar_before_login").show()
-
+  update: ->
+    if @view?
+      @view.update()
 
   login: (username, password, handler) ->
     $.ajax
@@ -30,7 +26,7 @@ class LoginManager
       else
         alert "Invalid username or password!"
         @username = ''
-      @updateInterface()
+      @update()
 
   logout: () ->
     $.ajax
@@ -44,8 +40,12 @@ class LoginManager
       dataType: 'json'
     .done (result) =>
       @username = ''
-      @updateInterface()
+      @update()
       $("#navbar_password").val('')
+
+  register: (loginUI) ->
+    @view = loginUI
+    @view._register(@)
 
   loginCheck: () ->
     $.ajax
@@ -57,6 +57,6 @@ class LoginManager
         @username = result.username
       else
         @username = ''
-      @updateInterface()
+      @update()
 
 module.exports = LoginManager

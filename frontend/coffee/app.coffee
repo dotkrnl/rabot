@@ -3,6 +3,7 @@ GameScene = require './views/gamescene.coffee'
 UserWorker = require './worker/worker.coffee'
 StageManager = require './models/stagemanager.coffee'
 LoginManager = require './models/loginmanager.coffee'
+LoginUI = require './views/loginui.coffee'
 
 $ ->
 
@@ -31,6 +32,8 @@ $ ->
   # Init the stage manager
   stageManager = new StageManager
   loginManager = new LoginManager
+  loginUI = new LoginUI
+  loginManager.register loginUI
 
   # TODO: currently an element with text is used to indicate win/lost status
   # after relative events. UI will be more friendly in future.
