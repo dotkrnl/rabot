@@ -1,0 +1,28 @@
+include jadecomponents/layout.jade
+
+block css
+  link(rel='stylesheet' href='css/game.css')
+
+block content
+  div#container-play
+    svg#play-canvas
+  div#container-code
+    div#container-code-editor
+      textarea#code-editor
+    div#container-code-assistant
+    div#container-code-control
+      p
+        button#button-run-code.btn.btn-primary(type='button')
+          span.glyphicon.glyphicon-play
+          span Run
+        button#button-stop-code.btn.btn-warning(type='button')
+          span.glyphicon.glyphicon-stop
+          span Stop
+        div.dropup
+          button.btn.btn-default.dropup-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+            span Levels
+            span.caret
+          ul.dropdown-menu#stage-dropdown
+
+block js
+  script(type='text/javascript' src='js/site.js')

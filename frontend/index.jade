@@ -1,56 +1,12 @@
-doctype html
-html
-  head
-    link(rel='stylesheet' href='css/bootstrap.min.css')
-    link(rel='stylesheet' href='css/index.css')
-    link(rel="stylesheet" href="css/codemirror.css")
-    title Rabot
-  body
-    nav.navbar.navbar-inverse.navbar-fixed-top
-      div.container
-        div.navbar-header
-          button.navbar-toggle.collapsed(type='button' data-toggle='collapse' data-target='#navbar' aria-expanded='false' aria-controls='navbar')
-            span.sr-only Toggle navigation
-          a.navbar-brand(href='#') Rabot
-        div#navbar.collapse.navbar-collapse
-          ul.nav.navbar-nav.navbar-left
-            li.active
-              a(href='#') Home
-            li
-              a#status(href='#game') Status
-          form#navbar_before_login.navbar-form.navbar-right
-            div.form-group
-              input#navbar_username.form-control(type='text' placeholder='Username')
-            div.form-group
-              input#navbar_password.form-control(type='password' placeholder='Password')
-            button#navbar_login_button.btn.btn-primary(type='button') Login
-          div#navbar_after_login
-            form.navbar-form.navbar-right
-              button#navbar_logout_button.btn.btn-danger(type='button') Logout
-            ul.nav.navbar-nav.navbar-right
-              p#navbar_message.navbar-text Welcome
-    div#container-play
-      svg#play-canvas
-    div#container-code
-      div#container-code-editor
-        textarea#code-editor
-      div#container-code-assistant
-      div#container-code-control
-        p
-          button#button-run-code.btn.btn-primary(type='button')
-            span.glyphicon.glyphicon-play
-            span Run
-          button#button-stop-code.btn.btn-warning(type='button')
-            span.glyphicon.glyphicon-stop
-            span Stop
-          div.dropup
-            button.btn.btn-default.dropup-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
-              span Levels
-              span.caret
-            ul.dropdown-menu#stage-dropdown
-    script(type='text/javascript' src='js/jquery.min.js')
-    script(type='text/javascript' src='js/bootstrap.min.js')
-    script(type='text/javascript' src='js/codemirror.js')
-    script(type='text/javascript' src='js/snap.svg-min.js')
-    script(type='text/javascript' src='js/iced-coffee-script-108.0.8-min.js')
-    script(type='text/javascript' src='js/site.js')
+include jadecomponents/layout.jade
+block css
+  link(rel='stylesheet' href='css/index.css')
+block content
+  div.container#page-body(role='main')
+    div.jumbotron
+      h1 Rabot —— Learning by coding a rabbit!
+      p.
+        Coding for fun, is that a joke? No! Try our product to experience
+        how programming is transformed into a toy for children!
+      p
+        a.btn.btn-primary.btn-lg(href='game.html' role='button') Play Demo
