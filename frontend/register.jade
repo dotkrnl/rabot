@@ -1,0 +1,31 @@
+include jadecomponents/layout.jade
+block css
+  link(rel='stylesheet' href='css/index.css')
+block content
+  div.container#page-body(role='main')
+      div.row
+        div.col-sm-6
+          h1 Welcome to Rabot!
+          p
+            To register in the website, you need to provide your email address
+            and set a password for it. The email address needs to real so
+            that we could send a link for you to complete the procedure.
+      div.row
+        form.form-horizontal
+          div.form-group
+            label.col-sm-2.control-label(for='input-email') Email
+            div.col-sm-4
+              input.form-control#input-email(type="email" placeholder="Email")
+          div.form-group
+            label.col-sm-2.control-label(for='input-password') Password
+            div.col-sm-4
+              input.form-control#input-password(\
+                type="password" placeholder="Password")
+          div.form-group
+            label.col-sm-2.control-label(for='input-password') Password Confirm
+            div.col-sm-4
+              input.form-control#input-password-confirm(\
+                type="password" placeholder="Password Confirm")
+          div
+            button.btn.btn-primary(type='submit') Submit
+            button.btn.btn-primary(type='reset') Reset
