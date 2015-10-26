@@ -28,7 +28,7 @@
   },
   "jest": {
     "verbose": "true",
-    "scriptPreprocessor": "jest.js",
+    "scriptPreprocessor": "jestcoffee.js",
     "testFileExtensions": ["coffee", "js"],
     "moduleFileExtensions": ["coffee", "js"]
   }

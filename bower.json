@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "authors": [
     "Crystala <crystalian@126.com>",
-    "Jason Lau <i@dotkrnl.com>"
+    "Jason Lau <i@dotkrnl.com>",
+    "Liang Ze Yu <mato_no1@yeah.net>",
+    "Tan Si Nan <tansinan_1995@163.com>"
   ],
   "description": "RaBot is a project aiming at creating a vivid and interactive environment for children to learn computer programming, it's also our project for the course <Software Engineering> and it might be used by JiSuanKe.com for further development.",
   "license": "BSD-3-Clause",

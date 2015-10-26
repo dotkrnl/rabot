@@ -48,6 +48,18 @@ use:
 
 `python manage.py addusers`
 
+## Unit Tests
+
+### Frontend
+
+Frontend unit tests is accomplish via **jest**, You can run test, use:
+
+`npm run test`
+
+### Backend
+Backend unit tests is based-on Django's unit test module (which is a wrapper
+of python's unittest module).
+
 ## Team members
 * 廖亦阳
 * 梁泽宇
