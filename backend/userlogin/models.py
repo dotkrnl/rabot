@@ -7,10 +7,10 @@ from django.db import models
 class UserInfoManager(BaseUserManager):
 
     def create_user(self, user_id, user_name, email, password=''):
-        new_user = self.model(
+        new_user = UserInfo(
             user_id = user_id,
             user_name = user_name,
-            email = UserInfoManager.normalize_email(email),
+            email = UserInfoManager.normalize_email(email)
         )
         new_user.set_password(password)
 

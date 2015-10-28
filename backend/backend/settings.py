@@ -80,6 +80,10 @@ AUTHENTICATION_BACKENDS = (
 
 ANONYMOUS_USER_ID = -1
 
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+)
+
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
@@ -93,6 +97,8 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
