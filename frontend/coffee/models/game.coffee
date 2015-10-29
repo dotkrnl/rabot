@@ -125,13 +125,12 @@ class Game extends Emitter
       deg -= 360 while deg >= 360
       deg += 360 while deg < 0
       return deg
-    angle = toNormalDeg(angle)
     rabbit = @getRabbit()
     rabbit.angle += angle
-    rabbit.angle = toNormalDeg(rabbit.angle)
     @update angle, =>
       @stepFinished()
       callback() if callback?
+      rabbit.angle = toNormalDeg(rabbit.angle)
     return
 
   # This function is called when each step (i.e user interface call),

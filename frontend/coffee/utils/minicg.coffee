@@ -49,12 +49,26 @@ class Polygon
 
   pointInside: (point) ->
     count = 0
+
     for segment in @segmentList
-      if ((segment.point1.y > point.y and segment.point2.y < point.y) or
-        (segment.point1.y < point.y and segment.point2.y > point.y)) and
-        segment.slopeX != NaN
+      if segment.slopeX != NaN and
+      point.x == point.y * segment.slopeX + segment.intersectX and
+      ((segment.point1.y >= point.y and segment.point2.y <= point.y) or
+      (segment.point1.y <= point.y and segment.point2.y >= point.y))
+        return true
+
+      if segment.slopeX == NaN and
+      point.y == segment.intersectY and
+      ((segment.point1.x >= point.x and segment.point2.x <= point.x) or
+      (segment.point1.x <= point.x and segment.point2.x >= point.x))
+        return true
+
+    for segment in @segmentList
+      if ((segment.point1.y >= point.y and segment.point2.y < point.y) or
+      (segment.point1.y < point.y and segment.point2.y >= point.y)) and
+      segment.slopeX != NaN
         x = point.y * segment.slopeX + segment.intersectX
-        if x > point.x
+        if x >= point.x
           count++
     if count % 2 == 0
       return false
@@ -83,6 +97,3 @@ class Polygon
 module.exports.Vec2D = Vec2D
 module.exports.Segment = Segment
 module.exports.Polygon = Polygon
-
-p = new Vec2D(0.3,0.9)
-console.log p.rotate(90, new Vec2D(0.1,0.1))
