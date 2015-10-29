@@ -279,19 +279,24 @@ describe 'Game.turn', ->
     game.addSprite type: 'rabbit', x: 0, y: 0, angle: 0
 
     game.turn 1000
-    expect(game.getRabbit().angle).toBeCloseTo(1000 % 360)
+    expect(game.getRabbit().angle).toBeCloseTo(1000)
 
-  it 'calls update once with normal angle', ->
+  it 'calls update once with angle reduced to be less than 1080', ->
     game = new Game
     game.addSprite type: 'rabbit', x: 0, y: 0, angle: 0
 
     game.update = jest.genMockFunction()
     game.stepFinished = jest.genMockFunction()
 
-    for i in [1..2]
+    checkRange = [-3..3]
+    for i in checkRange
       game.turn 1234 * i
-      expect(game.update.mock.calls.length).toBe i
-      expect(game.update.mock.calls[i-1][0]).toBe (1234 * i % 360)
+      expectedAngle = 1234 * i
+      expectedAngle += 360 while expectedAngle < -1080
+      expectedAngle -= 360 while expectedAngle > 1080
+      expectedTimes = i - checkRange[0] + 1
+      expect(game.update.mock.calls.length).toBe expectedTimes
+      expect(game.update.mock.calls[expectedTimes-1][0]).toBe expectedAngle
 
 
 describe 'Game.*actions*', ->

@@ -122,16 +122,14 @@ class Game extends Emitter
   # @param angle to turn, in degree
   # @param callback, function to call when animation is finished.
   turn: (angle, callback) ->
-    toNormalDeg = (deg) ->
-      deg -= 360 while deg >= 360
-      deg += 360 while deg < 0
-      return deg
+    # avoid stupid action of users
+    angle -= 360 while angle > 1080
+    angle += 360 while angle < -1080
     rabbit = @getRabbit()
     rabbit.angle += angle
     @update angle, =>
       @stepFinished()
       callback() if callback?
-      rabbit.angle = toNormalDeg(rabbit.angle)
     return
 
   # This function is called when each step (i.e user interface call),
