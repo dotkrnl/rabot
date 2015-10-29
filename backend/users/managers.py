@@ -11,8 +11,10 @@ class UsersManager():
             return False
 
         for i in passwd:
-            if not 32 < i < 127:
+            if not 32 < ord(i) < 127:
                 return False
+
+        return True
 
     def registration(self, uname, passwd, passwd2, email):
         if passwd != passwd2:
@@ -30,10 +32,14 @@ class UsersManager():
             return 'Email is already used.'
 
         all_users = self.dao.get_all_users()
-        uid = all_users[-1].uid + 1
+        if len(all_users) > 0:
+            uid = all_users[-1].uid + 1
+        else:
+            uid = 1
+
         self.dao.create_user(uid, uname, passwd, email)
 
-        return 'Succeeded, new user\'s uid: ' + str(uid)
+        return 'Succeeded, new user\'s uid: #' + str(uid)
 
     def login(self, uname, passwd):
         cur_user = self.dao.get_user_by_uname(uname)
@@ -41,9 +47,26 @@ class UsersManager():
         if not cur_user:
             return 'User does not exist.'
         elif cur_user.passwd == passwd:
-            return 'Succeeded. User\'s uid: ' + str(cur_user.uid)
+            if self.dao.has_logged_in(cur_user):
+                return 'User has already logged in.'
+            else:
+                self.dao.log_in(cur_user)
+                return 'Succeeded. User\'s uid: #' + str(cur_user.uid)
         else:
             return 'Password is incorrect.'
+
+    def logout(self, uid):
+        if uid > 0:
+            cur_user = self.dao.get_user_by_uid(uid)
+            if not cur_user:
+                return 'User does not exist.'
+            elif self.dao.has_logged_in(cur_user):
+                self.dao.log_out(cur_user)
+                return 'Succeeded.'
+            else:
+                return 'User has not logged in.'
+        else:
+            return 'Succeeded. Nothing is done.'
 
     def update(self, uid, old_passwd, new_passwd, new_passwd2, new_email):
         cur_user = self.dao.get_user_by_uid(uid)
@@ -67,7 +90,3 @@ class UsersManager():
         if len(old_passwd) > 0: cur_user.update(passwd=new_passwd)
         if len(new_email) > 0: cur_user.update(email=new_email)
         return 'Succeeded.'
-
-
-    
-

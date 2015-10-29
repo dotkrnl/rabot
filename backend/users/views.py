@@ -26,7 +26,7 @@ def user_registration_view(request):
             result = manager.registration(uname, passwd, passwd2, email)
 
             if result[:9] == 'Succeeded':
-                uid = int(result[27:])
+                uid = int(result[28:])
                 response_data = {
                     'result': 'succeeded',
                     'uid': uid,
@@ -64,10 +64,49 @@ def user_login_view(request):
             result = manager.login(uname, passwd)
 
             if result[:9] == 'Succeeded':
-                uid = int(result[23:])
+                uid = int(result[24:])
                 response_data = {
                     'result': 'succeeded',
                     'uid': uid,
+                }
+            else:
+                response_data = {
+                    'result': 'failed',
+                    'errorMessage': result,
+                }
+
+        return HttpResponse(json.dumps(response_data))
+
+    elif request.method == 'GET':
+        response_data = {
+            'result': 'failed'
+        }
+
+        return HttpResponse(json.dumps(response_data))
+
+    else:
+        raise Http404
+
+
+@csrf_exempt
+def user_logout_view(request):
+    manager = UsersManager()
+
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode())
+            uid = data['uid']
+        except KeyError:
+            response_data = {
+                'result': "failed",
+                'errorMessage': 'KeyError',
+            }
+        else:
+            result = manager.logout(uid)
+
+            if result[:9] == 'Succeeded':
+                response_data = {
+                    'result': 'succeeded',
                 }
             else:
                 response_data = {

@@ -3,6 +3,7 @@
 class LoginManager
   constructor: ->
     @view = null
+    @uid = 0
     @username = ''
     @update()
 
@@ -22,24 +23,27 @@ class LoginManager
       dataType: 'json'
     .done (result) =>
       if result.result == 'succeeded'
+        @uid = result.uid
         @username = username
       else
-        alert "Invalid username or password!"
-        @username = ''
+        alert result.errorMessage
       @update()
 
-  logout: () ->
+  logout: (handler) ->
     $.ajax
-      url : '/backend/login/'
+      url : '/backend/logout/'
       type : 'POST'
       data :
         JSON.stringify
-          username : ''
-          password : ''
+          uid : @uid
       contentType: "application/json"
       dataType: 'json'
     .done (result) =>
-      @username = ''
+      if result.result == 'succeeded'
+        @uid = 0
+        @username = ''
+      else
+        alert result.errorMessage
       @update()
       $("#navbar_password").val('')
 

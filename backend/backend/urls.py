@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^backend/stage/$', 'stage.views.all_stages_info_view'),
     url(r'^backend/stage/(?P<stage_id>\d+)/$', 'stage.views.stage_info_view'),
     url(r'^backend/login', 'users.views.user_login_view'),
+    url(r'^backend/logout', 'users.views.user_logout_view'),
 ]
