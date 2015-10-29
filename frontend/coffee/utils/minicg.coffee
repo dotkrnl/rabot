@@ -4,11 +4,14 @@
 class Vec2D
   constructor: (@x, @y) ->
 
-  lengthSquared: (@x, @y) ->
+  lengthSquared: ->
     @x * @x + @y * @y
 
   length: ->
     Math.sqrt(@lengthSquared())
+
+  normalized: ->
+    new Vec2D(@x / @length(), @y / @length())
 
   rotate: (angle, pivot) ->
     pivot = new Vec2D(0, 0) unless pivot
@@ -28,12 +31,63 @@ class Vec2D
   @neg: (vec) ->
     new Vec2D(-vec.x, -vec.y)
 
+  @mul: (vec, scalar) ->
+    new Vec2D(vec.x * scalar, vec.y * scalar)
+
+  @dotProduct: (vec1, vec2) ->
+    vec1.x * vec2.x + vec1.y * vec2.y
+
 class Segment
+
+  direction:  ->
+    Vec2D.sub(@point2, @point1).normalized()
+
   constructor: (@point1, @point2) ->
     @slopeX = (@point2.x - @point1.x) / (@point2.y - @point1.y)
     @intersectX = @point2.x - @point2.y * @slopeX
     @slopeY = (@point2.y - @point1.y) / (@point2.x - @point1.x)
     @intersectY = @point2.y - @point2.x * @slopeY
+
+  vecToLine: (point) ->
+    vec = Vec2D.sub(@point2, point)
+    return Vec2D.sub(vec, Vec2D.mul(
+      @direction(),
+      Vec2D.dotProduct(vec, @direction())
+    ))
+
+  distTo: (point) ->
+    vecTo = @vecToLine(point)
+    intersect = Vec2D.add(point, vecTo)
+    if (
+      @point1.y != @point2.y and
+      ((@point1.y >= intersect.y and @point2.y <= intersect.y) or
+      (@point1.y <= intersect.y and @point2.y >= intersect.y)))
+      return vecTo.length()
+    else if (
+      @point1.x != @point2.x and
+      ((@point1.x >= intersect.x and @point2.x <= intersect.x) or
+      (@point1.x <= intersect.x and @point2.x >= intersect.x)))
+      return vecTo.length()
+    else
+      return Math.min \
+        Vec2D.sub(point, @point1).length(),
+        Vec2D.sub(point, @point2).length()
+
+class Circle
+  constructor: (@center, @radius) ->
+
+  collidePoly: (poly) ->
+    if poly.pointInside(@center)
+      return true
+
+    for edge in poly.segmentList
+      if edge.distTo(@center) <= @radius
+        return true
+    return false
+
+  @collide: (circle1, circle2) ->
+    return Vec2D.sub(circle1.center, circle2.center).length() <
+    circle1.radius + circle2.radius
 
 class Polygon
   constructor: (@vertexList) ->
@@ -97,3 +151,18 @@ class Polygon
 module.exports.Vec2D = Vec2D
 module.exports.Segment = Segment
 module.exports.Polygon = Polygon
+module.exports.Circle = Circle
+
+circle = new Circle(new Vec2D(0,0), 0.35)
+poly = new Polygon([new Vec2D(0,0.5),new Vec2D(0.5,1),new Vec2D(1,0.5),new Vec2D(0.5,0)])
+console.log circle.collidePoly(poly)
+circle = new Circle(new Vec2D(0,0), 0.36)
+console.log circle.collidePoly(poly)
+circle = new Circle(new Vec2D(0.5,-0.5), 0.49)
+console.log circle.collidePoly(poly)
+circle = new Circle(new Vec2D(0.5,-0.5), 0.51)
+console.log circle.collidePoly(poly)
+
+circle = new Circle(new Vec2D(1.5,1.5), 0.70)
+poly = new Polygon([new Vec2D(0,0),new Vec2D(0,1),new Vec2D(1,1),new Vec2D(1,0)])
+console.log circle.collidePoly(poly)
