@@ -40,7 +40,7 @@ module.exports = (code) ->
       buffer = ""
       detected = true
     # and it is "for" or "if"
-    else if ((buffer == "for") || (buffer == "if")) || (buffer == "while")) && detected
+    else if ((buffer == "for") || (buffer == "if") || (buffer == "while")) && detected
       afterCode += ", defer param "
       afterCode += buffer
       afterCode += ch
