@@ -6,23 +6,20 @@ module.exports = (code) ->
   # @val detected: true when a key function is found and not done with.
   # @val buffer: code buffer.
   # @val afterCode: return value.
+  # @val bracketCounter: used to match brackets. When met '()' +1,
+  # when met ')' -1.
   detected = false
   buffer = ""
   afterCode = ""
+  bracketCounter = 0
 
   # scan thorough the code (by char).
   # if-elseif structure.
   for ch in code
+
     # When a word is not finished
     if (ch >= 'a' && ch <= 'z')||(ch >= 'A' && ch <= 'Z')
       buffer += ch
-    # When a key function finished with ')'
-    else if detected && (ch == ')')
-      afterCode += buffer
-      buffer = ""
-      afterCode += ", defer param"
-      afterCode +=  ch
-      detected = false
     # When \n is scanned
     else if ch == '\n'
       afterCode += buffer
@@ -43,7 +40,7 @@ module.exports = (code) ->
       buffer = ""
       detected = true
     # and it is "for" or "if"
-    else if ((buffer == "for") || (buffer == "if")) && detected
+    else if ((buffer == "for") || (buffer == "if")) || (buffer == "while")) && detected
       afterCode += ", defer param "
       afterCode += buffer
       afterCode += ch
