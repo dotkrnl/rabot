@@ -37,7 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'stage',
-    'userlogin',
+    'users',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -75,7 +75,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Authentication backends
 
 AUTHENTICATION_BACKENDS = (
-    'userlogin.auth.AuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
 )
 
 ANONYMOUS_USER_ID = -1
