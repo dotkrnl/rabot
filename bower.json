@@ -23,6 +23,6 @@
     "coffee-script": "coffeescript#~1.10.0",
     "Snap.svg": "snap.svg#~0.4.1",
     "codemirror": "CodeMirror#~5.7.0",
-    "iced-coffee-script": "~108.0.8"
+    "iced-coffee-script": "108.0.8"
   }
 }

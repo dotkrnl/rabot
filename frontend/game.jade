@@ -1,7 +1,4 @@
-include jadecomponents/layout.jade
-
-block css
-  link(rel='stylesheet' href='css/game.css')
+include includes/layout.jade
 
 block content
   div#container-play
@@ -23,6 +20,3 @@ block content
             span Levels
             span.caret
           ul.dropdown-menu#stage-dropdown
-
-block js
-  script(type='text/javascript' src='js/site.js')
