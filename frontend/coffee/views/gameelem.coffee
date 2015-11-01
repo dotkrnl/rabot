@@ -27,6 +27,12 @@ class GameElem
           fill: '#ff5555'
           stroke: '#000'
           strokeWidth: 5
+      when 'river'
+        @elem = @canvas.rect(0, 0, @sprite.width, @sprite.height, 0, 0)
+        @elem.attr
+          fill: '#0B469F'
+          stroke: '#000'
+          strokeWidth: 5
     @update(0)
 
   # Update the element with animation (if scale)

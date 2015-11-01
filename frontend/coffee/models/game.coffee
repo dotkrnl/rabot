@@ -32,6 +32,8 @@ class Game extends Emitter
     throw new Error('no sprite type') unless sprite.type?
     sprite.x = 0 unless sprite.x?
     sprite.y = 0 unless sprite.y?
+    sprite.width = 0 unless sprite.width?
+    sprite.height = 0 unless sprite.height?
     sprite.angle = 0 unless sprite.angle?
     sprite.lethal = false unless sprite.lethal?
     sprite.passable = true unless sprite.passable?

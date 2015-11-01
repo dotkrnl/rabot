@@ -58,7 +58,7 @@
     "x": 12, "y": 450,
     "teleportTo": [54, 120]
   },
-  
+
   {
     "_comment": [
       "type 'river': a part of a river, simply stops rabbit from passing."
@@ -66,7 +66,8 @@
     "type": "river",
     "passable": false,
     "leathal": false,
-    "x": 123, "y": 224
+    "x": 123, "y": 224,
+    "width" : 100, "height": 100
   },
 
   {

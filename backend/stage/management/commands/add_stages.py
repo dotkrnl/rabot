@@ -20,7 +20,9 @@ class Command(BaseCommand):
             {"type":"rabbit","x":300,"y":370,"angle":0}
           ]""")
         stage.save();
-        stage = Stage(stage_id = 3, name ="Unsolvable", info = """[
-            {"type":"carrot","x":300,"y":50}
+        stage = Stage(stage_id = 3, name ="Level 3", info = """[
+            {"type":"river","x":0,"y":150,"width":400,"height":75},
+            {"type":"carrot","x":300,"y":50},
+            {"type":"rabbit","x":300,"y":370,"angle":0}
           ]""")
         stage.save();
