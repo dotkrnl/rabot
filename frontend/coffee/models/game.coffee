@@ -104,18 +104,66 @@ class Game extends Emitter
       callback() if callback?
     return
 
+  movePredict: (stepRemaining) ->
+    rabbit = @getRabbit()
+    origX = rabbit.x
+    origY = rabbit.y
+    stepScanned = 0
+    ret = {}
+    while true
+      rabbit.x += Math.sin(toRad(rabbit.angle))
+      rabbit.y -= Math.cos(toRad(rabbit.angle))
+      stepScanned++
+
+      carrotCollisionFlag = false
+      for carrot in @filterSprites(type: 'carrot', defunct: false)
+        if (rabbit.x - carrot.x) * (rabbit.x - carrot.x) +
+        (rabbit.y - carrot.y) * (rabbit.y - carrot.y) < 20 * 20
+          carrotCollisionFlag = true
+          ret =
+            collision: carrot
+            step: stepScanned
+          break
+
+      break if carrotCollisionFlag
+
+      if stepScanned >= stepRemaining
+        ret =
+          collision: null
+          step: stepRemaining
+        break
+
+    rabbit.x = origX
+    rabbit.y = origY
+    return ret
+
+  collisionHandler: (collision, callback) ->
+    if collision.type == "carrot"
+      @removeSprite(collision.uid)
+      @carrotGot++
+      callback() if callback?
+
+
   # Move the rabbit along the direction of its current orientation.
   # This function will call @update, producing animation in the game scene.
   # @param step to move, currently in pixels.
   # @param callback, function to call when animation is finished.
   move: (step, callback) ->
     rabbit = @getRabbit()
-    rabbit.x += step * Math.sin(toRad(rabbit.angle))
-    rabbit.y -= step * Math.cos(toRad(rabbit.angle))
-    @update step, =>
-      @stepFinished()
-      callback() if callback?
-    return
+    prediction = @movePredict(step)
+    if not prediction.collision?
+      rabbit.x += step * Math.sin(toRad(rabbit.angle))
+      rabbit.y -= step * Math.cos(toRad(rabbit.angle))
+      @update step, =>
+        @stepFinished()
+        callback() if callback?
+    else
+      rabbit.x += prediction.step * Math.sin(toRad(rabbit.angle))
+      rabbit.y -= prediction.step * Math.cos(toRad(rabbit.angle))
+      @update prediction.step, =>
+        @collisionHandler prediction.collision, =>
+          @move(step - prediction.step, callback)
+
 
   # Turn the orientation of the rabbit by angle, in degree, clockwisely.
   # This function will call @update, producing animation in the game scene.
