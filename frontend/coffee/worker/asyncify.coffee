@@ -117,22 +117,37 @@ module.exports = (code) ->
   # @val detected: true when a key function is found and not done with.
   # @val buffer: code buffer.
   # @val afterCode: return value.
-  # @val bracketCounter: used to match brackets. When met '()' +1,
+  # @val bracketFlag: true when bracketCount is activated
+  # @val bracketCount: used to match brackets. When met '()' +1,
   # when met ')' -1.
   detected = false
   buffer = ""
   afterCode = ""
+  bracketFlag = false
+  bracketCount = 0
 
   # scan thorough the code (by char).
   # if-elseif structure.
   i = 0
   while i < code.length
-
+    # Count brackets
+    if detected
+      if code[i] == '('
+        bracketCount++
+      if code[i] == ')'
+        bracketCount--
+        
+    #When bracketCount is 0 again
+    if detected && bracketFlag && bracketCount == 0
+      bracketFlag = false
+      detected = false
+      afterCode = afterCode + buffer + ", defer param)"
+      buffer = ""
     # When a word is not finished
-    if isIdentifier(code[i])
+    else if isIdentifier(code[i])
       buffer += code[i]
-    # When \n is scanned
-    else if code[i] == '\n'
+    # When \n or ';' is scanned
+    else if code[i] == '\n' || code[i] == ';'
       afterCode += buffer
       if detected
         afterCode += ", defer param"
@@ -159,6 +174,9 @@ module.exports = (code) ->
           buffer = ""
           detected = false
         break
+      if detected && code[i]=='('
+        bracketFlag = true
+        bracketCount = 1
     # and it is "for" or "if"
     else if inBranchOrLoop(buffer) && detected
       afterCode += ", defer param "
