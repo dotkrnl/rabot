@@ -106,39 +106,53 @@ module.exports = (code) ->
 
   # scan thorough the code (by char).
   # if-elseif structure.
-  for ch in code
+  i = 0
+  while i < code.length
 
     # When a word is not finished
-    if isIdentifier(ch)
-      buffer += ch
+    if isIdentifier(code[i])
+      buffer += code[i]
     # When \n is scanned
-    else if ch == '\n'
+    else if code[i] == '\n'
       afterCode += buffer
       if detected
         afterCode += ", defer param"
-      afterCode += ch
+      afterCode += code[i]
       buffer = ""
       detected = false
     # When a word has not yet begun
     else if buffer == ""
-      afterCode += ch
+      afterCode += code[i]
     # When a word is finished...
-    # and it is a key function
+    # and it is a key function and not announcement
     else if inFunctionList(buffer, functionList)
-      afterCode = addPrefix(afterCode, buffer, ch)
-      buffer = ""
-      detected = true
+      j = i
+      while j < code.length
+        if code[j] == ' ' || code[j] == '\t'
+          j++
+          continue
+        if code[j] != '='
+          afterCode = addPrefix(afterCode, buffer, code[i])
+          buffer = ""
+          detected = true
+        if code[j] == '='
+          afterCode += buffer
+          buffer = ""
+          detected = false
+        break
     # and it is "for" or "if"
     else if inBranchOrLoop(buffer) && detected
       afterCode += ", defer param "
       afterCode += buffer
-      afterCode += ch
+      afterCode += code[i]
       buffer = ""
       detected = false
     # and it is some other word.
     else
       afterCode += buffer
-      afterCode += ch
+      afterCode += code[i]
       buffer = ""
+    
+    i++
 
   return afterCode
