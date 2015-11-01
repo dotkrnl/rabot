@@ -80,6 +80,7 @@ class Game extends Emitter
     @stageData = json
     @carrotGot = 0
     @sprites = []
+    @gameOverFlag = false
     @scene.clear() if @scene
     data = JSON.parse(@stageData)
     @addSprite(sprite) for sprite in data
@@ -127,6 +128,15 @@ class Game extends Emitter
             step: stepScanned
           break
 
+      for river in @filterSprites(type: 'river', defunct: false)
+        if rabbit.x > river.x and rabbit.x < river.x + river.width and
+        rabbit.y > river.y and rabbit.y < river.y + river.height
+          carrotCollisionFlag = true
+          ret =
+            collision: river
+            step: stepScanned
+          break
+
       break if carrotCollisionFlag
 
       if stepScanned >= stepRemaining
@@ -144,13 +154,18 @@ class Game extends Emitter
       @removeSprite(collision.uid)
       @carrotGot++
       callback() if callback?
-
+    if collision.type == "river"
+      @gameOverFlag = true
+      callback() if callback?
 
   # Move the rabbit along the direction of its current orientation.
   # This function will call @update, producing animation in the game scene.
   # @param step to move, currently in pixels.
   # @param callback, function to call when animation is finished.
   move: (step, callback) ->
+    if @gameOverFlag
+      callback() if callback?
+      return
     rabbit = @getRabbit()
     prediction = @movePredict(step)
     if not prediction.collision?
@@ -172,6 +187,9 @@ class Game extends Emitter
   # @param angle to turn, in degree
   # @param callback, function to call when animation is finished.
   turn: (angle, callback) ->
+    if @gameOverFlag
+      callback() if callback?
+      return
     # avoid stupid action of users
     angle -= 360 while angle > 1080
     angle += 360 while angle < -1080
@@ -196,7 +214,7 @@ class Game extends Emitter
   # This function will perform win / lost check,
   # triggering the corresponding event, as well as the finish event
   finish: ->
-    victory = @carrotGot > 0
+    victory = @carrotGot > 0 and not @gameOverFlag
     if victory
       @trigger('win')
     else
