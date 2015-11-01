@@ -141,7 +141,19 @@ module.exports = (code) ->
     if detected && bracketFlag && bracketCount == 0
       bracketFlag = false
       detected = false
-      afterCode = afterCode + buffer + ", defer param)"
+      emptyParamFlag = true
+      j = i
+      while j >= 0
+        j--
+        if code[j] == '('
+          break
+        if code[j] != ' '
+          emptyParamFlag = false
+          break
+      if emptyParamFlag
+        afterCode = afterCode + buffer + "defer param)"    
+      else
+        afterCode = afterCode + buffer + ", defer param)"    
       buffer = ""
     # When a word is not finished
     else if isIdentifier(code[i])
