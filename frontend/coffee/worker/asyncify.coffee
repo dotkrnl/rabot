@@ -42,12 +42,31 @@ module.exports = (code) ->
   
   # Fisrt scan, to process user-defined functions
   # Add callback param to param list
-  code = code.replace(/\)\s*->/, ", __rabot_cb_) ->")
-  code = code.replace(/\(\s*,/, "(")
+  code = code.replace(/\)\s*->/g, ", __rabot_cb_) ->")
+  code = code.replace(/\(\s*,/g, "(")
   
   i = 0
   while i < code.length - 1
     if code[i] == '-' && code[i+1] == '>'
+      # Add new line after "->" if there's something
+      j = i + 2
+      flag = false
+      while j <= code.length
+        if code[j] == '\n'
+          break
+        if code[j] != ' '
+          flag = true
+          break
+        j++
+      if flag
+        j = i
+        while j >= 0
+          if code[j] = '\n' || j == 0
+            break
+          j--
+        indent = getIndent(j, code) + "  "
+        code = code.substr(0, i+3) + '\n' + indent + \
+        code.substr(i+3, code.length)
       # Find & add function name to functionList
       j = i
       nameFound = false
