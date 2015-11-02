@@ -27,10 +27,22 @@ class GameElem
           fill: '#ff5555'
           stroke: '#000'
           strokeWidth: 5
+      when 'key'
+        @elem = @canvas.circle(0, 0, 20)
+        @elem.attr
+          fill: '#efcd7d'
+          stroke: '#000'
+          strokeWidth: 5
       when 'river'
         @elem = @canvas.rect(0, 0, @sprite.width, @sprite.height, 0, 0)
         @elem.attr
           fill: '#0B469F'
+          stroke: '#000'
+          strokeWidth: 5
+      when 'door'
+        @elem = @canvas.rect(0, 0, @sprite.width, @sprite.height, 0, 0)
+        @elem.attr
+          fill: '#4a4937'
           stroke: '#000'
           strokeWidth: 5
     @update(0)

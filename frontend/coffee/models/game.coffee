@@ -81,6 +81,7 @@ class Game extends Emitter
     @carrotGot = 0
     @sprites = []
     @gameOverFlag = false
+    @keysObtained = []
     @scene.clear() if @scene
     data = JSON.parse(@stageData)
     @addSprite(sprite) for sprite in data
@@ -118,26 +119,26 @@ class Game extends Emitter
       rabbit.y -= Math.cos(toRad(rabbit.angle))
       stepScanned++
 
-      carrotCollisionFlag = false
-      for carrot in @filterSprites(type: 'carrot', defunct: false)
-        if (rabbit.x - carrot.x) * (rabbit.x - carrot.x) +
-        (rabbit.y - carrot.y) * (rabbit.y - carrot.y) < 20 * 20
-          carrotCollisionFlag = true
+      collisionFlag = false
+      for elem in @filterSprites(defunct: false)
+        if (elem.type == "carrot" or elem.type == "key") and
+        (rabbit.x - elem.x) * (rabbit.x - elem.x) +
+        (rabbit.y - elem.y) * (rabbit.y - elem.y) < 20 * 20
+          collisionFlag = true
           ret =
-            collision: carrot
+            collision: elem
+            step: stepScanned
+          break
+        else if (elem.type == "river" or elem.type == "door") and
+        rabbit.x > elem.x and rabbit.x < elem.x + elem.width and
+        rabbit.y > elem.y and rabbit.y < elem.y + elem.height
+          collisionFlag = true
+          ret =
+            collision: elem
             step: stepScanned
           break
 
-      for river in @filterSprites(type: 'river', defunct: false)
-        if rabbit.x > river.x and rabbit.x < river.x + river.width and
-        rabbit.y > river.y and rabbit.y < river.y + river.height
-          carrotCollisionFlag = true
-          ret =
-            collision: river
-            step: stepScanned
-          break
-
-      break if carrotCollisionFlag
+      break if collisionFlag
 
       if stepScanned >= stepRemaining
         ret =
@@ -149,14 +150,24 @@ class Game extends Emitter
     rabbit.y = origY
     return ret
 
-  collisionHandler: (collision, callback) ->
+  collisionHandler: (collision, continueCallback, cancelCallback) ->
     if collision.type == "carrot"
       @removeSprite(collision.uid)
       @carrotGot++
-      callback() if callback?
+      continueCallback() if continueCallback?
     if collision.type == "river"
       @gameOverFlag = true
-      callback() if callback?
+      continueCallback() if continueCallback?
+    if collision.type == "key"
+      @keysObtained.push(collision.keyId)
+      @removeSprite(collision.uid)
+      continueCallback() if continueCallback?
+    if collision.type == "door"
+      if @keysObtained.indexOf(collision.keyId) == -1
+        cancelCallback() if cancelCallback?
+      else
+        @removeSprite(collision.uid)
+        continueCallback() if continueCallback?
 
   # Move the rabbit along the direction of its current orientation.
   # This function will call @update, producing animation in the game scene.
@@ -178,8 +189,10 @@ class Game extends Emitter
       rabbit.x += prediction.step * Math.sin(toRad(rabbit.angle))
       rabbit.y -= prediction.step * Math.cos(toRad(rabbit.angle))
       @update prediction.step, =>
-        @collisionHandler prediction.collision, =>
-          @move(step - prediction.step, callback)
+        @collisionHandler prediction.collision, (=>
+          @move(step - prediction.step, callback)), (=>
+          callback() if callback)
+
 
 
   # Turn the orientation of the rabbit by angle, in degree, clockwisely.
