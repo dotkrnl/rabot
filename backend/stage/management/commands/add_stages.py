@@ -37,7 +37,11 @@ class Command(BaseCommand):
         stage.save();
         stage = Stage(stage_id = 5, name ="Level 5", info = """[
             {"type":"river","x":0,"y":150,"width":400,"height":75},
+            {"type":"river","x":475,"y":150,"width":400,"height":75},
             {"type":"carrot","x":300,"y":50},
-            {"type":"rabbit","x":300,"y":370,"angle":0}
+            {"type":"rabbit","x":300,"y":370,"angle":0},
+            {"type":"key","x":100,"y":400,"keyId":0},
+            {"type":"door","x":400,"y":150,"width":75,"height":75,"keyId":0},
+            {"type":"rotator","x":400,"y":400,"rotation":90}
           ]""")
         stage.save();

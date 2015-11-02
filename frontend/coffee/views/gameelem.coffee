@@ -45,6 +45,12 @@ class GameElem
           fill: '#4a4937'
           stroke: '#000'
           strokeWidth: 5
+      when 'rotator'
+        @elem = @canvas.circle(0, 0, 20)
+        @elem.attr
+          fill: '#4e0f69'
+          stroke: '#000'
+          strokeWidth: 5
     @update(0)
 
   # Update the element with animation (if scale)

@@ -38,6 +38,8 @@ class UserCodeWorker
         @game.move(m.step, @resume.bind(@))
       when "turn"
         @game.turn(m.angle, @resume.bind(@))
+      when "turnTo"
+        @game.turnTo(m.objectName, @resume.bind(@))
       when "finish"
         @game.finish()
 
@@ -79,6 +81,14 @@ class UserCodeWorker
       @postMessage
         action: 'turn'
         angle: angle
+
+    turnTo = (objectName, callback) ->
+      __rabot_resume = ->
+        __rabot_resume = __rabot_nop
+        callback()
+      @postMessage
+        action: 'turnTo'
+        objectName: objectName
 
     __rabot_finished = ->
       @postMessage

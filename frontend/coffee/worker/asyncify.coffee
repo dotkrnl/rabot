@@ -34,17 +34,15 @@ getIndent = (pos, code) ->
 
 module.exports = (code) ->
   code += '\n'
-  
+
   # @val functionList: stores functions needed to be done
-  functionList = new Array()
-  functionList.push("move")
-  functionList.push("turn")
-  
+  functionList = ["move", "turn", "turnTo"]
+
   # Fisrt scan, to process user-defined functions
   # Add callback param to param list
   code = code.replace(/\)\s*->/g, ", __rabot_cb_) ->")
   code = code.replace(/\(\s*,/g, "(")
-  
+
   i = 0
   while i < code.length - 1
     if code[i] == '-' && code[i+1] == '>'
@@ -77,16 +75,16 @@ module.exports = (code) ->
             functionName = code[j] + functionName
           else
             if functionName == ""
-            
+
             else
               break
         else
           if code[j] == '='
             nameFound = true
           else
-        
+
         j--
-      
+
       if functionName.length > 0
         functionList.push(functionName)
 
@@ -107,13 +105,13 @@ module.exports = (code) ->
               i += 14
               break
           j++
-    
+
     i++
-    
-  
-  
+
+
+
   # Second scan
-  
+
   # @val detected: true when a key function is found and not done with.
   # @val buffer: code buffer.
   # @val afterCode: return value.
@@ -136,7 +134,7 @@ module.exports = (code) ->
         bracketCount++
       if code[i] == ')'
         bracketCount--
-        
+
     #When bracketCount is 0 again
     if detected && bracketFlag && bracketCount == 0
       bracketFlag = false
@@ -151,9 +149,9 @@ module.exports = (code) ->
           emptyParamFlag = false
           break
       if emptyParamFlag
-        afterCode = afterCode + buffer + "defer param)"    
+        afterCode = afterCode + buffer + "defer param)"
       else
-        afterCode = afterCode + buffer + ", defer param)"    
+        afterCode = afterCode + buffer + ", defer param)"
       buffer = ""
     # When a word is not finished
     else if isIdentifier(code[i])
@@ -201,7 +199,7 @@ module.exports = (code) ->
       afterCode += buffer
       afterCode += code[i]
       buffer = ""
-    
+
     i++
 
   return afterCode

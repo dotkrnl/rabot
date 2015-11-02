@@ -5,6 +5,9 @@ MiniCG = require('../utils/minicg.coffee')
 toRad = (degrees) ->
   degrees * Math.PI / 180.0
 
+toDeg = (rad) ->
+  rad / Math.PI * 180.0
+
 # A helper function to clone object
 cloned = (obj) ->
   if not obj? or typeof obj != 'object'
@@ -212,6 +215,24 @@ class Game extends Emitter
       @stepFinished()
       callback() if callback?
     return
+
+  # Turn the orientation of the rabbit by choosing an object.
+  # This function will call @update, producing animation in the game scene.
+  # @param objectName object to turn to
+  # @param callback, function to call when animation is finished.
+  # TODO: currently object name is not fully supported, type will be used.
+  turnTo: (objectName, callback) ->
+    console.log("bbb")
+    rabbit = @getRabbit()
+    objects = @filterSprites(type: objectName, defunct: false)
+    if objects.length <= 0
+      callback() if callback?
+      return
+    object = objects[0]
+    dx = object.x - rabbit.x;
+    dy = object.y - rabbit.y;
+    console.log(Math.atan(dx / -dy))
+    @turn toDeg(Math.atan(dx / -dy)) - rabbit.angle, callback
 
   # This function is called when each step (i.e user interface call),
   # to perform collision detection and add update the number of
