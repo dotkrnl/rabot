@@ -117,31 +117,38 @@ class Game extends Emitter
     origY = rabbit.y
     stepScanned = 0
     ret = {}
+    lastCollision = []
     while true
       rabbit.x += Math.sin(toRad(rabbit.angle))
       rabbit.y -= Math.cos(toRad(rabbit.angle))
       stepScanned++
 
-      collisionFlag = false
+      currentCollision = []
       for elem in @filterSprites(defunct: false)
-        if (elem.type == "carrot" or elem.type == "key") and
+        if elem.type in ["carrot", "key", "rotator"] and
         (rabbit.x - elem.x) * (rabbit.x - elem.x) +
         (rabbit.y - elem.y) * (rabbit.y - elem.y) < 20 * 20
-          collisionFlag = true
-          ret =
-            collision: elem
-            step: stepScanned
-          break
+          currentCollision.push(elem)
+          console.log lastCollision, currentCollision, stepScanned
+          if elem.type not in lastCollision and stepScanned != 1
+            collisionFlag = true
+            ret =
+              collision: elem
+              step: stepScanned
+            currentCollision.append
+            break
         else if (elem.type == "river" or elem.type == "door") and
         rabbit.x > elem.x and rabbit.x < elem.x + elem.width and
         rabbit.y > elem.y and rabbit.y < elem.y + elem.height
+          currentCollision.push(elem)
           collisionFlag = true
           ret =
             collision: elem
             step: stepScanned
           break
 
-      break if collisionFlag
+      lastCollision = currentCollision
+      break if currentCollision.length > 0
 
       if stepScanned >= stepRemaining
         ret =
@@ -171,6 +178,8 @@ class Game extends Emitter
       else
         @removeSprite(collision.uid)
         continueCallback() if continueCallback?
+    if collision.type == "rotator"
+      @turn(collision.rotation, continueCallback)
 
   # Move the rabbit along the direction of its current orientation.
   # This function will call @update, producing animation in the game scene.

@@ -89,7 +89,7 @@ module.exports = (grunt) ->
 
     shell:
       django:
-        command: 'cd backend && ./manage.py runserver 0.0.0.0:8000'
+        command: 'cd backend && python manage.py runserver 0.0.0.0:8000'
         options:
           stdin: true,
           stdout: true,
