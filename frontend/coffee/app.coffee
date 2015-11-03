@@ -52,7 +52,7 @@ $ ->
   # Handles the "Run" and "Stop" button events.
   $('#button-run-code').click ->
     code = editorCodeMirror.getValue()
-    userWorker = new UserWorker game, code
+    userWorker = new UserWorker game, code if not userWorker?
 
   $('#button-stop-code').click ->
     game.finish()
