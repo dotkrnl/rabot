@@ -21,15 +21,23 @@
     "grunt-contrib-sass": "gruntjs/grunt-contrib-sass"
   },
   "devDependencies": {
+    "grunt-concurrent": "^2.0.4",
     "grunt-connect-proxy": "^0.2.0",
     "grunt-contrib-connect": "^0.11.2",
     "grunt-contrib-watch": "^0.6.1",
+    "grunt-shell": "^1.1.2",
     "jest-cli": "^0.6.0"
   },
   "jest": {
     "verbose": "true",
     "scriptPreprocessor": "jestcoffee.js",
-    "testFileExtensions": ["coffee", "js"],
-    "moduleFileExtensions": ["coffee", "js"]
+    "testFileExtensions": [
+      "coffee",
+      "js"
+    ],
+    "moduleFileExtensions": [
+      "coffee",
+      "js"
+    ]
   }
 }
