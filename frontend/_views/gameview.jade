@@ -1,0 +1,15 @@
+div.game-view
+  svg.game-scene
+  textarea.code-editor
+  div.code-controller
+    button.run-code.btn.btn-primary(type="button")
+      i.glyphicon.glyphicon-play
+      span Run
+    button.stop-code.btn.btn-warning(type="button")
+      i.glyphicon.glyphicon-stop
+      span Stop
+    div.level-manager
+      button.btn.btn-default.dropup-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+        span Levels
+        span.caret
+      ul.level-dropdown

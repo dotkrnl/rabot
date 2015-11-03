@@ -22,33 +22,30 @@ $containerCodeAssistantHeight:	75px;
   bottom:0px;
 }
 
-#container-play
+.game-view
 {
   position:absolute;
   left:0;
   width:$containerPlayWidth;
   top:$containerTop;
   bottom:0;
-  background:blue;
 }
 
-#container-code
+.code-editor
 {
+  @extend .absolute-full-width;
   position:absolute;
   left:$containerCodeLeft;
   right:0;
-  top:$containerCodeTop;
-  bottom:0;
-}
-
-#container-code-editor
-{
-  @extend .absolute-full-width;
   top:0;
   bottom:$containerCodeEditorBottom;
+  @extend .absolute-full-width;
+  @extend .absolute-full-height;
+  width:100%;
+  height:100%;
 }
 
-#container-code-assistant
+.code-controller
 {
   @extend .absolute-full-width;
   height:$containerCodeAssistantHeight;
@@ -56,22 +53,14 @@ $containerCodeAssistantHeight:	75px;
   background:#aaa;
 }
 
-#code-editor
-{
-  @extend .absolute-full-width;
-  @extend .absolute-full-height;
-  width:100%;
-  height:100%;
-}
-
-#play-canvas
+.game-scene
 {
   @extend .absolute-full-width;
   @extend .absolute-full-height;
   background:white;
 }
 
-#container-code-control
+.code-controller
 {
   position:fixed;
   right: 0px;
