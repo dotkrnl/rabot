@@ -7,7 +7,7 @@ module.exports = (grunt) ->
     jade:
       install:
         cwd: './frontend'
-        src: ['./**/*.jade']
+        src: ['./**/*.jade', '!./_**/*.jade']
         dest: './public'
         ext: '.html'
         extDot: 'last'
