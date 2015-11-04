@@ -13,8 +13,14 @@ class UserCodeWorker
     asyncCode = asyncify(@code)
 
     # set "runtime" to be inlined instead of node
+    workerSpriteInitCode = """
+
+    __rabot_add_game_sprites(#{JSON.stringify(@prepareWorkerGameObject())})
+
+    """
+
     jsCode = CoffeeScript.compile \
-      @USERSPACE_API + asyncCode + @USERSPACE_END,
+      @USERSPACE_API + workerSpriteInitCode + asyncCode + @USERSPACE_END,
       runtime: "inline"
 
     blob = new Blob([jsCode], { type: "text/javascript" })
@@ -43,11 +49,21 @@ class UserCodeWorker
       when "finish"
         @game.finish()
 
+  prepareWorkerGameObject: () ->
+    ret = {}
+    availableSpriteTypes = ["rabbit", "carrot", "key", "door"]
+    for type in availableSpriteTypes
+      ret[type] = @game.filterSprites({"type":type})
+      if ret[type]? and ret[type].length == 1
+        ret[type] = ret[type][0]
+    return ret
+
   # The callback to resume user code by post a message to user worker.
   # see @onmessage for more information.
   resume: ->
     @worker.postMessage
       action: 'resume'
+      gameSprites: @prepareWorkerGameObject()
 
   # Terminate the user worker.
   terminate: ->
@@ -90,14 +106,28 @@ class UserCodeWorker
         action: 'turnTo'
         objectName: objectName
 
+    distance = (obj1, obj2) ->
+      if not obj2?
+        return distance(rabbit, obj1)
+      return Math.sqrt(
+        (obj1.x - obj2.x) * (obj1.x - obj2.x) +
+        (obj1.y - obj2.y) * (obj1.y - obj2.y)
+      )
+
     __rabot_finished = ->
       @postMessage
         action: 'finish'
+
+    __rabot_add_game_sprites = (gameSprites) ->
+      for type, elems of gameSprites
+        console.log type
+        @[type] = elems
 
     @onmessage = (e) ->
       e = e.data if e?
       if e? and e.action? and \
           e.action == 'resume'
+        __rabot_add_game_sprites(e.gameSprites)
         __rabot_resume()
 
     """
