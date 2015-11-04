@@ -129,7 +129,6 @@ class Game extends Emitter
         (rabbit.x - elem.x) * (rabbit.x - elem.x) +
         (rabbit.y - elem.y) * (rabbit.y - elem.y) < 20 * 20
           currentCollision.push(elem)
-          console.log lastCollision, currentCollision, stepScanned
           if elem.type not in lastCollision and stepScanned > 0.15
             collisionFlag = true
             ret =
@@ -235,7 +234,6 @@ class Game extends Emitter
     object = objects[0]
     dx = object.x - rabbit.x;
     dy = object.y - rabbit.y;
-    console.log(Math.atan(dx / -dy))
     @turn toDeg(Math.atan(dx / -dy)) - rabbit.angle, callback
 
   # This function is called when the game is finished.

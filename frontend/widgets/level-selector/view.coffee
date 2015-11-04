@@ -35,7 +35,6 @@ class LevelSelector extends Emitter
         strokeWidth: 5
     i = 1
     for stage in stageData
-      console.log stage
       center = centers[i-1]
       circle = @canvas.circle(center.x, center.y, 20);
       circle.attr
@@ -59,7 +58,7 @@ class LevelSelector extends Emitter
           elem.animate(transform:'t0,0s1.0', 200, mina.linear, ->)
         $(elem.node).on "click", =>
           @hide()
-          @trigger("levelselected", stage.id);
+          @trigger("levelselected", stage.sid);
       i++
 
   hide: ->

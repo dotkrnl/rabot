@@ -152,17 +152,3 @@ module.exports.Vec2D = Vec2D
 module.exports.Segment = Segment
 module.exports.Polygon = Polygon
 module.exports.Circle = Circle
-
-circle = new Circle(new Vec2D(0,0), 0.35)
-poly = new Polygon([new Vec2D(0,0.5),new Vec2D(0.5,1),new Vec2D(1,0.5),new Vec2D(0.5,0)])
-console.log circle.collidePoly(poly)
-circle = new Circle(new Vec2D(0,0), 0.36)
-console.log circle.collidePoly(poly)
-circle = new Circle(new Vec2D(0.5,-0.5), 0.49)
-console.log circle.collidePoly(poly)
-circle = new Circle(new Vec2D(0.5,-0.5), 0.51)
-console.log circle.collidePoly(poly)
-
-circle = new Circle(new Vec2D(1.5,1.5), 0.70)
-poly = new Polygon([new Vec2D(0,0),new Vec2D(0,1),new Vec2D(1,1),new Vec2D(1,0)])
-console.log circle.collidePoly(poly)

@@ -120,7 +120,6 @@ class UserCodeWorker
 
     __rabot_add_game_sprites = (gameSprites) ->
       for type, elems of gameSprites
-        console.log type
         @[type] = elems
 
     @onmessage = (e) ->
