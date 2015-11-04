@@ -17,7 +17,6 @@ class LevelSelector extends Emitter
     @levelElems = []
     @canvas = Snap(@topDom.find(".ls-canvas")[0]);
     @stageManager = new Stage();
-    @stageManager.queryStageList @updateLevelElems.bind(@)
 
   updateLevelElems: (stageData) ->
     levelElems = []
@@ -36,6 +35,7 @@ class LevelSelector extends Emitter
         strokeWidth: 5
     i = 1
     for stage in stageData
+      console.log stage
       center = centers[i-1]
       circle = @canvas.circle(center.x, center.y, 20);
       circle.attr
@@ -46,6 +46,10 @@ class LevelSelector extends Emitter
       text.attr
           fill: "#222",
           "font-size": "20px"
+      levelText = @canvas.text(center.x - 30, center.y + 30, stage.name);
+      levelText.attr
+          fill: "#222",
+          "font-size": "12px"
       elem = @canvas.group(circle, text)
       levelElems.push(elem)
       do(elem, stage) =>
@@ -65,5 +69,6 @@ class LevelSelector extends Emitter
   show: ->
     @contentDom.fadeIn();
     @maskDom.fadeIn();
+    @stageManager.queryStageList @updateLevelElems.bind(@)
 
 module.exports = LevelSelector

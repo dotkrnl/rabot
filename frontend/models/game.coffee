@@ -119,8 +119,8 @@ class Game extends Emitter
     ret = {}
     lastCollision = []
     while true
-      rabbit.x += Math.sin(toRad(rabbit.angle))
-      rabbit.y -= Math.cos(toRad(rabbit.angle))
+      rabbit.x += 0.1 * Math.sin(toRad(rabbit.angle))
+      rabbit.y -= 0.1 * Math.cos(toRad(rabbit.angle))
       stepScanned += 0.1
 
       currentCollision = []
@@ -130,7 +130,7 @@ class Game extends Emitter
         (rabbit.y - elem.y) * (rabbit.y - elem.y) < 20 * 20
           currentCollision.push(elem)
           console.log lastCollision, currentCollision, stepScanned
-          if elem.type not in lastCollision and stepScanned != 1
+          if elem.type not in lastCollision and stepScanned > 0.15
             collisionFlag = true
             ret =
               collision: elem
@@ -195,7 +195,6 @@ class Game extends Emitter
       rabbit.x += step * Math.sin(toRad(rabbit.angle))
       rabbit.y -= step * Math.cos(toRad(rabbit.angle))
       @update step, =>
-        @stepFinished()
         callback() if callback?
     else
       rabbit.x += prediction.step * Math.sin(toRad(rabbit.angle))
@@ -204,8 +203,6 @@ class Game extends Emitter
         @collisionHandler prediction.collision, (=>
           @move(step - prediction.step, callback)), (=>
           callback() if callback)
-
-
 
   # Turn the orientation of the rabbit by angle, in degree, clockwisely.
   # This function will call @update, producing animation in the game scene.
@@ -221,7 +218,6 @@ class Game extends Emitter
     rabbit = @getRabbit()
     rabbit.angle += angle
     @update angle, =>
-      @stepFinished()
       callback() if callback?
     return
 
@@ -242,16 +238,6 @@ class Game extends Emitter
     console.log(Math.atan(dx / -dy))
     @turn toDeg(Math.atan(dx / -dy)) - rabbit.angle, callback
 
-  # This function is called when each step (i.e user interface call),
-  # to perform collision detection and add update the number of
-  # carrots that player has got.
-  stepFinished: ->
-    rabbit = @getRabbit()
-    for carrot in @filterSprites(type: 'carrot', defunct: false)
-      if @scene.collided(rabbit, carrot)
-        @removeSprite(carrot.uid)
-        @carrotGot++
-
   # This function is called when the game is finished.
   # This function will perform win / lost check,
   # triggering the corresponding event, as well as the finish event
@@ -263,6 +249,5 @@ class Game extends Emitter
       @trigger('lost')
     @trigger('finish')
     return
-
 
 module.exports = Game
