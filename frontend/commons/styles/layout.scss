@@ -1,0 +1,6 @@
+$navbar-height: 51px;
+$navbar-padding: 21px;
+
+#content {
+  margin-top: $navbar-height + $navbar-padding;
+}

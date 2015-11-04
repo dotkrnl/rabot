@@ -1,56 +1,16 @@
-.absolute-full-width
-{
-  position:absolute;
-  left:0px;
-  right:0px;
-}
+.play-app {
+  position: fixed;
+  top: $navbar-height;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
-.absolute-full-height
-{
-  position:absolute;
-  top:0px;
-  bottom:0px;
-}
+  .pa-game-view {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+  }
 
-.game-view
-{
-  position:absolute;
-  left:0;
-  bottom:0;
-}
-
-.code-editor
-{
-  @extend .absolute-full-width;
-  position:absolute;
-  right:0;
-  top:0;
-  @extend .absolute-full-width;
-  @extend .absolute-full-height;
-  width:100%;
-  height:100%;
-}
-
-.code-controller
-{
-  @extend .absolute-full-width;
-  bottom:0;
-  background:#aaa;
-}
-
-.game-scene
-{
-  @extend .absolute-full-width;
-  @extend .absolute-full-height;
-  background:white;
-}
-
-.code-controller
-{
-  position:fixed;
-  right: 0px;
-  width: 300px;
-  bottom: 100px;
-  height: 75px;
-  background: #aaa;
+  @import "../../widgets/game-view/style.scss";
 }
