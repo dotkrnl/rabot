@@ -8,9 +8,13 @@ class CodeEditor
 
     # setup code mirror
     if textAreaDom?
-      CodeMirror.fromTextArea textAreaDom, lineNumbers: true
+      @codebox = CodeMirror.fromTextArea textAreaDom, lineNumbers: true
     else
       throw new Error('no textArea inside CodeEditor')
+
+  # Get code from text area
+  getCode: ->
+    @codebox.getValue()
 
 
 module.exports = CodeEditor

@@ -1,45 +1,7 @@
-#Game = require './models/game.coffee'
-#GameScene = require './views/gamescene.coffee'
-#UserWorker = require './worker/worker.coffee'
-#StageManager = require './models/stagemanager.coffee'
 #LoginManager = require './models/loginmanager.coffee'
 #LoginUI = require './views/loginui.coffee'
 
 $ ->
-
-  # Init the game model, scene and all related objects.
-  game = new Game
-  gameScene = new GameScene "#play-canvas"
-  game.register gameScene
-  userWorker = null
-
-  # Init the stage manager
-  stageManager = new StageManager
-  loginManager = new LoginManager
-  loginUI = new LoginUI
-  loginManager.register loginUI
-
-  # TODO: currently an element with text is used to indicate win/lost status
-  # after relative events. UI will be more friendly in future.
-  game.on 'win', ->
-    $('#status').text('Win' + game.carrotGot)
-    game.restartStage()
-  game.on 'lost', ->
-    $('#status').text('Lost')
-    game.restartStage()
-
-  # Terminate worker for user code after game finished.
-  game.on 'finish', ->
-    userWorker.terminate() if userWorker?
-    userWorker = null
-
-  # Handles the "Run" and "Stop" button events.
-  $('#button-run-code').click ->
-    code = editorCodeMirror.getValue()
-    userWorker = new UserWorker game, code
-
-  $('#button-stop-code').click ->
-    game.finish()
 
   startUpStageLoad = true
   stageManager.queryStageList (result) ->
