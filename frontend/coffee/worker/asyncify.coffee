@@ -34,15 +34,17 @@ getIndent = (pos, code) ->
 
 module.exports = (code) ->
   code += '\n'
-
+  
   # @val functionList: stores functions needed to be done
-  functionList = ["move", "turn", "turnTo"]
-
+  functionList = new Array()
+  functionList.push("move")
+  functionList.push("turn")
+  
   # Fisrt scan, to process user-defined functions
   # Add callback param to param list
   code = code.replace(/\)\s*->/g, ", __rabot_cb_) ->")
   code = code.replace(/\(\s*,/g, "(")
-
+  
   i = 0
   while i < code.length - 1
     if code[i] == '-' && code[i+1] == '>'
@@ -75,16 +77,16 @@ module.exports = (code) ->
             functionName = code[j] + functionName
           else
             if functionName == ""
-
+            
             else
               break
         else
           if code[j] == '='
             nameFound = true
           else
-
+        
         j--
-
+      
       if functionName.length > 0
         functionList.push(functionName)
 
@@ -105,20 +107,20 @@ module.exports = (code) ->
               i += 14
               break
           j++
-
+    
     i++
-
-
-
+    
+  
+  
   # Second scan
-
-  # @val detected: true when a key function is found and not done with.
+  
+  # @val detected: counter of key function that is found and not done with.
   # @val buffer: code buffer.
   # @val afterCode: return value.
   # @val bracketFlag: true when bracketCount is activated
   # @val bracketCount: used to match brackets. When met '()' +1,
   # when met ')' -1.
-  detected = false
+  detected = 0
   buffer = ""
   afterCode = ""
   bracketFlag = false
@@ -129,16 +131,16 @@ module.exports = (code) ->
   i = 0
   while i < code.length
     # Count brackets
-    if detected
+    if detected > 0 && bracketFlag
       if code[i] == '('
         bracketCount++
       if code[i] == ')'
         bracketCount--
-
+        
     #When bracketCount is 0 again
-    if detected && bracketFlag && bracketCount == 0
+    if detected > 0 && bracketFlag && bracketCount == 0
       bracketFlag = false
-      detected = false
+      detected--
       emptyParamFlag = true
       j = i
       while j >= 0
@@ -149,9 +151,9 @@ module.exports = (code) ->
           emptyParamFlag = false
           break
       if emptyParamFlag
-        afterCode = afterCode + buffer + "defer param)"
+        afterCode = afterCode + buffer + "defer param)"    
       else
-        afterCode = afterCode + buffer + ", defer param)"
+        afterCode = afterCode + buffer + ", defer param)"    
       buffer = ""
     # When a word is not finished
     else if isIdentifier(code[i])
@@ -159,11 +161,11 @@ module.exports = (code) ->
     # When \n or ';' is scanned
     else if code[i] == '\n' || code[i] == ';'
       afterCode += buffer
-      if detected
+      while detected > 0
         afterCode += ", defer param"
+        detected--
       afterCode += code[i]
       buffer = ""
-      detected = false
     # When a word has not yet begun
     else if buffer == ""
       afterCode += code[i]
@@ -171,6 +173,7 @@ module.exports = (code) ->
     # and it is a key function and not announcement
     else if inFunctionList(buffer, functionList)
       j = i
+      defineFlag = false
       while j < code.length
         if code[j] == ' ' || code[j] == '\t'
           j++
@@ -178,28 +181,29 @@ module.exports = (code) ->
         if code[j] != '='
           afterCode = addPrefix(afterCode, buffer, code[i])
           buffer = ""
-          detected = true
+          detected++
+          defineFlag = false
         if code[j] == '='
           afterCode += buffer
           buffer = ""
-          detected = false
+          defineFlag = true
         break
-      if detected && code[i]=='('
+      if detected > 0 && code[i]=='(' && !defineFlag
         bracketFlag = true
         bracketCount = 1
     # and it is "for" or "if"
-    else if inBranchOrLoop(buffer) && detected
+    else if inBranchOrLoop(buffer) && detected > 0
       afterCode += ", defer param "
       afterCode += buffer
       afterCode += code[i]
       buffer = ""
-      detected = false
+      detected--
     # and it is some other word.
     else
       afterCode += buffer
       afterCode += code[i]
       buffer = ""
-
+    
     i++
 
   return afterCode
