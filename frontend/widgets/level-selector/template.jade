@@ -1,0 +1,10 @@
+mixin level-selector()
+  div.level-selector(class!=attributes.class)
+    div
+      div.ls-mask
+      div.ls-content
+        div.panel.panel-default
+          div.panel-heading Select Level
+          svg(width="600px" height="400px")
+          div.panel-footer
+            button.cancel-dialog.btn.btn-primary(type="button") Back

@@ -1,0 +1,19 @@
+.level-selector {
+  .ls-full-screen {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+  }
+  .ls-mask {
+    @extend .ls-full-screen;
+    background: black;
+    opacity: 0.8;
+    z-index: 100
+  }
+  .ls-content {
+    position: absolute;
+    z-index: 101;
+  }
+}

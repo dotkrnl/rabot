@@ -4,6 +4,7 @@ UserWorker = require('../../commons/logic/worker.coffee')
 
 CodeEditor = require('../code-editor/view.coffee')
 GameScene = require('../game-scene/view.coffee')
+LevelSelector = require('../level-selector/view.coffee')
 
 # a class to setup view for user to play
 class GameView
@@ -16,6 +17,7 @@ class GameView
     @userWorker = null
     @gameScene = null
     @codeEditor = null
+    @levelSelector = null
 
     gameSceneDom = $(topDom).find(".gv-game-scene")[0]
     if gameSceneDom?
@@ -28,6 +30,12 @@ class GameView
       @codeEditor = new CodeEditor(codeEditerDom)
     else
       throw new Error('no code editor inside GameView')
+
+    levelSelectorDom = $(topDom).find(".gv-level-selector")[0]
+    if levelSelectorDom?
+      @levelSelector = new LevelSelector(levelSelectorDom)
+    else
+      throw new Error('no level selector inside GameView')
 
     @game.register @gameScene
 
