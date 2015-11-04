@@ -117,10 +117,11 @@ class Game extends Emitter
     origY = rabbit.y
     stepScanned = 0
     ret = {}
+
     while true
       rabbit.x += Math.sin(toRad(rabbit.angle))
       rabbit.y -= Math.cos(toRad(rabbit.angle))
-      stepScanned++
+      stepScanned += 0.1
 
       collisionFlag = false
       for elem in @filterSprites(defunct: false)
@@ -222,7 +223,6 @@ class Game extends Emitter
   # @param callback, function to call when animation is finished.
   # TODO: currently object name is not fully supported, type will be used.
   turnTo: (objectName, callback) ->
-    console.log("bbb")
     rabbit = @getRabbit()
     objects = @filterSprites(type: objectName, defunct: false)
     if objects.length <= 0
