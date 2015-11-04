@@ -1,45 +1,87 @@
 from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
-from stage.models import Stage
+from stage.managers import StageManager
 import json
 
 # Create your views here.
 
 
 @csrf_exempt
-def stage_info_view(request, stage_id):
+def stage_info_view(request, sid):
+    manager = StageManager()
+
     if request.method == 'GET':
-        try:
-            target = Stage.objects.get(id=stage_id)
-        except Stage.DoesNotExist:
+        cur_stage = manager.get_stage(sid)
+        if cur_stage:
+            return HttpResponse(json.dumps({
+                'status': 'succeeded',
+                'sid': cur_stage.sid,
+                'name': cur_stage.name,
+                'info': cur_stage.info,
+            }))
+        else:
             return HttpResponse(json.dumps({
                 'status': 'not_exist',
             }))
 
-        return HttpResponse(json.dumps({
-            'status': 'succeeded',
-            'name': target.name,
-            'info': target.info,
-        }))
+    elif request.method == 'POST':
+        data = json.loads(request.body.decode())
+        action = data['action']
 
-    if request.method == 'POST':
-        post = request.POST
-        new_stage = Stage(stage_id=post['id'], info=post['info'])
-        new_stage.save()
+        if action == 'add':
+            sid = data['sid']
+            name = data['name']
+            info = data['info']
+            result = manager.add_stage(sid, name, info)
+
+        elif action == 'delete':
+            sid = data['sid']
+            result = manager.delete_stage(sid)
+
+        elif action == 'update':
+            sid = data['sid']
+            new_name = data['name']
+            new_info = data['info']
+            result = manager.update_stage(sid, new_name, new_info)
+
+        else:
+            result = ''
+
+        if result == '':
+            response_data = {}
+        elif result[:9] == 'Succeeded':
+            response_data = {
+                'result': 'succeeded',
+            }
+        else:
+            response_data = {
+                'result': 'failed',
+                'errorMessage': result,
+            }
+
+        return HttpResponse(json.dumps(response_data))
+
+    else:
+        raise Http404
 
 
 @csrf_exempt
 def all_stages_info_view(request):
+    manager = StageManager()
+
     if request.method == 'GET':
-        all_stages = Stage.objects.all()
+        all_stages = manager.get_all_stages()
         results = []
 
         for stage in all_stages:
-            current_stage = {
-                'id': stage.id,
+            cur_stage = {
+                'sid': stage.sid,
                 'name': stage.name,
                 'info': stage.info,
             }
-            results.append(current_stage)
+            results.append(cur_stage)
 
         return HttpResponse(json.dumps(results))
+
+    else:
+        raise Http404

@@ -37,7 +37,7 @@ class UsersDao():
         try:
             target = Users.objects.get(uid=uid)
         except Users.DoesNotExist:
-            return None
+            pass
         else:
             target.delete()
 
