@@ -1,4 +1,4 @@
-from users.models import Users, UsersDao
+from users.models import UsersDao
 
 
 class UsersManager():
