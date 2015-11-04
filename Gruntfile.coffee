@@ -39,8 +39,8 @@ module.exports = (grunt) ->
             bootstrap:
               keepExpandedHierarchy: false
               files: [
-                "dist/js/bootstrap.min.js",
-                "dist/css/bootstrap.min.css",
+                "dist/js/bootstrap.min.js"
+                "dist/css/bootstrap.min.css"
                 "dist/css/bootstrap-theme.min.css"
                 "dist/fonts/*"
               ]
@@ -62,7 +62,7 @@ module.exports = (grunt) ->
             'iced-coffee-script':
               keepExpandedHierarchy: false
               files: [
-                "extras/iced-coffee-script-108.0.8-min.js",
+                "extras/iced-coffee-script-108.0.8-min.js"
               ]
 
     browserify:
