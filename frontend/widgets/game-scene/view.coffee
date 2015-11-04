@@ -1,4 +1,4 @@
-GameElem = require('./gameelem.coffee')
+GameElem = require('./logic/element.coffee')
 
 # The class GameScene defines a game scene
 class GameScene
@@ -7,9 +7,15 @@ class GameScene
   # After constructed, the game scene is not related to any game models
   #   therefore no element will be visible nor existed
   # Call game.register(gamescene) to bind scene to a game
-  # @param canvasDom Specify the svg element used to init the scene
-  constructor: (canvasDom) ->
-    @canvas = Snap(canvasDom)
+  # @param topDom Specify the top dom element provided by template
+  constructor: (topDom) ->
+    canvasDom = $(topDom).find('.gs-svg')[0]
+    # setup canvas with snap
+    if canvasDom?
+      @canvas = Snap(canvasDom)
+    else
+      throw new Error('no canvas inside GameScene')
+
     @game = null
     @elems = []
 

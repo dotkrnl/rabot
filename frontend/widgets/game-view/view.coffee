@@ -1,4 +1,5 @@
 CodeEditor = require('../code-editor/view.coffee')
+GameScene = require('../game-scene/view.coffee')
 
 # a class to setup view for user to play
 class GameView
@@ -8,6 +9,11 @@ class GameView
   constructor: (topDom) ->
     gameSceneDom = $(topDom).find(".gv-game-scene")[0]
     codeEditerDom = $(topDom).find(".gv-code-editor")[0]
+
+    if gameSceneDom?
+      @gameScene = new GameScene(gameSceneDom)
+    else
+      throw new Error('no game scene inside GameView')
 
     if codeEditerDom?
       @codeEditor = new CodeEditor(codeEditerDom)
