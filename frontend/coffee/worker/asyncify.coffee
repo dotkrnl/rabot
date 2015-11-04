@@ -39,6 +39,7 @@ module.exports = (code) ->
   functionList = new Array()
   functionList.push("move")
   functionList.push("turn")
+  functionList.push("turnTo")
   
   # Fisrt scan, to process user-defined functions
   # Add callback param to param list
