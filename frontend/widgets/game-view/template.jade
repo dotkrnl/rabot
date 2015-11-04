@@ -1,0 +1,21 @@
+include /widgets/game-scene/template.jade
+include /widgets/code-editor/template.jade
+
+mixin game-view()
+  div.game-view(class!=attributes.class)
+    +game-scene()(class="gv-game-scene")
+    +code-editor()(class="gv-code-editor")
+
+    div.gv-code-controller
+      button.run-code.btn.btn-primary(type="button")
+        i.glyphicon.glyphicon-play
+        span Run
+      button.stop-code.btn.btn-warning(type="button")
+        i.glyphicon.glyphicon-stop
+        span Stop
+
+      div.level-manager
+        button.btn.btn-default.dropup-toggle(type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false")
+          span Levels
+          span.caret
+        ul.level-dropdown

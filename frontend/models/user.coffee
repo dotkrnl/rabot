@@ -1,6 +1,7 @@
-# The class LoginManager contacts with the backend via Ajax requests
+# The class User contacts with the backend via Ajax requests
 # to perform user log in/out and login status check.
-class LoginManager
+
+class User
   constructor: ->
     @view = null
     @uid = 0
@@ -63,4 +64,4 @@ class LoginManager
         @username = ''
       @update()
 
-module.exports = LoginManager
+module.exports = User

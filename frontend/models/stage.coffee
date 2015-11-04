@@ -1,4 +1,4 @@
-class StageManager
+class Stage
   queryStageList: (handler) ->
     #TODO: Use Ajax to query server to acquire data
     $.ajax
@@ -15,4 +15,4 @@ class StageManager
       dataType: 'json'
     .done handler
 
-module.exports = StageManager
+module.exports = Stage

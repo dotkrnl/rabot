@@ -1,4 +1,7 @@
+include /widgets/game-view/template.jade
+
 extends /commons/template.jade
 
 block content
-  include /widgets/gameview/template.jade
+  div.play-app
+    +game-view()(class="pa-game-view")
