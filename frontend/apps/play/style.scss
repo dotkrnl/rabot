@@ -1,4 +1,6 @@
 .play-app {
+  @import "../../widgets/game-view/style.scss";
+  
   position: fixed;
   top: $navbar-height;
   bottom: 0;
@@ -11,6 +13,4 @@
     width: 100%;
     height: 100%;
   }
-
-  @import "../../widgets/game-view/style.scss";
 }

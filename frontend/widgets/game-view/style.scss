@@ -1,4 +1,7 @@
 .game-view {
+  @import "../game-scene/style";
+  @import "../code-editor/style";
+
   .gv-game-scene {
     position: absolute;
     top: 0; bottom: 0;
@@ -14,7 +17,4 @@
     left: 60%; right: 0; 
     height: 50px; bottom: 0;
   }
-
-  @import "../game-scene/style";
-  @import "../code-editor/style";
 }
