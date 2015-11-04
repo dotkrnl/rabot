@@ -45,6 +45,9 @@ class GameView
       alert "lost #{@game.carrotGot} (not implemented)"
     @game.on 'finish', @stopGame.bind(@)
 
+    @levelSelector.on "levelselected", (stageId) =>
+      @stage.getStage stageId, (stageData) =>
+        @game.loadStage stageData.info
     # TODO: merge stage manager
     @game.loadStage """[
       {"type":"river","x":0,"y":150,"width":300,"height":75},
