@@ -44,9 +44,9 @@ Currently, there is no interface yet to register or adding a stage, but Django
 management script is used to add some built-in users and stages. To perform them
 use:
 
-`python manage.py add_stages`
+`python manage.py addstages`
 
-`python manage.py addusers`
+`python manage.py addusers` (not implemented)
 
 ## Unit Tests
 
