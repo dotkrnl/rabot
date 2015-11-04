@@ -1,9 +1,9 @@
-Game = require './models/game.coffee'
-GameScene = require './views/gamescene.coffee'
-UserWorker = require './worker/worker.coffee'
-StageManager = require './models/stagemanager.coffee'
-LoginManager = require './models/loginmanager.coffee'
-LoginUI = require './views/loginui.coffee'
+#Game = require './models/game.coffee'
+#GameScene = require './views/gamescene.coffee'
+#UserWorker = require './worker/worker.coffee'
+#StageManager = require './models/stagemanager.coffee'
+#LoginManager = require './models/loginmanager.coffee'
+#LoginUI = require './views/loginui.coffee'
 
 $ ->
 

@@ -6,14 +6,15 @@ module.exports = (grunt) ->
 
     jade:
       install:
-        cwd: './frontend'
-        src: ['./**/*.jade', '!./_**/*.jade']
-        dest: './public'
+        cwd: './frontend/apps'
+        src: ['./**/*.jade']
+        dest: './_site'
         ext: '.html'
         extDot: 'last'
         expand: true
         options:
           doctype: 'html'
+          basedir: './frontend/'
 
     sass:
       install:
@@ -21,18 +22,18 @@ module.exports = (grunt) ->
           style: 'expanded'
         files: [{
           expand: true
-          cwd: './frontend/scss'
-          src: ['./**/*.scss']
-          dest: './public/css'
+          cwd: './frontend/apps'
+          src: ['./site.scss']
+          dest: './_site/css'
           ext: '.css'
         }]
 
     bower:
       install:
-        dest: 'public'
-        js_dest: 'public/js'
-        css_dest: 'public/css'
-        fonts_dest: 'public/fonts'
+        dest: './_site'
+        js_dest: './_site/js'
+        css_dest: './_site/css'
+        fonts_dest: './_site/fonts'
         options:
           packageSpecific:
             bootstrap:
@@ -67,14 +68,14 @@ module.exports = (grunt) ->
     browserify:
       install:
         files:
-          'public/js/site.js': ['frontend/coffee/**/app.coffee']
+          './_site/js/site.js': ['frontend/apps/**/app.coffee']
         options:
           transform: ['coffeeify']
 
     connect:
       server:
         options:
-          base: "./public"
+          base: "./_site"
           port: 9000
           middleware: (connect, options, defaultMiddleware) ->
             return [require('grunt-connect-proxy/lib/utils').proxyRequest]. \
@@ -97,13 +98,13 @@ module.exports = (grunt) ->
 
     watch:
       jade:
-        files: ['frontend/**/*.jade']
+        files: ['./frontend/**/*.jade']
         tasks: ['jade']
       sass:
-        files: ['./frontend/scss/**/*.scss']
+        files: ['./frontend/**/*.scss']
         tasks: ['sass']
       browserify:
-        files: ['frontend/coffee/**/*.coffee']
+        files: ['./frontend/**/*.coffee']
         tasks: ['browserify']
 
     concurrent:

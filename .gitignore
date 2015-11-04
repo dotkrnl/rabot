@@ -19,7 +19,7 @@ node_modules
 bower_components
 
 # Distribution
-public
+_site
 
 # Temp files
 *.swp

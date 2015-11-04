@@ -1,13 +1,3 @@
-$font-stack:    Helvetica, sans-serif;
-$primary-color: #333;
-$containerPlayWidth:	600px;
-$containerTop:	50px;
-$containerCodeLeft:	600px;
-$containerCodeTop:	50px;
-$containerCodeEditorBottom:	75px;
-$containerCodeAssistantHeight:	75px;
-
-
 .absolute-full-width
 {
   position:absolute;
@@ -26,8 +16,6 @@ $containerCodeAssistantHeight:	75px;
 {
   position:absolute;
   left:0;
-  width:$containerPlayWidth;
-  top:$containerTop;
   bottom:0;
 }
 
@@ -35,10 +23,8 @@ $containerCodeAssistantHeight:	75px;
 {
   @extend .absolute-full-width;
   position:absolute;
-  left:$containerCodeLeft;
   right:0;
   top:0;
-  bottom:$containerCodeEditorBottom;
   @extend .absolute-full-width;
   @extend .absolute-full-height;
   width:100%;
@@ -48,7 +34,6 @@ $containerCodeAssistantHeight:	75px;
 .code-controller
 {
   @extend .absolute-full-width;
-  height:$containerCodeAssistantHeight;
   bottom:0;
   background:#aaa;
 }
