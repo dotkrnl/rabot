@@ -59,6 +59,8 @@ class GameView
       @userWorker = new UserWorker @game, code
     $(topDom).find('.stop-code.btn').click ->
       stopGame()
+    $(topDom).find('.select-level.btn').click =>
+      @levelSelector.show()
 
   stopGame: ->
     @userWorker.terminate() if @userWorker?
