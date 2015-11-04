@@ -48,6 +48,41 @@ class User
       @update()
       $("#navbar_password").val('')
 
+  registration: (username, password, password2, email, handler) ->
+    $.ajax
+      url : '/backend/registration/'
+      type : 'POST'
+      data :
+        JSON.stringify
+          username : username
+          password : password
+          repeatedPassword : password2
+          email : email
+      contentType: "application/json"
+      dataType: 'json'
+    .done (result) =>
+      if result.result != 'succeeded'
+        alert result.errorMessage
+      @update()
+
+  updateinfo: (old_password, new_password, new_password2, new_email, handler) ->
+    $.ajax
+      url : '/backend/updateinfo/'
+      type : 'POST'
+      data :
+        JSON.stringify
+          uid : @uid
+          oldPassword : old_password
+          newPassword : new_password
+          repeatedPassword : new_password2
+          new_email : new_email
+      contentType: "application/json"
+      dataType: 'json'
+    .done (result) =>
+      if result.result != 'succeeded'
+        alert result.errorMessage
+      @update()
+
   register: (loginUI) ->
     @view = loginUI
     @view._register(@)
