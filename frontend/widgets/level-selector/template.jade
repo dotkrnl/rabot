@@ -4,7 +4,10 @@ mixin level-selector()
       div.ls-mask
       div.ls-content
         div.panel.panel-default
-          div.panel-heading Select Level
-          svg.ls-canvas(width="600px" height="400px")
-          div.panel-footer
-            button.cancel-dialog.btn.btn-primary(type="button") Back
+          div.panel-heading
+            button.close.cancel-dialog(type="button")
+              span(aria-hidden="true") &times;
+              span.sr-only Back
+            h5 Select Level
+          div.panel-body
+            svg.ls-canvas

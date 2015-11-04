@@ -1,10 +1,8 @@
 .level-selector {
   .ls-full-screen {
-    position: absolute;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-    bottom: 0px;
+    position: fixed;
+    top: 0px; bottom: 0px;
+    left: 0px; right: 0px;
   }
   .ls-mask {
     @extend .ls-full-screen;
@@ -17,8 +15,18 @@
     position: absolute;
     z-index: 101;
     display: none;
-  }
-  .ls-canvas {
-
+    top: 10%; bottom: 10%;
+    left: 10%; right: 10%;
+    .panel,
+    .panel .panel-body .ls-canvas {
+      height: 100%;
+      width: 100%;
+    }
+    .panel .panel-body {
+      padding: 0;
+      position: absolute;
+      top: 56px; bottom: 0;
+      left: 0; right: 0;
+    }
   }
 }

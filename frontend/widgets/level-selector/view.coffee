@@ -13,9 +13,6 @@ class LevelSelector extends Emitter
 
     @contentDom = $(topDom).find(".ls-content")
     @maskDom = $(topDom).find(".ls-mask")
-    @contentDom.css
-      left: (@maskDom.width() - @contentDom.width()) / 2,
-      top: (@maskDom.height() - @contentDom.height()) / 2
 
     @levelElems = []
     @canvas = Snap(@topDom.find(".ls-canvas")[0]);
