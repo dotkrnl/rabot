@@ -27,8 +27,10 @@ class NavUserManager
     username = @guestViewUsername.val()
     password = @guestViewPassword.val()
     @user.login username, password, (err) =>
-      @topView.removeClass('open');
-      throw new Error(err) if err?
+      if err?
+        alert(err)
+      else
+        @topView.removeClass('open');
 
   logout: ->
     @user.logout =>
