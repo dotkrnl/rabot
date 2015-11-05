@@ -1,0 +1,18 @@
+mixin nav-user-manager()
+  li.nav-user-manager.dropdown(class!=attributes.class)
+    a(href="#", data-toggle="dropdown")
+      img.num-userinfo.dropdown-toggle(src="http://www.gravatar.com/avatar/205e460b479e2e5b48aec0710c08d50?d=mm")
+    div.dropdown-menu.hidden
+      form.num-login-form
+        div.num-container
+          input.form-control.num-username(name="username", type="text", placeholder="Username")
+        div.num-container
+          input.form-control.num-password(name="password", type="password", placeholder="Password")
+        div.num-container
+          a.btn.btn-primary.num-login(href="#", role="button") Login
+          a.btn.btn-default.num-register(href="/register/", role="button") Register
+    ul.dropdown-menu
+      li
+        a.num-edit(href="/updateinfo/") @dotKrnl
+      li
+        a.num-logout(href="#") Logout

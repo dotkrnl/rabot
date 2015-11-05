@@ -1,0 +1,29 @@
+$num-height: 35px;
+
+.nav-user-manager {
+  a {
+    padding-top: ($navbar-height - $num-height) / 2;
+    padding-bottom: ($navbar-height - $num-height) / 2;
+  }
+  .num-userinfo {
+    height: $num-height;
+    width: $num-height;
+    @include border-radius($num-height / 2);
+  }
+  .num-login-form {
+    padding: 1.5em;
+    .num-container {
+      min-width: 15em;
+      margin-top: 0.8em;
+      .btn {
+        margin-right: 0.5em;
+      }
+      .btn:last-child {
+        margin-right: 0;
+      }
+    }
+    .num-container:first-child {
+      margin-top: 0;
+    }
+  }
+}

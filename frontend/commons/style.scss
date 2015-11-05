@@ -3,3 +3,8 @@
 @import "styles/typography";
 @import "styles/utilities";
 
+header {
+  .rabot-navbar {
+    @import "../../frontend/widgets/nav-user-manager/style";
+  }
+}
