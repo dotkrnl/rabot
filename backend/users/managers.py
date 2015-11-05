@@ -84,19 +84,18 @@ class UsersManager():
         if not cur_user:
             return 'User does not exist or log in now.'
 
-        if len(old_passwd) > 0:
-            if cur_user.passwd == old_passwd:
-                if not self.__valid_passwd(new_passwd):
-                    return 'New password is invalid.'
-            else:
-                return 'Old password is incorrect.'
+        if cur_user.passwd != old_passwd:
+            return 'Old password is incorrect.'
+
+        if len(new_passwd) > 0 and not self.__valid_passwd(new_passwd):
+            return 'New password is invalid.'
 
         if len(new_email) > 0:
             target = self.dao.get_user_by_email(new_email)
             if target:
                 return 'Email is already used.'
 
-        if len(old_passwd) > 0: cur_user.update(passwd=new_passwd)
-        if len(new_email) > 0: cur_user.update(email=new_email)
+        if len(new_passwd) > 0: self.dao.update_passwd(cur_user, new_passwd)
+        if len(new_email) > 0: self.dao.update_email(cur_user, new_email)
         self.cur_user = cur_user
         return 'Succeeded.'
