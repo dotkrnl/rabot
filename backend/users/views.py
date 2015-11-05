@@ -11,28 +11,45 @@ def user_registration_view(request):
     manager = UsersManager()
 
     if request.method == 'POST':
-        try:
-            data = json.loads(request.body.decode())
-            uname = data['username']
-            passwd = data['password']
-            email = data['email']
-        except KeyError:
+        logged_in = request.session.get('logged_in', False)
+        if logged_in:
+            cur_user = request.session.get('cur_user', {})
             response_data = {
-                'result': 'failed',
-                'errorMessage': 'KeyError',
+                'result': "failed",
+                'user': cur_user,
+                'loggedin': True,
+                'errorMessage': 'Please log out first.',
             }
-        else:
-            result = manager.registration(uname, passwd, email)
 
-            if result[:9] == 'Succeeded':
-                response_data = {
-                    'result': 'succeeded',
-                }
-            else:
+        else:
+            try:
+                data = json.loads(request.body.decode())
+                uname = data['username']
+                passwd = data['password']
+                email = data['email']
+            except KeyError:
                 response_data = {
                     'result': 'failed',
-                    'errorMessage': result,
+                    'errorMessage': 'KeyError',
                 }
+            else:
+                result = manager.registration(uname, passwd, email)
+
+                if result[:9] == 'Succeeded':
+                    cur_user = manager.get_cur_user().to_dict()
+                    request.session['cur_user'] = cur_user
+                    request.session['logged_in'] = True
+                    response_data = {
+                        'result': 'succeeded',
+                        'user': cur_user,
+                        'loggedin': True,
+                    }
+
+                else:
+                    response_data = {
+                        'result': 'failed',
+                        'errorMessage': result,
+                    }
 
         return HttpResponse(json.dumps(response_data))
 
@@ -74,19 +91,13 @@ def user_login_view(request):
         return HttpResponse(json.dumps(response_data))
 
     elif request.method == 'GET':
-        cur_user = request.session.get('cur_user', None)
-        if cur_user:
-            logged_in = request.session.get('logged_in', False)
-            response_data = {
-                'result': 'succeeded',
-                'loggedin': logged_in,
-                'user': cur_user,
-            }
-        else:
-            response_data = {
-                'result': 'failed',
-                'errorMessage': 'No user is logging in now.'
-            }
+        cur_user = request.session.get('cur_user', {})
+        logged_in = request.session.get('logged_in', False)
+        response_data = {
+            'result': 'succeeded',
+            'user': cur_user,
+            'loggedin': logged_in,
+        }
 
         return HttpResponse(json.dumps(response_data))
 
@@ -99,10 +110,10 @@ def user_logout_view(request):
     manager = UsersManager()
 
     if request.method == 'GET':
-        cur_user = request.session.get('cur_user', None)
-        if cur_user:
-            logged_in = request.session.get('logged_in', False)
-            if logged_in:
+        logged_in = request.session.get('logged_in', False)
+        if logged_in:
+            cur_user = request.session.get('cur_user', None)
+            if cur_user:
                 uid = cur_user['uid']
             else:
                 uid = -1073741823
@@ -111,8 +122,10 @@ def user_logout_view(request):
 
         result = manager.logout(uid)
         if result[:9] == 'Succeeded':
+            request.session['logged_in'] = False
             response_data = {
                 'result': 'succeeded',
+                'user': manager.get_cur_user().to_dict(),
             }
         else:
             response_data = {
@@ -157,11 +170,12 @@ def user_info_update(request):
             if result[:9] == 'Succeeded':
                 response_data = {
                     'result': 'succeeded',
+                    'user': manager.get_cur_user().to_dict()
                 }
             else:
                 response_data = {
                     'result': "failed",
-                    'errorMessage': result
+                    'errorMessage': result,
                 }
 
         return HttpResponse(json.dumps(response_data))

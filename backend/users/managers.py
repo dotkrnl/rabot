@@ -45,6 +45,7 @@ class UsersManager():
 
         self.dao.create_user(uid, uname, passwd, email)
         self.cur_user = self.dao.get_user_by_uid(uid)
+        self.dao.log_in(self.cur_user)
 
         return 'Succeeded.'
 
