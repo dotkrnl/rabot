@@ -1,28 +1,27 @@
 extends /commons/template.jade
 
 block content
-    div.container#page-body(role='main')
-        div.row
-            div.col-sm-6
-                h1 Update your information
-        div.row
-            form.form-horizontal
-                div.form-group
-                    label.col-sm-2.control-label(for='input-password') Old Password
-                    div.col-sm-4
-                        input.form-control#input-password(type="password" placeholder="Old Password(Necessary)")
-                div.form-group
-                    label.col-sm-2.control-label(for='input-password') New Password
-                    div.col-sm-4
-                        input.form-control#input-password(type="password" placeholder="New Password(Left blank when not need to update)")
-                div.form-group
-                    label.col-sm-2.control-label(for='input-password') New Password Confirm
-                    div.col-sm-4
-                        input.form-control#input-password-confirm(type="password" placeholder="New Password Confirm(Left blank when not need to update)")
-                div.form-group
-                    label.col-sm-2.control-label(for='input-email') New Email
-                    div.col-sm-4
-                        input.form-control#input-email(type="email" placeholder="New Email(Left blank when not need to update)")
-                div
-                    button.btn.btn-primary(type='submit') Confirm
-                    button.btn.btn-primary(type='reset') Reset
+  div.container.update-app
+    div.row
+      div.col-sm-6
+        h1 Update
+    div.row
+      form.form-horizontal
+        div.form-group
+          label.col-sm-2.control-label(for='input-password') Old Password
+          div.col-sm-4
+            input.form-control.ua-password(type="password" placeholder="Required")
+        div.form-group
+          label.col-sm-2.control-label(for='input-password') New Password
+          div.col-sm-4
+            input.form-control.ua-newpwd(type="password" placeholder="Left blank if not updating")
+        div.form-group
+          label.col-sm-2.control-label(for='input-password') Password Confirm
+          div.col-sm-4
+            input.form-control.ua-confirm(type="password" placeholder="Left blank if not updating")
+        div.form-group
+          label.col-sm-2.control-label(for='input-email') New Email
+          div.col-sm-4
+            input.form-control.ua-email(type="email" placeholder="Left blank if not updating")
+        div
+          button.btn.btn-primary.ua-submit(type='button') Submit
