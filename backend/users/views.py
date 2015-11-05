@@ -25,7 +25,6 @@ def user_registration_view(request):
             result = manager.registration(uname, passwd, email)
 
             if result[:9] == 'Succeeded':
-                uid = int(result[28:])
                 response_data = {
                     'result': 'succeeded',
                 }
@@ -63,7 +62,8 @@ def user_login_view(request):
                     'result': 'succeeded',
                 }
                 cur_user = manager.get_cur_user()
-                request.session['cur_user'] = cur_user
+                request.session['cur_user'] = cur_user.to_dict()
+                request.session['logged_in'] = True
 
             else:
                 response_data = {
@@ -76,9 +76,10 @@ def user_login_view(request):
     elif request.method == 'GET':
         cur_user = request.session.get('cur_user', None)
         if cur_user:
+            logged_in = request.session.get('logged_in', False)
             response_data = {
                 'result': 'succeeded',
-                'loggedin': cur_user.logged_in,
+                'loggedin': logged_in,
                 'user': cur_user,
             }
         else:
@@ -100,7 +101,11 @@ def user_logout_view(request):
     if request.method == 'GET':
         cur_user = request.session.get('cur_user', None)
         if cur_user:
-            uid = cur_user.uid
+            logged_in = request.session.get('logged_in', False)
+            if logged_in:
+                uid = cur_user['uid']
+            else:
+                uid = -1073741823
         else:
             uid = -1073741823
 
@@ -139,7 +144,11 @@ def user_info_update(request):
         else:
             cur_user = request.session.get('cur_user', None)
             if cur_user:
-                uid = cur_user.uid
+                logged_in = request.session.get('logged_in', False)
+                if logged_in:
+                    uid = cur_user['uid']
+                else:
+                    uid = -1073741823
             else:
                 uid = -1073741823
 

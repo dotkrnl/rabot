@@ -14,6 +14,16 @@ class Users(models.Model):
     def __unicode__(self):
         return self.uname + ' (#' + str(self.uid) + ')'
 
+    def to_dict(self):
+        return {
+            'uid': self.uid,
+            'username': self.uname,
+            'password': self.passwd,
+            'email': self.email,
+            #'authenticated': self.authenticated,
+            #'logged_in': self.logged_in,
+        }
+
     class Meta:
         db_table = 'users'
         ordering = ['uid']
