@@ -103,7 +103,7 @@ class GameView
       do(userAPI, code) =>
         $(".btn-code-assistance-" + userAPI).click =>
           event.preventDefault()
-          @codeEditor.insertCode(code + '\n')
+          @codeEditor.insertCode(code)
           @codeEditor.focus()
 
   stopGame: ->

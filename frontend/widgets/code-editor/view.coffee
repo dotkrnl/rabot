@@ -15,6 +15,12 @@ class CodeEditor
         lineNumbers: true
         mode: 'rabot-iced'
         indentWithTabs: false
+        tabSize: 2
+      @codebox.setOption \
+        'extraKeys',
+        Tab: (cm) ->
+          spaces = Array(cm.getOption('indentUnit') + 1).join(' ')
+          cm.replaceSelection(spaces)
     else
       throw new Error('no textArea inside CodeEditor')
 
