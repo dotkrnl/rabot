@@ -16,6 +16,11 @@ class UsersManager():
 
         return True
 
+    def clear(self):
+        all_users = self.dao.get_all_users()
+        for user in all_users:
+            self.dao.delete_user(user)
+
     def registration(self, uname, passwd, passwd2, email):
         if passwd != passwd2:
             return 'Repeated password is incorrect.'

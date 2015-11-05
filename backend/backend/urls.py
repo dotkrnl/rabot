@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^backend/stage/$', 'stage.views.all_stages_info_view'),
     url(r'^backend/stage/(?P<sid>\d+)/$', 'stage.views.stage_info_view'),
+    url(r'^backend/modifystage/$', 'stage.views.stage_modify'),
     url(r'^backend/login', 'users.views.user_login_view'),
     url(r'^backend/logout', 'users.views.user_logout_view'),
     url(r'^backend/registration', 'users.views.user_registration_view'),

@@ -37,16 +37,8 @@ class StageDao():
     def create_stage(self, sid, name, info):
         Stage.objects.create(sid=sid, name=name, info=info)
 
-    def delete_cur_stage(self, cur_stage):
+    def delete_stage(self, cur_stage):
         cur_stage.delete()
-
-    def delete_stage(self, sid):
-        try:
-            target = Stage.objects.get(sid=sid)
-        except Stage.DoesNotExist:
-            pass
-        else:
-            target.delete()
 
     def update_name(self, cur_stage, name):
         cur_stage.name = name

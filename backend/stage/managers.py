@@ -9,7 +9,7 @@ class StageManager:
     def clear(self):
         all_stages = self.dao.get_all_stages()
         for stage in all_stages:
-            self.dao.delete_cur_stage(stage)
+            self.dao.delete_stage(stage)
 
     def add_stage(self, sid, name, info):
         if sid < 0:
@@ -45,8 +45,12 @@ class StageManager:
         if sid <= 0:
             return 'Sid invalid.'
         else:
-            self.dao.delete_stage(sid)
-            return 'Succeeded.'
+            cur_stage = self.dao.get_stage_by_sid(sid)
+            if cur_stage:
+                self.dao.delete_stage(sid)
+                return 'Succeeded.'
+            else:
+                return 'Succeeded. Stage #' + str(sid) + ' does not exist, nothing is done.'
 
     def update_stage(self, sid, new_name, new_info):
         if sid <= 0:

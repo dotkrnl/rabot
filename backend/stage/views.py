@@ -23,23 +23,30 @@ def stage_info_view(request, sid):
             return HttpResponse(json.dumps({
                 'status': 'not_exist',
             }))
+    else:
+        raise Http404
 
-    elif request.method == 'POST':
+
+@csrf_exempt
+def stage_modify(request):
+    manager = StageManager()
+
+    if request.method == 'POST':
         data = json.loads(request.body.decode())
         action = data['action']
 
         if action == 'add':
-            sid = data['sid']
+            sid = int(data['sid'])
             name = data['name']
             info = data['info']
             result = manager.add_stage(sid, name, info)
 
         elif action == 'delete':
-            sid = data['sid']
+            sid = int(data['sid'])
             result = manager.delete_stage(sid)
 
         elif action == 'update':
-            sid = data['sid']
+            sid = int(data['sid'])
             new_name = data['name']
             new_info = data['info']
             result = manager.update_stage(sid, new_name, new_info)

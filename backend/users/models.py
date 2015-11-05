@@ -12,10 +12,7 @@ class Users(models.Model):
     logged_in = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return self.uname
-
-    def is_authenticated(self):
-        return self.authenticated
+        return self.uname + ' (#' + str(self.uid) + ')'
 
     class Meta:
         db_table = 'users'
@@ -33,13 +30,8 @@ class UsersDao():
     def create_user(self, uid, uname, passwd, email):
         Users.objects.create(uid=uid, uname=uname, passwd=passwd, email=email)
 
-    def delete_user(self, uid):
-        try:
-            target = Users.objects.get(uid=uid)
-        except Users.DoesNotExist:
-            pass
-        else:
-            target.delete()
+    def delete_user(self, cur_user):
+        cur_user.delete()
 
     def authenticate(self, cur_user):
         cur_user.authenticated = True
