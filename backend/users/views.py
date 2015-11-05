@@ -82,6 +82,11 @@ def user_login_view(request):
                 request.session['cur_user'] = cur_user.to_dict()
                 request.session['logged_in'] = True
 
+            elif result == 'User has already logged in.':
+                response_data = {
+                    'result': 'succeeded',
+                }
+                
             else:
                 response_data = {
                     'result': 'failed',
@@ -93,11 +98,17 @@ def user_login_view(request):
     elif request.method == 'GET':
         cur_user = request.session.get('cur_user', {})
         logged_in = request.session.get('logged_in', False)
-        response_data = {
-            'result': 'succeeded',
-            'user': cur_user,
-            'loggedin': logged_in,
-        }
+        if logged_in:
+            response_data = {
+                'result': 'succeeded',
+                'user': cur_user,
+                'loggedin': True,
+            }
+        else:
+            response_data = {
+                'result': 'succeeded',
+                'loggedin': False,
+            }
 
         return HttpResponse(json.dumps(response_data))
 
