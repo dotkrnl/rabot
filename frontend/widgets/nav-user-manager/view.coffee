@@ -15,6 +15,7 @@ class NavUserManager
     $(topDom).find('.num-gv-login').click(@login.bind(@))
     $(topDom).find('.num-uv-logout').click(@logout.bind(@))
 
+    @topView = $(topDom)
     @guestView = $(topDom).find('.num-guest-view')
     @guestViewUsername = $(topDom).find('.num-gv-username')
     @guestViewPassword = $(topDom).find('.num-gv-password')
@@ -25,11 +26,13 @@ class NavUserManager
   login: ->
     username = @guestViewUsername.val()
     password = @guestViewPassword.val()
-    @user.login username, password, (err) ->
+    @user.login username, password, (err) =>
+      @topView.removeClass('open');
       throw new Error(err) if err?
 
   logout: ->
-    @user.logout()
+    @user.logout =>
+      @topView.removeClass('open');
 
   update: ->
     if @user.loggedin
