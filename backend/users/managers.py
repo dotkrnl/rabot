@@ -5,6 +5,7 @@ class UsersManager():
 
     def __init__(self):
         self.dao = UsersDao()
+        self.cur_user = None
 
     def __valid_passwd(self, passwd):
         if not 4 <= len(passwd) <= 24:
@@ -16,15 +17,15 @@ class UsersManager():
 
         return True
 
+    def get_cur_user(self):
+        return self.cur_user
+
     def clear(self):
         all_users = self.dao.get_all_users()
         for user in all_users:
             self.dao.delete_user(user)
 
-    def registration(self, uname, passwd, passwd2, email):
-        if passwd != passwd2:
-            return 'Repeated password is incorrect.'
-
+    def registration(self, uname, passwd, email):
         if not self.__valid_passwd(passwd):
             return 'Password is invalid.'
 
@@ -43,8 +44,9 @@ class UsersManager():
             uid = 1
 
         self.dao.create_user(uid, uname, passwd, email)
+        self.cur_user = self.dao.get_user_by_uid(uid)
 
-        return 'Succeeded, new user\'s uid: #' + str(uid)
+        return 'Succeeded.'
 
     def login(self, uname, passwd):
         cur_user = self.dao.get_user_by_uname(uname)
@@ -56,7 +58,8 @@ class UsersManager():
                 return 'User has already logged in.'
             else:
                 self.dao.log_in(cur_user)
-                return 'Succeeded. User\'s uid: #' + str(cur_user.uid)
+                self.cur_user = cur_user
+                return 'Succeeded.'
         else:
             return 'Password is incorrect.'
 
@@ -67,22 +70,22 @@ class UsersManager():
                 return 'User does not exist.'
             elif self.dao.has_logged_in(cur_user):
                 self.dao.log_out(cur_user)
+                self.cur_user = cur_user
                 return 'Succeeded.'
             else:
                 return 'User has not logged in.'
         else:
-            return 'Succeeded. Nothing is done.'
+            self.cur_user = None
+            return 'User does not exist or log in now.'
 
-    def update(self, uid, old_passwd, new_passwd, new_passwd2, new_email):
+    def update(self, uid, old_passwd, new_passwd, new_email):
         cur_user = self.dao.get_user_by_uid(uid)
         if not cur_user:
-            return
+            return 'User does not exist or log in now.'
 
         if len(old_passwd) > 0:
             if cur_user.passwd == old_passwd:
-                if new_passwd != new_passwd2:
-                    return 'Repeated password is incorrect.'
-                elif not self.__valid_passwd(new_passwd):
+                if not self.__valid_passwd(new_passwd):
                     return 'New password is invalid.'
             else:
                 return 'Old password is incorrect.'
@@ -94,4 +97,5 @@ class UsersManager():
 
         if len(old_passwd) > 0: cur_user.update(passwd=new_passwd)
         if len(new_email) > 0: cur_user.update(email=new_email)
+        self.cur_user = cur_user
         return 'Succeeded.'
