@@ -9,29 +9,54 @@ class GameOverDialog extends Emitter
     @topDom = $(topDom)
     @topDom.find(".btn-next").click =>
       @hide()
+      @trigger("nextstage")
 
-    @topDom.find(".btn-relay").click =>
+    @topDom.find(".btn-replay").click =>
       @hide()
+      @trigger("replaystage")
 
     @contentDom = $(topDom).find(".god-content")
     @maskDom = $(topDom).find(".god-mask")
 
-    #@levelElems = []
-    @canvas = Snap(@topDom.find(".god-canvas")[0]);
-    #@stageManager = new Stage();
+    @canvas = Snap(@topDom.find(".god-canvas")[0])
+    # Rank is how many stars you've got.
+    @rank = -2
 
 
-  updateCanvas: (rank) ->
-    if rank == -1
-      @canvas.clear()
+  update: (rank) ->
+    @rank = rank
+    @canvas.clear()
+    if rank < 0 or rank > 3
+      @topDom.find(".btn-next").hide()
+      circle = @canvas.circle(100, 200, 50)
+      circle.attr
+        fill: "#ba5555",
+        stroke: "#000",
+        strokeWidth: 5
+      text = @canvas.text(100, 100, "You failed.")
+      text.attr
+        fill: "#ba5555",
+        "font-size": "40px"
+    else
+      @topDom.find(".btn-next").show()
+      for i in [1..rank]
+        circle = @canvas.circle(100 + 200 * i, 200, 50)
+        circle.attr
+          fill: "#5555ba",
+          stroke: "#000",
+          strokeWidth: 5
+      text = @canvas.text(100, 100, "Victory!")
+      text.attr
+        fill: "#5555ba",
+        "font-size": "40px"
 
   hide: ->
-    @contentDom.fadeOut();
-    @maskDom.fadeOut();
+    @contentDom.fadeOut()
+    @maskDom.fadeOut()
 
-  show: ->
-    @contentDom.fadeIn();
-    @maskDom.fadeIn();
-    #@stageManager.queryStageList @updateLevelElems.bind(@)
+  show: (rank) ->
+    @contentDom.fadeIn()
+    @maskDom.fadeIn()
+    @update(rank)
 
 module.exports = GameOverDialog

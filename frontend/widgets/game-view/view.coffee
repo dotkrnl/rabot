@@ -20,6 +20,7 @@ class GameView
     @codeEditor = null
     @levelSelector = null
     @gameOverDialog = null
+    @currentSid = -1
 
     gameSceneDom = $(topDom).find(".gv-game-scene")[0]
     if gameSceneDom?
@@ -48,14 +49,21 @@ class GameView
     @game.register @gameScene
 
     @game.on 'win', =>
-      @gameOverDialog.show()
-      #alert "win #{@game.carrotGot} (not implemented)"
+      @gameOverDialog.show(@game.carrotGot)
     @game.on 'lost', =>
-      alert "lost #{@game.carrotGot} (not implemented)"
+      @gameOverDialog.show(-1)
     @game.on 'finish', @stopGame.bind(@)
 
     @levelSelector.on "levelselected", (stageId) =>
+      @currentSid = parseInt(stageId)
       @stage.getStage stageId, (stageData) =>
+        @game.loadStage stageData.info
+
+    @gameOverDialog.on "replaystage", =>
+      @game.restartStage()
+    @gameOverDialog.on "nextstage", =>
+      @currentSid++
+      @stage.getStage @currentSid, (stageData) =>
         @game.loadStage stageData.info
     # TODO: merge stage manager
     @game.loadStage """[

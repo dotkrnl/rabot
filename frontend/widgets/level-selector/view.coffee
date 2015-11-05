@@ -15,8 +15,8 @@ class LevelSelector extends Emitter
     @maskDom = $(topDom).find(".ls-mask")
 
     @levelElems = []
-    @canvas = Snap(@topDom.find(".ls-canvas")[0]);
-    @stageManager = new Stage();
+    @canvas = Snap(@topDom.find(".ls-canvas")[0])
+    @stageManager = new Stage()
 
   updateLevelElems: (stageData) ->
     levelElems = []
@@ -36,16 +36,16 @@ class LevelSelector extends Emitter
     i = 1
     for stage in stageData
       center = centers[i-1]
-      circle = @canvas.circle(center.x, center.y, 20);
+      circle = @canvas.circle(center.x, center.y, 20)
       circle.attr
         fill: "#daba55",
         stroke: "#000",
         strokeWidth: 2
-      text = @canvas.text(center.x - 5, center.y + 5, "" + i);
+      text = @canvas.text(center.x - 5, center.y + 5, "" + i)
       text.attr
           fill: "#222",
           "font-size": "20px"
-      levelText = @canvas.text(center.x - 30, center.y + 30, stage.name);
+      levelText = @canvas.text(center.x - 30, center.y + 30, stage.name)
       levelText.attr
           fill: "#222",
           "font-size": "12px"
@@ -58,16 +58,16 @@ class LevelSelector extends Emitter
           elem.animate(transform:'t0,0s1.0', 200, mina.linear, ->)
         $(elem.node).on "click", =>
           @hide()
-          @trigger("levelselected", stage.sid);
+          @trigger("levelselected", stage.sid)
       i++
 
   hide: ->
-    @contentDom.fadeOut();
-    @maskDom.fadeOut();
+    @contentDom.fadeOut()
+    @maskDom.fadeOut()
 
   show: ->
-    @contentDom.fadeIn();
-    @maskDom.fadeIn();
+    @contentDom.fadeIn()
+    @maskDom.fadeIn()
     @stageManager.queryStageList @updateLevelElems.bind(@)
 
 module.exports = LevelSelector
