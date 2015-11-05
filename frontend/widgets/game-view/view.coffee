@@ -5,6 +5,7 @@ UserWorker = require('../../commons/logic/worker.coffee')
 CodeEditor = require('../code-editor/view.coffee')
 GameScene = require('../game-scene/view.coffee')
 LevelSelector = require('../level-selector/view.coffee')
+GameOverDialog = require('../game-over-dialog/view.coffee')
 
 # a class to setup view for user to play
 class GameView
@@ -18,6 +19,7 @@ class GameView
     @gameScene = null
     @codeEditor = null
     @levelSelector = null
+    @gameOverDialog = null
 
     gameSceneDom = $(topDom).find(".gv-game-scene")[0]
     if gameSceneDom?
@@ -37,10 +39,17 @@ class GameView
     else
       throw new Error('no level selector inside GameView')
 
+    gameOverDialogDom = $(topDom).find(".gv-game-over-dialog")[0]
+    if gameOverDialogDom?
+      @gameOverDialog = new GameOverDialog(gameOverDialogDom)
+    else
+      throw new Error('no game over dialog inside GameView')
+
     @game.register @gameScene
 
     @game.on 'win', =>
-      alert "win #{@game.carrotGot} (not implemented)"
+      @gameOverDialog.show()
+      #alert "win #{@game.carrotGot} (not implemented)"
     @game.on 'lost', =>
       alert "lost #{@game.carrotGot} (not implemented)"
     @game.on 'finish', @stopGame.bind(@)
