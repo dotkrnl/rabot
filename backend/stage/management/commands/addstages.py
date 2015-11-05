@@ -15,17 +15,17 @@ class Command(BaseCommand):
         sid = 1
         name = "Level 1 - Basic"
         info = """[
-            {"type":"carrot","x":300,"y":50},
-            {"type":"rabbit","x":300,"y":370,"angle":0}
+            {"type":"carrot","x":300,"y":50,"radius":40},
+            {"type":"rabbit","x":300,"y":370,"angle":0,"radius":40}
           ]"""
         manager.add_stage(sid, name, info)
 
         sid = 2
         name = "Level 2 - Carrot"
         info = """[
-            {"type":"carrot","x":300,"y":50},
-            {"type":"carrot","x":300,"y":200,"angle":0},
-            {"type":"rabbit","x":300,"y":370,"angle":0}
+            {"type":"carrot","x":300,"y":50,"radius":40},
+            {"type":"carrot","x":300,"y":200,"angle":0,"radius":40},
+            {"type":"rabbit","x":300,"y":370,"angle":0,"radius":40}
           ]"""
         manager.add_stage(sid, name, info)
 
@@ -33,8 +33,8 @@ class Command(BaseCommand):
         name = "Level 3 - River"
         info = """[
             {"type":"river","x":0,"y":150,"width":400,"height":75},
-            {"type":"carrot","x":300,"y":50},
-            {"type":"rabbit","x":300,"y":370,"angle":0}
+            {"type":"carrot","x":300,"y":50,"radius":40},
+            {"type":"rabbit","x":300,"y":370,"angle":0,"radius":40}
           ]"""
         manager.add_stage(sid, name, info)
 
@@ -43,9 +43,9 @@ class Command(BaseCommand):
         info = """[
             {"type":"river","x":0,"y":150,"width":400,"height":75},
             {"type":"river","x":475,"y":150,"width":400,"height":75},
-            {"type":"carrot","x":300,"y":50},
-            {"type":"rabbit","x":300,"y":370,"angle":0},
-            {"type":"key","x":100,"y":400,"keyId":0},
+            {"type":"carrot","x":300,"y":50,"radius":40},
+            {"type":"rabbit","x":300,"y":370,"angle":0,"radius":40},
+            {"type":"key","x":100,"y":400,"keyId":0,"radius":40},
             {"type":"door","x":400,"y":150,"width":75,"height":75,"keyId":0}
           ]"""
         manager.add_stage(sid, name, info)
@@ -55,10 +55,10 @@ class Command(BaseCommand):
         info = """[
             {"type":"river","x":0,"y":150,"width":400,"height":75},
             {"type":"river","x":475,"y":150,"width":400,"height":75},
-            {"type":"carrot","x":300,"y":50},
-            {"type":"rabbit","x":300,"y":370,"angle":0},
-            {"type":"key","x":100,"y":400,"keyId":0},
+            {"type":"carrot","x":300,"y":50,"radius":40},
+            {"type":"rabbit","x":300,"y":370,"angle":0,"radius":40},
+            {"type":"key","x":100,"y":400,"keyId":0,"radius":40},
             {"type":"door","x":400,"y":150,"width":75,"height":75,"keyId":0},
-            {"type":"rotator","x":400,"y":400,"rotation":90}
+            {"type":"rotator","x":400,"y":400,"rotation":90,"radius":40}
           ]"""
         manager.add_stage(sid, name, info)

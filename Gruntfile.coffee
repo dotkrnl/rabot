@@ -28,6 +28,16 @@ module.exports = (grunt) ->
           ext: '.css'
         }]
 
+    copy:
+      install:
+        files: [{
+          expand: true
+          cwd: 'frontend/public/'
+          src: ['**']
+          dest: '_site/public/'
+          filter: 'isFile'
+        }]
+
     bower:
       install:
         dest: './_site'
@@ -119,13 +129,14 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-connect'
+  grunt.loadNpmTasks 'grunt-contrib-copy'
   grunt.loadNpmTasks 'grunt-bower'
   grunt.loadNpmTasks 'grunt-browserify'
   grunt.loadNpmTasks 'grunt-concurrent'
   grunt.loadNpmTasks 'grunt-connect-proxy'
   grunt.loadNpmTasks 'grunt-shell'
 
-  grunt.registerTask 'compile', ['jade', 'sass', 'bower', 'browserify']
+  grunt.registerTask 'compile', ['jade', 'sass', 'bower', 'browserify', 'copy']
   grunt.registerTask 'serve', [
     'compile', 'configureProxies:server', 'connect', 'concurrent:runserver']
   grunt.registerTask 'dev', ['compile']

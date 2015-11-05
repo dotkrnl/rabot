@@ -28,11 +28,14 @@ class GameElem
           stroke: '#000'
           strokeWidth: 5
       when 'key'
-        @elem = @canvas.circle(0, 0, 20)
-        @elem.attr
+        @elem = @canvas.image(
+          "/public/images/key.svg",
+          -@sprite.radius, -@sprite.radius, @sprite.radius, @sprite.radius
+        )
+        '''@elem.attr
           fill: '#efcd7d'
           stroke: '#000'
-          strokeWidth: 5
+          strokeWidth: 5'''
       when 'river'
         @elem = @canvas.rect(0, 0, @sprite.width, @sprite.height, 0, 0)
         @elem.attr

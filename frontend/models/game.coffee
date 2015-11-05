@@ -132,10 +132,13 @@ class Game extends Emitter
 
       currentCollision = []
       for elem in @filterSprites(defunct: false)
-        if elem.type in ["carrot", "key", "rotator"] and
+        continue if elem == rabbit
+        if elem.radius? and
         (rabbit.x - elem.x) * (rabbit.x - elem.x) +
-        (rabbit.y - elem.y) * (rabbit.y - elem.y) < 20 * 20
+        (rabbit.y - elem.y) * (rabbit.y - elem.y) < elem.radius * elem.radius
           currentCollision.push(elem)
+          if elem.type == "key"
+            console.log elem
           if elem.type not in lastCollision and stepScanned > 0.15
             collisionFlag = true
             ret =
@@ -143,7 +146,7 @@ class Game extends Emitter
               step: stepScanned
             currentCollision.append
             break
-        else if (elem.type == "river" or elem.type == "door") and
+        else if elem.width? and
         rabbit.x > elem.x and rabbit.x < elem.x + elem.width and
         rabbit.y > elem.y and rabbit.y < elem.y + elem.height
           currentCollision.push(elem)
