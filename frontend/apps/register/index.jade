@@ -1,32 +1,27 @@
 extends /commons/template.jade
 
 block content
-  div.container#page-body(role='main')
+  div.container.register-app
       div.row
         div.col-sm-6
-          h1 New user registration
-          p.
-            To register in the website, you need to provide your nickname(used for user's name),
-            email address and set a password for it. The email address needs to real sthat we
-            could send a link for you to complete the procedure.
+          h1 Register
       div.row
         form.form-horizontal
           div.form-group
             label.col-sm-2.control-label(for='input-text') Username
             div.col-sm-4
-              input.form-control#input-text(type="text" placeholder="Username")
+              input.form-control.ra-username(type="text" placeholder="Username")
           div.form-group
             label.col-sm-2.control-label(for='input-password') Password
             div.col-sm-4
-              input.form-control#input-password(type="password" placeholder="Password")
+              input.form-control.ra-password(type="password" placeholder="Password")
           div.form-group
             label.col-sm-2.control-label(for='input-password') Password Confirm
             div.col-sm-4
-              input.form-control#input-password-confirm(type="password" placeholder="Password Confirm")
+              input.form-control.ra-confirm(type="password" placeholder="Password Confirm")
           div.form-group
             label.col-sm-2.control-label(for='input-email') Email
             div.col-sm-4
-              input.form-control#input-email(type="email" placeholder="Email")
+              input.form-control.ra-email(type="email" placeholder="Email")
           div
-            button.btn.btn-primary(type='submit') Submit
-            button.btn.btn-primary(type='reset') Reset
+            button.btn.btn-primary.ra-submit(type='button') Submit
