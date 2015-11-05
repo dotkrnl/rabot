@@ -45,7 +45,7 @@ class UserCodeWorker
       when "turn"
         @game.turn(m.angle, @resume.bind(@))
       when "turnTo"
-        @game.turnTo(m.objectName, @resume.bind(@))
+        @game.turnTo(m.uid, @resume.bind(@))
       when "finish"
         @game.finish()
 
@@ -98,13 +98,13 @@ class UserCodeWorker
         action: 'turn'
         angle: angle
 
-    turnTo = (objectName, callback) ->
+    turnTo = (obj, callback) ->
       __rabot_resume = ->
         __rabot_resume = __rabot_nop
         callback()
       @postMessage
         action: 'turnTo'
-        objectName: objectName
+        uid: obj.uid
 
     distance = (obj1, obj2) ->
       if not obj2?

@@ -8,6 +8,13 @@ toRad = (degrees) ->
 toDeg = (rad) ->
   rad / Math.PI * 180.0
 
+normalizeAngle = (degrees) ->
+  while degrees > 180
+    degrees -= 360
+  while degrees < -180
+    degrees += 360
+  return degrees
+
 # A helper function to clone object
 cloned = (obj) ->
   if not obj? or typeof obj != 'object'
@@ -225,16 +232,17 @@ class Game extends Emitter
   # @param objectName object to turn to
   # @param callback, function to call when animation is finished.
   # TODO: currently object name is not fully supported, type will be used.
-  turnTo: (objectName, callback) ->
+  turnTo: (uid, callback) ->
     rabbit = @getRabbit()
-    objects = @filterSprites(type: objectName, defunct: false)
+    objects = @filterSprites(uid: uid, defunct: false)
     if objects.length <= 0
       callback() if callback?
       return
     object = objects[0]
     dx = object.x - rabbit.x;
     dy = object.y - rabbit.y;
-    @turn toDeg(Math.atan(dx / -dy)) - rabbit.angle, callback
+    angle = normalizeAngle(toDeg(Math.atan2(dx, -dy)) - rabbit.angle);
+    @turn angle, callback
 
   # This function is called when the game is finished.
   # This function will perform win / lost check,
