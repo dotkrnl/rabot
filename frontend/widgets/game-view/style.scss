@@ -1,0 +1,22 @@
+.game-view {
+  @import "../game-scene/style";
+  @import "../code-editor/style";
+  @import "../level-selector/style";
+  @import "../game-over-dialog/style";
+
+  .gv-game-scene {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 0; right: 40%;
+  }
+  .gv-code-editor {
+    position: absolute;
+    top: 0; bottom: 50px;
+    left: 60%; right: 0;
+  }
+  .gv-code-controller {
+    position: absolute;
+    left: 60%; right: 0;
+    height: 50px; bottom: 0;
+  }
+}

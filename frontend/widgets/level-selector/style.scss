@@ -1,0 +1,32 @@
+.level-selector {
+  .ls-full-screen {
+    position: fixed;
+    top: 0px; bottom: 0px;
+    left: 0px; right: 0px;
+  }
+  .ls-mask {
+    @extend .ls-full-screen;
+    background: black;
+    opacity: 0.8;
+    z-index: 100;
+    display: none;
+  }
+  .ls-content {
+    position: absolute;
+    z-index: 101;
+    display: none;
+    top: 10%; bottom: 10%;
+    left: 10%; right: 10%;
+    .panel,
+    .panel .panel-body .ls-canvas {
+      height: 100%;
+      width: 100%;
+    }
+    .panel .panel-body {
+      padding: 0;
+      position: absolute;
+      top: 56px; bottom: 0;
+      left: 0; right: 0;
+    }
+  }
+}

@@ -46,7 +46,7 @@ use:
 
 `python manage.py addstages`
 
-`python manage.py addusers`
+`python manage.py addusers` (not implemented)
 
 ## Unit Tests
 

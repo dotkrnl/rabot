@@ -1,0 +1,25 @@
+.game-over-dialog {
+  .god-full-screen {
+    position: fixed;
+    top: 0px; bottom: 0px;
+    left: 0px; right: 0px;
+  }
+  .god-mask {
+    @extend .god-full-screen;
+    background: black;
+    opacity: 0.8;
+    z-index: 100;
+    display: none;
+  }
+  .god-content {
+    position: absolute;
+    z-index: 101;
+    display: none;
+    top: 20%; bottom: 20%;
+    left: 20%; right: 20%;
+    .god-canvas {
+      height: 100%;
+      width: 50%;
+    }
+  }
+}

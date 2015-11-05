@@ -1,0 +1,20 @@
+extends /commons/template.jade
+
+block content
+    div.container#page-body(role='main')
+        div.row
+            div.col-sm-6
+                h1 Log in
+        div.row
+            form.form-horizontal
+                div.form-group
+                    label.col-sm-2.control-label(for='input-text') Username
+                    div.col-sm-4
+                        input.form-control#input-text(type="text" placeholder="Username")
+                div.form-group
+                    label.col-sm-2.control-label(for='input-password') Password
+                    div.col-sm-4
+                        input.form-control#input-password(type="password" placeholder="Password")
+                div
+                    button.btn.btn-primary(type='submit') Login
+                    button.btn.btn-primary(type='reset') Reset
