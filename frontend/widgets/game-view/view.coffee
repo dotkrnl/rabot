@@ -82,6 +82,30 @@ class GameView
     $(topDom).find('.select-level.btn').click =>
       @levelSelector.show()
 
+    @codeAssistanceDom = $(topDom).find(".gv-code-assistance")
+    availableFunctions =
+      move : "move <distance>"
+      turn : "turn <angle|left|right>"
+      turnTo : "turnTo <object>"
+      distance : "distance <(obj1, obj2)|obj>"
+
+    codeAssistanceHTML = ''
+    for userAPI of availableFunctions
+      codeAssistanceHTML += """
+        <button class=\"btn-code-assistance-#{userAPI} btn btn-primary\"
+        type=\"submit\">
+          #{userAPI}
+        </button>
+      """
+
+    @codeAssistanceDom.html(codeAssistanceHTML)
+    for userAPI, code of availableFunctions
+      do(userAPI, code) =>
+        $(".btn-code-assistance-" + userAPI).click =>
+          event.preventDefault()
+          @codeEditor.insertCode(code + '\n')
+          @codeEditor.focus()
+
   stopGame: ->
     @userWorker.terminate() if @userWorker?
     @userWorker = null

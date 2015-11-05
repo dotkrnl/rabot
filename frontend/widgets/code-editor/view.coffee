@@ -2,7 +2,7 @@ require('./logic/rabot-iced.coffee')()
 
 # a class to setup user friendly code editor
 class CodeEditor
-  
+
   # Construct the code editor with CodeMirror
   # @param topDom: the mixin dom provided by template.jade
   constructor: (topDom) ->
@@ -22,5 +22,10 @@ class CodeEditor
   getCode: ->
     @codebox.getValue()
 
+  insertCode: (code) ->
+    @codebox.replaceSelection code
+
+  focus: (code) ->
+    @codebox.focus()
 
 module.exports = CodeEditor
