@@ -265,7 +265,6 @@ describe 'Game.move', ->
     game.addSprite type: 'rabbit', x: 0, y: 0, angle: 0
 
     game.update = jest.genMockFunction()
-    game.stepFinished = jest.genMockFunction()
 
     for i in [1..2]
       game.move i
@@ -286,7 +285,6 @@ describe 'Game.turn', ->
     game.addSprite type: 'rabbit', x: 0, y: 0, angle: 0
 
     game.update = jest.genMockFunction()
-    game.stepFinished = jest.genMockFunction()
 
     checkRange = [-3..3]
     for i in checkRange
@@ -302,57 +300,17 @@ describe 'Game.turn', ->
 describe 'Game.*actions*', ->
   for action in ['move', 'turn']
     do (action) ->
-      it "(#{action}) calls callback and stepFinished after update", ->
+      it "(#{action}) calls callback after update", ->
         game = new Game
         game.addSprite type: 'rabbit', x: 0, y: 0, angle: 0
 
         game.update = jest.genMockFunction()
         game.update.mockImplementation (scale, callback) ->
-          expect(game.stepFinished.mock.calls.length).toBe 0
           callback() if callback()?
-        game.stepFinished = jest.genMockFunction()
         callback = jest.genMockFunction()
 
         game[action] 100, callback
-        expect(game.stepFinished.mock.calls.length).toBe 1
         expect(callback.mock.calls.length).toBe 1
-
-
-describe 'Game.stepFinished', ->
-  it 'removes carrots that rabbit got', ->
-    game = new Game
-    game.addSprite type: 'rabbit', x: 0, y: -100
-    game.addSprite type: 'carrot', x: 0, y: -100
-    game.addSprite type: 'carrot', x: 0, y: -100
-    game.addSprite type: 'carrot', x: 0, y: -200
-
-    game.removeSprite = jest.genMockFunction()
-    game.scene =
-      collided: (a, b) ->
-        a.x == b.x and a.y == b.y # mock check
-
-    game.stepFinished()
-    expect(game.removeSprite.mock.calls.length).toBe 2
-    expect(game.removeSprite.mock.calls[0][0]).toBe 1
-    expect(game.removeSprite.mock.calls[1][0]).toBe 2
-
-  it 'increases carrotGot when rabbit got non-defuncted carrots', ->
-    game = new Game
-    game.addSprite type: 'rabbit', x: 0, y: -100
-    game.addSprite type: 'rabbit', x: 0, y: -100
-    game.addSprite type: 'carrot', x: 0, y: -100
-    game.addSprite type: 'carrot', x: 0, y: -100
-    game.addSprite type: 'carrot', x: 0, y: -100, defunct: true
-    game.addSprite type: 'carrot', x: 0, y: -100, defunct: true
-    game.addSprite type: 'carrot', x: 0, y: -200
-
-    game.removeSprite = jest.genMockFunction()
-    game.scene =
-      collided: (a, b) ->
-        a.x == b.x and a.y == b.y # mock check
-
-    game.stepFinished()
-    expect(game.carrotGot).toBe 2
 
 
 describe 'Game.finish', ->
