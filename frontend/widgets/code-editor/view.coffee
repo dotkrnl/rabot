@@ -1,3 +1,4 @@
+# enable rabot iced highlight
 require('./logic/rabot-iced.coffee')()
 
 # a class to setup user friendly code editor

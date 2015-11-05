@@ -3,12 +3,19 @@ Emitter = require('../commons/logic/emitter.coffee')
 # The class User contacts with the backend via Ajax requests
 # to perform user log in/out and login status check.
 class User extends Emitter
+  # Make user to be singleton
+  instance = null
 
   # Construct the User model
   constructor: ->
+    if instance
+      return instance
+    else
+      instance = this
+    super()
     @loggedin = false
     @user = {}
-    @update()
+    @sync()
 
   # Login to user
   # @param username: username of the user
@@ -75,7 +82,7 @@ class User extends Emitter
     .done (result) =>
       syncCb = \
         if result.result != 'succeeded'
-          -> cb(result.errorMessage)
+          -> cb(result.errorMessage) if cb?
         else cb
       @sync(syncCb)
 
@@ -90,11 +97,11 @@ class User extends Emitter
       if result.result == 'succeeded'
         @loggedin = result.loggedin
         @user = result.user
-        cb()
+        cb() if cb?
       else
         @loggedin = false
         @user = {}
-        cb(result.errorMessage)
+        cb(result.errorMessage) if cb?
       @update()
 
   # Trigger event after user updated
