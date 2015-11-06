@@ -114,6 +114,18 @@ isAsyncable = (pos, code, functionList) ->
   return false
 
 
+scanAsyncableFunction = (code, functionList) ->
+  i = 0
+  while i < code.length
+    if code[i] == '-' && code[i+1] == '>'
+      if !inFunctionList(findFunctionName(i, code), functionList)
+        if isAsyncable(i, code, functionList)
+          functionList.push(findFunctionName(i, code))
+          i = 0
+          continue
+    i++
+  return functionList
+
 # Add callback to end of the function
 addCallbackAtEnd = (pos, code) ->
   if !(code[pos] == '-' && code[pos+1] == '>')
@@ -258,7 +270,7 @@ module.exports = (code) ->
   functionList = ["move", "turn", "turnTo"]
   
   # First scan, find functions to asyncify
-  # todo
+  functionList = scanAsyncableFunction(code,functionList)
   
   # Second scan, to process user-defined functions
   tmpList = processCallback(code, functionList)
