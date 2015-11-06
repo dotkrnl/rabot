@@ -9,19 +9,23 @@ addPrefix = (afterCode, buffer, ch) ->
   afterCode += ch
   return afterCode
 
+  
 inFunctionList = (word, functionList) ->
   for str in functionList
     if word == str
       return true
   return false
 
+  
 isIdentifier = (char) ->
   return (char >= 'a' && char <= 'z')||(char >= 'A' && char <= 'Z')\
   || (char == '_') || (char >= '0' && char <= '9')
 
+  
 inBranchOrLoop = (word) ->
   return (word == "for") || (word == "if") || (word == "while")
 
+  
 getIndent = (pos, code) ->
   if code[pos] != '\n'
     return ""
@@ -32,89 +36,129 @@ getIndent = (pos, code) ->
     pos++
   return indent
 
-module.exports = (code) ->
-  code += '\n'
   
-  # @val functionList: stores functions needed to be done
-  functionList = new Array()
-  functionList.push("move")
-  functionList.push("turn")
-  functionList.push("turnTo")
+# Add new line after "->" if there's something
+ensureLineEnd = (pos, code) ->
+  if !(code[pos] == '-' && code[pos+1] == '>')
+    return code
+    
+  j = pos + 2
+  flag = false
+  while j <= code.length
+    if code[j] == '\n'
+      break
+    if code[j] != ' '
+      flag = true
+      break
+    j++
+  if flag
+    j = pos
+    while j >= 0
+      if code[j] = '\n' || j == 0
+        break
+      j--
+    indent = getIndent(j, code) + "  "
+    code = code.substr(0, posi+3) + '\n' + indent + \
+    code.substr(pos+3, code.length)
+  return code
+
+
+# Find function name
+findFunctionName = (pos, code) ->
+  if !(code[pos] == '-' && code[pos+1] == '>')
+    return ""
+    
+  j = pos
+  nameFound = false
+  functionName = ""
+  while j >= 0
+    if nameFound
+      if isIdentifier(code[j])
+        functionName = code[j] + functionName
+      else
+        if functionName == ""
+        
+        else
+          break
+    else
+      if code[j] == '='
+        nameFound = true
+      else
+    
+    j--
+  return functionName
   
-  # Fisrt scan, to process user-defined functions
+
+# Check if the function is asyncable
+isAsyncable = (pos, code, functionList) ->
+  if !(code[pos] == '-' && code[pos+1] == '>')
+    return false
+  indent = ""
+  buffer = ""
+  j = pos
+  while code[j] != '\n'
+    j++
+  indent = getIndent(j, code)
+  if indent.length > 0
+    while j < code.length - 1
+      if isIdentifier(code[j])
+        buffer += code[j]
+      else
+        if inFunctionList(buffer, functionList)
+          return true
+        buffer = ""
+      if code[j] == '\n'
+        if indent.length > getIndent(j, code).length
+          break
+      j++
+  return false
+
+
+# Add callback to end of the function
+addCallbackAtEnd = (pos, code) ->
+  if !(code[pos] == '-' && code[pos+1] == '>')
+    return code
+  indent = ""
+  j = pos
+  while code[j] != '\n'
+    j++
+  indent = getIndent(j, code)
+  if indent.length > 0
+    while j < code.length - 1
+      if code[j] == '\n'
+        if indent.length > getIndent(j, code).length
+          code2 = code.substr(0, j+1) + indent + "__rabot_cb_()\n"\
+          + code.substr(j+1, code.length)
+          code = code2
+          break
+      j++
+  return code
+
+
+# Second scan, to process user-defined functions
+processCallback = (code, functionList) ->
   # Add callback param to param list
   code = code.replace(/\)\s*->/g, ", __rabot_cb_) ->")
   code = code.replace(/\(\s*,/g, "(")
-  
+  # Scan
   i = 0
   while i < code.length - 1
     if code[i] == '-' && code[i+1] == '>'
       # Add new line after "->" if there's something
-      j = i + 2
-      flag = false
-      while j <= code.length
-        if code[j] == '\n'
-          break
-        if code[j] != ' '
-          flag = true
-          break
-        j++
-      if flag
-        j = i
-        while j >= 0
-          if code[j] = '\n' || j == 0
-            break
-          j--
-        indent = getIndent(j, code) + "  "
-        code = code.substr(0, i+3) + '\n' + indent + \
-        code.substr(i+3, code.length)
+      code = ensureLineEnd(i, code)
       # Find & add function name to functionList
-      j = i
-      nameFound = false
-      functionName = ""
-      while j >= 0
-        if nameFound
-          if isIdentifier(code[j])
-            functionName = code[j] + functionName
-          else
-            if functionName == ""
-            
-            else
-              break
-        else
-          if code[j] == '='
-            nameFound = true
-          else
-        
-        j--
-      
+      functionName = findFunctionName(i, code)
       if functionName.length > 0
         functionList.push(functionName)
 
       # Add callback to end of the function
-      indent = ""
-      j = i
-      while code[j] != '\n'
-        j++
-      indent = getIndent(j, code)
-      if indent.length > 0
-        while j < code.length - 1
-          if code[j] == '\n'
-            if indent.length > getIndent(j, code).length
-              code2 = code.substr(0, j+1) + indent + "__rabot_cb_()\n"\
-              + code.substr(j+1, code.length)
-              code = code2
-              i += indent.length
-              i += 14
-              break
-          j++
-    
+      code = addCallbackAtEnd(i, code)
     i++
-    
-  
-  
-  # Second scan
-  
+  return [code, functionList]
+
+
+# Third scan, add "await" & "defer param"
+processAwaitDefer = (code, functionList) ->
   # @val detected: counter of key function that is found and not done with.
   # @val buffer: code buffer.
   # @val afterCode: return value.
@@ -192,7 +236,7 @@ module.exports = (code) ->
       if detected > 0 && code[i]=='(' && !defineFlag
         bracketFlag = true
         bracketCount = 1
-    # and it is "for" or "if"
+    # and it is "for" or "if" or "while"
     else if inBranchOrLoop(buffer) && detected > 0
       afterCode += ", defer param "
       afterCode += buffer
@@ -204,7 +248,24 @@ module.exports = (code) ->
       afterCode += buffer
       afterCode += code[i]
       buffer = ""
-    
     i++
-
   return afterCode
+  
+module.exports = (code) ->
+  code += '\n'
+  
+  # @val functionList: stores functions needed to be done
+  functionList = ["move", "turn", "turnTo"]
+  
+  # First scan, find functions to asyncify
+  # todo
+  
+  # Second scan, to process user-defined functions
+  tmpList = processCallback(code, functionList)
+  code = tmpList[0]
+  functionList = tmpList[1]
+  
+  # Third scan, add "await" & "defer param"
+  code = processAwaitDefer(code, functionList)
+
+  return code

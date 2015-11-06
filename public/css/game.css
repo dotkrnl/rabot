@@ -1,0 +1,59 @@
+.absolute-full-width, #container-code-editor, #container-code-assistant, #code-editor, #play-canvas {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+}
+
+.absolute-full-height, #code-editor, #play-canvas {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+}
+
+#container-play {
+  position: absolute;
+  left: 0;
+  width: 600px;
+  top: 50px;
+  bottom: 0;
+  background: blue;
+}
+
+#container-code {
+  position: absolute;
+  left: 600px;
+  right: 0;
+  top: 50px;
+  bottom: 0;
+}
+
+#container-code-editor {
+  top: 0;
+  bottom: 75px;
+}
+
+#container-code-assistant {
+  height: 75px;
+  bottom: 0;
+  background: #aaa;
+}
+
+#code-editor {
+  width: 100%;
+  height: 100%;
+}
+
+#play-canvas {
+  background: white;
+}
+
+#container-code-control {
+  position: fixed;
+  right: 0px;
+  width: 300px;
+  bottom: 100px;
+  height: 75px;
+  background: #aaa;
+}
+
+/*# sourceMappingURL=game.css.map */
