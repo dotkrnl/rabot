@@ -58,7 +58,7 @@ ensureLineEnd = (pos, code) ->
         break
       j--
     indent = getIndent(j, code) + "  "
-    code = code.substr(0, posi+3) + '\n' + indent + \
+    code = code.substr(0, pos+3) + '\n' + indent + \
     code.substr(pos+3, code.length)
   return code
 
@@ -158,15 +158,11 @@ processCallback = (code, functionList) ->
     if code[i] == '-' && code[i+1] == '>'
       # Add new line after "->" if there's something
       code = ensureLineEnd(i, code)
-      # Find & add function name to functionList
-      functionName = findFunctionName(i, code)
-      if functionName.length > 0
-        functionList.push(functionName)
-
-      # Add callback to end of the function
-      code = addCallbackAtEnd(i, code)
+      # Add callback to end of the function if needed
+      if inFunctionList(findFunctionName(i, code), functionList)
+        code = addCallbackAtEnd(i, code)
     i++
-  return [code, functionList]
+  return code
 
 
 # Third scan, add "await" & "defer param"
@@ -273,9 +269,7 @@ module.exports = (code) ->
   functionList = scanAsyncableFunction(code,functionList)
   
   # Second scan, to process user-defined functions
-  tmpList = processCallback(code, functionList)
-  code = tmpList[0]
-  functionList = tmpList[1]
+  code = processCallback(code, functionList)
   
   # Third scan, add "await" & "defer param"
   code = processAwaitDefer(code, functionList)
