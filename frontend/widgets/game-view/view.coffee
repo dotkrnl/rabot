@@ -14,6 +14,12 @@ class GameView
   # Construct the game view
   # @param topDom: the mixin dom provided by template.jade
   constructor: (topDom) ->
+    createjs.Sound.on("fileload", (->
+      instance = createjs.Sound.play("sound", "none", 0, 0, -1)
+      instance.on("complete", this.handleComplete, this)
+      instance.volume = 0.5)
+     , @);
+    createjs.Sound.registerSound("/public/audios/ambient-forest.mp3", "sound");
     @game = new Game
     @stage = new Stage
     @userWorker = null
@@ -65,7 +71,7 @@ class GameView
       @game.loadStage(stageData)
 
     @bindGame(new Game)
-    
+
     @levelSelector.on "levelselected", (stageId) =>
       @currentSid = parseInt(stageId)
       @stage.getStage stageId, (stageData) =>

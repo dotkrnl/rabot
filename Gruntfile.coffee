@@ -74,6 +74,11 @@ module.exports = (grunt) ->
               files: [
                 "extras/iced-coffee-script-108.0.8-min.js"
               ]
+            SoundJS:
+              keepExpandedHierarchy: false
+              files: [
+                "lib/soundjs-0.6.1.min.js"
+              ]
 
     browserify:
       install:
