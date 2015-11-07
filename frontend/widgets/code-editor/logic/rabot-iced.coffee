@@ -8,10 +8,10 @@ module.exports = () ->
   CodeMirror.defineMode "rabot-iced", (conf, parserConf) ->
     wordRegexp = (words) ->
       new RegExp("^((" + words.join(")|(") + "))\\b")
-    
+
     # Tokenizers
     tokenBase = (stream, state) ->
-      
+
       # Handle scope changes
       if stream.sol()
         state.scope.align = false  if state.scope.align is null
@@ -26,54 +26,54 @@ module.exports = () ->
           dedent stream, state  if scopeOffset > 0
       return null  if stream.eatSpace()
       ch = stream.peek()
-      
+
       # Handle docco title comment (single line)
       if stream.match("####")
         stream.skipToEnd()
         return "comment"
-      
+
       # Handle multi line comments
       if stream.match("###")
         state.tokenize = longComment
         return state.tokenize(stream, state)
-      
+
       # Single line comment
       if ch is "#"
         stream.skipToEnd()
         return "comment"
-      
+
       # Handle number literals
       if stream.match(/^-?[0-9\.]/, false)
         floatLiteral = false
-        
+
         # Floats
         floatLiteral = true  if stream.match(/^-?\d*\.\d+(e[\+\-]?\d+)?/i)
         floatLiteral = true  if stream.match(/^-?\d+\.\d*/)
         floatLiteral = true  if stream.match(/^-?\.\d+/)
         if floatLiteral
-          
+
           # prevent from getting extra . on 1..
           stream.backUp 1  if stream.peek() is "."
           return "number"
-        
+
         # Integers
         intLiteral = false
-        
+
         # Hex
         intLiteral = true  if stream.match(/^-?0x[0-9a-f]+/i)
-        
+
         # Decimal
         intLiteral = true  if stream.match(/^-?[1-9]\d*(e[\+\-]?\d+)?/)
-        
+
         # Zero by itself with no other piece of number.
         intLiteral = true  if stream.match(/^-?0(?![\dx])/i)
         return "number"  if intLiteral
-      
+
       # Handle strings
       if stream.match(stringPrefixes)
         state.tokenize = tokenFactory(stream.current(), false, "string")
         return state.tokenize(stream, state)
-      
+
       # Handle regex literals
       if stream.match(regexPrefixes)
         if stream.current() isnt "/" or stream.match(/^.*\//, false) # prevent highlight of division
@@ -81,7 +81,7 @@ module.exports = () ->
           return state.tokenize(stream, state)
         else
           stream.backUp 1
-      
+
       # Handle operators and delimiters
       return "operator"  if stream.match(operators) or stream.match(wordOperators)
       return "punctuation"  if stream.match(delimiters)
@@ -89,7 +89,7 @@ module.exports = () ->
       return "property"  if stream.match(atProp) or state.prop and stream.match(identifiers)
       return "keyword"  if stream.match(keywords)
       return "variable"  if stream.match(identifiers)
-      
+
       # Handle non-detected items
       stream.next()
       ERRORCLASS
@@ -162,7 +162,7 @@ module.exports = () ->
     tokenLexer = (stream, state) ->
       style = state.tokenize(stream, state)
       current = stream.current()
-      
+
       # Handle "." connected identifiers
       if false and current is "."
         style = state.tokenize(stream, state)
@@ -171,7 +171,7 @@ module.exports = () ->
           return "variable"
         else
           return ERRORCLASS
-      
+
       # Handle scope changes.
       state.dedent = true  if current is "return"
       indent stream, state  if ((current is "->" or current is "=>") and stream.eol()) or style is "indent"
@@ -195,7 +195,7 @@ module.exports = () ->
     atProp = /^@[_A-Za-z$][_A-Za-z$0-9]*/
     wordOperators = wordRegexp([ "and", "or", "not", "is", "isnt", "in", "instanceof", "typeof" ])
     indentKeywords = [ "for", "while", "loop", "if", "unless", "else", "switch", "try", "catch", "finally", "class" ]
-    commonKeywords = [ "break", "by", "continue", "debugger", "delete", "do", "in", "of", "new", "return", "then", "this", "@", "throw", "when", "until", "extends", "await", "defer", "move", "turn", "turnTo" ]
+    commonKeywords = [ "break", "by", "continue", "debugger", "delete", "do", "in", "of", "new", "return", "then", "this", "@", "throw", "when", "until", "extends", "await", "defer", "move", "turn", "turnTo", "distance" ]
     keywords = wordRegexp(indentKeywords.concat(commonKeywords))
     indentKeywords = wordRegexp(indentKeywords)
     stringPrefixes = /^('{3}|\"{3}|['\"])/
@@ -241,4 +241,3 @@ module.exports = () ->
 
   CodeMirror.defineMIME "text/x-rabot-iced", "rabot-iced"
   CodeMirror.defineMIME "text/rabot-iced", "rabot-iced"
-

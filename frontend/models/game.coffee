@@ -143,8 +143,6 @@ class Game extends Emitter
         (rabbit.x - elem.x) * (rabbit.x - elem.x) +
         (rabbit.y - elem.y) * (rabbit.y - elem.y) < elem.radius * elem.radius
           currentCollision.push(elem)
-          if elem.type == "key"
-            console.log elem
           if elem.type not in lastCollision and stepScanned > 0.15
             collisionFlag = true
             ret =

@@ -7,7 +7,6 @@ class GameControlBar extends Emitter
   # @param topDom: the mixin dom provided by template.jade
   constructor: (topDom) ->
     super()
-    console.log 'aaa'
     @buttonRunDom = $(topDom).find('.button-run')
     @buttonStopDom = $(topDom).find('.button-stop')
     @buttonResetDom = $(topDom).find('.button-reset')
