@@ -146,6 +146,35 @@ addCallbackAtEnd = (pos, code) ->
       j++
   return code
 
+# Add highlight/unhighlight function calls
+processHighlight = (code) ->
+  lineNumber = 0
+  afterCode = ""
+  buffer = ""
+  for ch in code
+    buffer += ch
+    if ch == '\n'
+      lineNumber++
+      afterCode += processHighlightLine(buffer, lineNumber)
+      buffer = ""
+  if buffer != ""
+    buffer += '\n'
+    lineNumber++
+    afterCode += processHighlightLine(buffer, lineNumber)
+    buffer = ""
+  return afterCode
+
+# Add highlight/unhighlight function call for a single line
+# Incomplete
+processHighlightLine = (code, lineNumber) ->
+  indent = ""
+  for ch in code
+    if ch == ' ' || ch == '\t'
+      indent += ch
+    else
+      break
+  return indent + "Highlight(" + lineNumber + ")\n" + code\
+  + "Unhighlight(" + lineNumber + ")\n"
 
 # Second scan, to process user-defined functions
 processCallback = (code, functionList) ->
@@ -260,6 +289,9 @@ processAwaitDefer = (code, functionList) ->
   return afterCode
   
 module.exports = (code) ->
+  # Add highlight/unhighlight function calls
+  code = processHighlight(code)
+
   code += '\n'
   
   # @val functionList: stores functions needed to be done
