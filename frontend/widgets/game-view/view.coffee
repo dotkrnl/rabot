@@ -7,13 +7,15 @@ GameScene = require('../game-scene/view.coffee')
 LevelSelector = require('../level-selector/view.coffee')
 GameOverDialog = require('../game-over-dialog/view.coffee')
 GameControlBar = require('../game-control-bar/view.coffee')
+View = require('../view.coffee')
 
 # a class to setup view for user to play
-class GameView
+class GameView extends View
 
   # Construct the game view
   # @param topDom: the mixin dom provided by template.jade
   constructor: (topDom) ->
+    super(topDom)
     createjs.Sound.on("fileload", (->
       instance = createjs.Sound.play("sound", "none", 0, 0, -1)
       instance.on("complete", this.handleComplete, this)
@@ -29,35 +31,15 @@ class GameView
     @gameOverDialog = null
     @currentSid = -1
 
-    gameSceneDom = $(topDom).find(".gv-game-scene")[0]
-    if gameSceneDom?
-      @gameScene = new GameScene(gameSceneDom)
-    else
-      throw new Error('no game scene inside GameView')
-
-    codeEditerDom = $(topDom).find(".gv-code-editor")[0]
-    if codeEditerDom?
-      @codeEditor = new CodeEditor(codeEditerDom)
-    else
-      throw new Error('no code editor inside GameView')
-
-    levelSelectorDom = $(topDom).find(".gv-level-selector")[0]
-    if levelSelectorDom?
-      @levelSelector = new LevelSelector(levelSelectorDom)
-    else
-      throw new Error('no level selector inside GameView')
-
-    gameOverDialogDom = $(topDom).find(".gv-game-over-dialog")[0]
-    if gameOverDialogDom?
-      @gameOverDialog = new GameOverDialog(gameOverDialogDom)
-    else
-      throw new Error('no game over dialog inside GameView')
-
-    gameControlBarDom = $(topDom).find(".gv-game-control-bar")[0]
-    if gameControlBarDom?
-      @gameControlBar = new GameControlBar(gameControlBarDom)
-    else
-      throw new Error('no game control baar inside GameView')
+    @gameScene = @createViewFromElement("gv-game-scene", GameScene)
+    @codeEditor = @createViewFromElement("gv-code-editor", CodeEditor)
+    @levelSelector = @createViewFromElement("gv-level-selector", LevelSelector)
+    @gameOverDialog = @createViewFromElement(
+      "gv-game-over-dialog", GameOverDialog
+    )
+    @gameControlBar = @createViewFromElement(
+      "gv-game-control-bar", GameControlBar
+    )
 
     @gameControlBar.on 'runcode', =>
       code = @codeEditor.getCode()
