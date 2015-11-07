@@ -173,8 +173,8 @@ processHighlightLine = (code, lineNumber) ->
       indent += ch
     else
       break
-  return indent + "Highlight(" + lineNumber + ")\n" + code\
-  + "Unhighlight(" + lineNumber + ")\n"
+  return indent + "highlight(" + lineNumber + ")\n" + code\
+  + "unhighlight(" + lineNumber + ")\n"
 
 # Second scan, to process user-defined functions
 processCallback = (code, functionList) ->
