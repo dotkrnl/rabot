@@ -6,6 +6,7 @@ CodeEditor = require('../code-editor/view.coffee')
 GameScene = require('../game-scene/view.coffee')
 LevelSelector = require('../level-selector/view.coffee')
 GameOverDialog = require('../game-over-dialog/view.coffee')
+GameControlBar = require('../game-control-bar/view.coffee')
 
 # a class to setup view for user to play
 class GameView
@@ -46,14 +47,25 @@ class GameView
     else
       throw new Error('no game over dialog inside GameView')
 
-    @game.register @gameScene
+    gameControlBarDom = $(topDom).find(".gv-game-control-bar")[0]
+    if gameControlBarDom?
+      @gameControlBar = new GameControlBar(gameControlBarDom)
+    else
+      throw new Error('no game control baar inside GameView')
 
-    @game.on 'win', =>
-      @gameOverDialog.show(@game.carrotGot)
-    @game.on 'lost', =>
-      @gameOverDialog.show(-1)
-    @game.on 'finish', @stopGame.bind(@)
+    @gameControlBar.on 'runcode', =>
+      code = @codeEditor.getCode()
+      @userWorker = new UserWorker @game, code
 
+    @gameControlBar.on 'stopcode', =>
+      @stopGame()
+      stageData = @game.stageData
+      @game.unregister()
+      @bindGame(new Game)
+      @game.loadStage(stageData)
+
+    @bindGame(new Game)
+    
     @levelSelector.on "levelselected", (stageId) =>
       @currentSid = parseInt(stageId)
       @stage.getStage stageId, (stageData) =>
@@ -73,12 +85,6 @@ class GameView
       {"type":"rabbit","x":300,"y":370,"angle":0}
     ]"""
 
-    # TODO: split to new view
-    $(topDom).find('.run-code.btn').click =>
-      code = @codeEditor.getCode()
-      @userWorker = new UserWorker @game, code
-    $(topDom).find('.stop-code.btn').click ->
-      stopGame()
     $(topDom).find('.select-level.btn').click =>
       @levelSelector.show()
 
@@ -106,10 +112,19 @@ class GameView
           @codeEditor.insertCode(code)
           @codeEditor.focus()
 
+  bindGame: (game) ->
+    @game = game
+    @game.register @gameScene
+    @game.on 'win', =>
+      @gameOverDialog.show(@game.carrotGot)
+    @game.on 'lost', =>
+      @gameOverDialog.show(-1)
+    @game.on 'finish', =>
+      @stopGame()
+      @gameControlBar.setGameRunning(false)
+
   stopGame: ->
     @userWorker.terminate() if @userWorker?
     @userWorker = null
-    @game.restartStage()
-
 
 module.exports = GameView

@@ -1,28 +1,51 @@
 .game-control-bar
 {
+  $bottom : 100px;
+  $height : 100px;
+  $small_button_width : 100px;
+  $large_button_width : 200px;
+  $folded_width : $large_button_width + 1.5 * $small_button_width;
+  $total_width : $large_button_width + 2 * $small_button_width + 100px;
   position : fixed;
   right : 0px;
-  bottom : 100px;
+  bottom : $bottom;
+  width : $total_width;
+  right : $folded_width - $total_width;
+  .button
+  {
+    background-repeat: no-repeat;
+    background-position: center;
+    display : inline-block;
+    height : $height;
+  }
   .button-large
   {
-    display : inline-block;
-    width : 200px;
-    height : 100px;
+    @extend .button;
+    width : $large_button_width;
   }
   .button-small
   {
-    display : inline-block;
-    width : 100px;
-    height : 100px;
+    @extend .button;
+    width : $small_button_width;
   }
   .button-run
   {
     @extend .button-large;
-    background : url(/public/images/game-control-bar/button-run.png);
+    background-image : url(/public/images/game-control-bar/button-run.png);
   }
   .button-stop
   {
     @extend .button-large;
-    background : url(/public/images/game-control-bar/button-stop.png);
+    background-image : url(/public/images/game-control-bar/button-stop.png);
+  }
+  .button-reset
+  {
+    @extend .button-small;
+    background-image : url(/public/images/game-control-bar/button-reset.png);
+  }
+  .button-settings
+  {
+    @extend .button-small;
+    background-image : url(/public/images/game-control-bar/button-settings.png);
   }
 }

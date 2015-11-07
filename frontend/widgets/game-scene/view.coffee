@@ -29,6 +29,13 @@ class GameScene
     @update(0)
     return
 
+  # Cancel the association between the game and the scene. This will
+  # clear the canvas.
+  _unregister: () ->
+    @canvas.clear()
+    @game = null
+    @elems = []
+
   # Update the game view according to the game model.
   # @param scale: This function will update the game scene with animation
   # according to scale. The time used will be a linear function of scale

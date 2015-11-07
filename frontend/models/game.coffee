@@ -107,6 +107,12 @@ class Game extends Emitter
     @scene = gameScene
     @scene._register(@)
 
+  # Cancel the association of the game with the game scene. This will also
+  # clear the game scene.
+  unregister: ->
+    @scene._unregister()
+    @scene = null
+
   # Should be called whenever a change is made to the model, to notify the
   # game scene to keep synchronized with the model (with an animation).
   # It will also triggers "update" event.

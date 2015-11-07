@@ -109,7 +109,7 @@ module.exports = (grunt) ->
     watch:
       copy:
         files: ['./frontend/public/**']
-        task: ['copy']
+        tasks: ['copy']
       jade:
         files: ['./frontend/**/*.jade']
         tasks: ['jade']
