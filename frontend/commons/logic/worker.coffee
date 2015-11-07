@@ -12,7 +12,7 @@ class UserCodeWorker
   constructor: (@game, @code) ->
     asyncCode = asyncify(@code)
     console.log asyncCode
-    
+
     # set "runtime" to be inlined instead of node
     workerSpriteInitCode = """
 
@@ -90,6 +90,12 @@ class UserCodeWorker
       @postMessage
         action: 'move'
         step: step
+
+    highlight = (lineNumber) ->
+      #TODO : Stub, this function is reserved for callstack display.
+
+    unhighlight = (lineNumber) ->
+      #TODO : Stub, this function is reserved for callstack display.
 
     turn = (angle, callback) ->
       __rabot_resume = ->
