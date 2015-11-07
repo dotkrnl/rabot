@@ -11,7 +11,8 @@ class UserCodeWorker
   # @param @code the user code
   constructor: (@game, @code) ->
     asyncCode = asyncify(@code)
-
+    console.log asyncCode
+    
     # set "runtime" to be inlined instead of node
     workerSpriteInitCode = """
 

@@ -107,6 +107,9 @@ module.exports = (grunt) ->
           stderr: true
 
     watch:
+      copy:
+        files: ['./frontend/public/**']
+        task: ['copy']
       jade:
         files: ['./frontend/**/*.jade']
         tasks: ['jade']
@@ -136,7 +139,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-connect-proxy'
   grunt.loadNpmTasks 'grunt-shell'
 
-  grunt.registerTask 'compile', ['jade', 'sass', 'bower', 'browserify', 'copy']
+  grunt.registerTask 'compile', ['copy', 'jade', 'sass', 'bower', 'browserify']
   grunt.registerTask 'serve', [
     'compile', 'configureProxies:server', 'connect', 'concurrent:runserver']
   grunt.registerTask 'dev', ['compile']

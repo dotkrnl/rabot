@@ -1,0 +1,28 @@
+.game-control-bar
+{
+  position : fixed;
+  right : 0px;
+  bottom : 100px;
+  .button-large
+  {
+    display : inline-block;
+    width : 200px;
+    height : 100px;
+  }
+  .button-small
+  {
+    display : inline-block;
+    width : 100px;
+    height : 100px;
+  }
+  .button-run
+  {
+    @extend .button-large;
+    background : url(/public/images/game-control-bar/button-run.png);
+  }
+  .button-stop
+  {
+    @extend .button-large;
+    background : url(/public/images/game-control-bar/button-stop.png);
+  }
+}

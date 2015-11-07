@@ -2,11 +2,13 @@ include /widgets/game-scene/template.jade
 include /widgets/code-editor/template.jade
 include /widgets/level-selector/template.jade
 include /widgets/game-over-dialog/template.jade
+include /widgets/game-control-bar/template.jade
 
 mixin game-view()
   div.game-view(class!=attributes.class)
     +game-scene()(class="gv-game-scene")
     +code-editor()(class="gv-code-editor")
+    +game-control-bar()(class="gv-game-control-bar")
     +level-selector()(class="gv-level-selector")
     +game-over-dialog()(class="gv-game-over-dialog")
 
