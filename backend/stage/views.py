@@ -8,6 +8,7 @@ import json
 
 @csrf_exempt
 def stage_info_view(request, sid):
+    sid = int(sid)
     manager = StageManager()
 
     if request.method == 'GET':
@@ -82,7 +83,7 @@ def all_stages_info_view(request):
 
         for stage in all_stages:
             cur_stage = {
-                'sid': stage.sid,
+                'sid': int(stage.sid),
                 'name': stage.name,
                 'info': stage.info,
             }

@@ -29,7 +29,7 @@ class StageManager:
             return 'Succeeded, new stage\'s sid: #' + str(sid)
 
     def get_stage(self, sid):
-        if int(sid) <= 0:
+        if sid <= 0:
             return None
         else:
             cur_stage = self.dao.get_stage_by_sid(sid)
