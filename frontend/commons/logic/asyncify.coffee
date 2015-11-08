@@ -171,7 +171,7 @@ processHighlightLine = (code, lineNumber) ->
   i = 0
   while i < code.length
     if code[i] == '-' && code[i+1] == '>'
-      j = i
+      j = i + 2
       while j < code.length
         if code[j] == '\n'
           return code
