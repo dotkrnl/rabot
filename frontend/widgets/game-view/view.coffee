@@ -65,13 +65,6 @@ class GameView extends View
       @currentSid++
       @stage.getStage @currentSid, (stageData) =>
         @game.loadStage stageData.info
-    # TODO: merge stage manager
-    @game.loadStage """[
-      {"type":"river","x":0,"y":150,"width":300,"height":75},
-      {"type":"river","x":575,"y":150,"width":300,"height":75},
-      {"type":"carrot","x":300,"y":50},
-      {"type":"rabbit","x":300,"y":370,"angle":0}
-    ]"""
 
     $(topDom).find('.select-level.btn').click =>
       @levelSelector.show()

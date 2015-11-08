@@ -42,11 +42,7 @@ class Game extends Emitter
     throw new Error('no sprite type') unless sprite.type?
     sprite.x = 0 unless sprite.x?
     sprite.y = 0 unless sprite.y?
-    sprite.width = 0 unless sprite.width?
-    sprite.height = 0 unless sprite.height?
     sprite.angle = 0 unless sprite.angle?
-    sprite.lethal = false unless sprite.lethal?
-    sprite.passable = true unless sprite.passable?
     sprite.defunct = false unless sprite.defunct?
     sprite.uid = @sprites.length
     @sprites.push(sprite)
@@ -125,6 +121,7 @@ class Game extends Emitter
     return
 
   movePredict: (stepRemaining) ->
+    SCAN_STEP = 0.1
     rabbit = @getRabbit()
     origX = rabbit.x
     origY = rabbit.y
@@ -132,27 +129,30 @@ class Game extends Emitter
     ret = {}
     lastCollision = []
     while true
-      rabbit.x += 0.1 * Math.sin(toRad(rabbit.angle))
-      rabbit.y -= 0.1 * Math.cos(toRad(rabbit.angle))
-      stepScanned += 0.1
+      rabbit.x += SCAN_STEP * Math.sin(toRad(rabbit.angle))
+      rabbit.y -= SCAN_STEP * Math.cos(toRad(rabbit.angle))
+      stepScanned += SCAN_STEP
 
       currentCollision = []
       for elem in @filterSprites(defunct: false)
-        continue if elem == rabbit
-        if elem.radius? and
+        continue if elem == rabbit or not elem.region?
+        if elem.region.radius? and
         (rabbit.x - elem.x) * (rabbit.x - elem.x) +
-        (rabbit.y - elem.y) * (rabbit.y - elem.y) < elem.radius * elem.radius
+        (rabbit.y - elem.y) * (rabbit.y - elem.y) <
+        elem.region.radius * elem.region.radius
           currentCollision.push(elem)
-          if elem.type not in lastCollision and stepScanned > 0.15
+          if elem.type not in lastCollision and stepScanned > SCAN_STEP * 1.5
             collisionFlag = true
             ret =
               collision: elem
               step: stepScanned
             currentCollision.append
             break
-        else if elem.width? and
-        rabbit.x > elem.x and rabbit.x < elem.x + elem.width and
-        rabbit.y > elem.y and rabbit.y < elem.y + elem.height
+        else if elem.region.width? and
+        rabbit.x > elem.x - elem.region.width / 2 and
+        rabbit.x < elem.x + elem.region.width / 2 and
+        rabbit.y > elem.y - elem.region.height / 2 and
+        rabbit.y < elem.y + elem.region.height / 2 
           currentCollision.push(elem)
           collisionFlag = true
           ret =

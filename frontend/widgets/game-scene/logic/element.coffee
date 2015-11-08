@@ -1,7 +1,7 @@
 # A helper function to determine the duration of transform according to
 # its metric (i.e. length, angles, etc)
 scaleToTime = (scale) ->
-  Math.abs(scale * 5)
+  Math.abs(scale * 3)
 
 # Generate a Snap.svg transform string from an sprite
 tStrFor = (sprite) ->
@@ -14,46 +14,29 @@ class GameElem
   # This element will immediately update with sprite
   constructor: (@canvas, @sprite) ->
     @elem = null
-    switch @sprite.type
-      when 'rabbit'
-        @elem = @canvas.polygon(0, -70, 30, 30, -30, 30)
-        @elem.attr
-          fill: '#aaaaff'
-          stroke: '#000'
-          strokeWidth : 5
-      when 'carrot'
-        @elem = @canvas.circle(0, 0, 20)
-        @elem.attr
-          fill: '#ff5555'
-          stroke: '#000'
-          strokeWidth: 5
-      when 'key'
-        @elem = @canvas.image(
-          "/public/images/key.svg",
-          -@sprite.radius, -@sprite.radius, @sprite.radius, @sprite.radius
-        )
-        '''@elem.attr
-          fill: '#efcd7d'
-          stroke: '#000'
-          strokeWidth: 5'''
-      when 'river'
-        @elem = @canvas.rect(0, 0, @sprite.width, @sprite.height, 0, 0)
-        @elem.attr
-          fill: '#0B469F'
-          stroke: '#000'
-          strokeWidth: 5
-      when 'door'
-        @elem = @canvas.rect(0, 0, @sprite.width, @sprite.height, 0, 0)
-        @elem.attr
-          fill: '#4a4937'
-          stroke: '#000'
-          strokeWidth: 5
-      when 'rotator'
-        @elem = @canvas.circle(0, 0, 20)
-        @elem.attr
-          fill: '#4e0f69'
-          stroke: '#000'
-          strokeWidth: 5
+    knownSpriteTypes =
+      ['staticimage','rabbit', 'carrot', 'key', 'river', 'door', 'rotator']
+    if @sprite.type not in knownSpriteTypes
+      throw new Error("Unsupported sprite type #{@sprite.type}")
+
+    if @sprite.type != "staticimage" and @sprite.image
+      @elem = @canvas.image(
+        "/public/images/game-scene/" + @sprite.image.name,
+        -@sprite.image.width/2,
+        -@sprite.image.height/2,
+        @sprite.image.width,
+        @sprite.image.height
+      )
+
+    else if @sprite.type == "staticimage"
+      @elem = @canvas.image(
+        "/public/images/game-scene/" + @sprite.image.name,
+        @sprite.image.x,
+        @sprite.image.y,
+        @sprite.image.width,
+        @sprite.image.height
+      )
+
     @update(0)
 
   # Update the element with animation (if scale)
