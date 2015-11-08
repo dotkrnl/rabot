@@ -34,7 +34,7 @@ getIndent = (pos, code) ->
 ensureLineEnd = (pos, code) ->
   if !(code[pos] == '-' && code[pos+1] == '>')
     return code
-    
+
   j = pos + 2
   flag = false
   while j <= code.length
@@ -59,7 +59,7 @@ ensureLineEnd = (pos, code) ->
 findFunctionName = (pos, code) ->
   if !(code[pos] == '-' && code[pos+1] == '>')
     return ""
-    
+
   j = pos
   nameFound = false
   functionName = ""
@@ -69,17 +69,17 @@ findFunctionName = (pos, code) ->
         functionName = code[j] + functionName
       else
         if functionName == ""
-        
+
         else
           break
     else
       if code[j] == '='
         nameFound = true
       else
-    
+
     j--
   return functionName
-  
+
 # Check if the function is asyncable
 isAsyncable = (pos, code, functionList) ->
   if !(code[pos] == '-' && code[pos+1] == '>')
@@ -226,7 +226,7 @@ processAwaitDefer = (code, functionList) ->
         bracketCount++
       if code[i] == ')'
         bracketCount--
-        
+
     #When bracketCount is 0 again
     if detected > 0 && bracketFlag && bracketCount == 0
       bracketFlag = false
@@ -241,9 +241,9 @@ processAwaitDefer = (code, functionList) ->
           emptyParamFlag = false
           break
       if emptyParamFlag
-        afterCode = afterCode + buffer + "defer param)"    
+        afterCode = afterCode + buffer + "defer param)"
       else
-        afterCode = afterCode + buffer + ", defer param)"    
+        afterCode = afterCode + buffer + ", defer param)"
       buffer = ""
     # When a word is not finished
     else if isIdentifier(code[i])
@@ -295,25 +295,22 @@ processAwaitDefer = (code, functionList) ->
       buffer = ""
     i++
   return afterCode
-  
+
 module.exports = (code) ->
   # Add highlight/unhighlight function calls
   code = processHighlight(code)
 
   code += '\n'
-  
-  # add new line to for/while/if subfixes
-  code = breakLine(code)
-  
+
   # @val functionList: stores functions needed to be done
   functionList = ["move", "turn", "turnTo"]
-  
+
   # First scan, find functions to asyncify, add to functionList
   functionList = scanAsyncableFunction(code,functionList)
-  
+
   # Second scan, to process user-defined functions
   code = processCallback(code, functionList)
-  
+
   # Third scan, add "await" & "defer param"
   code = processAwaitDefer(code, functionList)
 
