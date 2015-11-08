@@ -174,7 +174,7 @@ processHighlightLine = (code, lineNumber) ->
       j = i
       while j < code.length
         if code[j] == '\n'
-          break
+          return code
         if code[j] != ' '
           code = ensureLineEnd(i, code)
           break
