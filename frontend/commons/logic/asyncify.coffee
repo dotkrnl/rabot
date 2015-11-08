@@ -9,26 +9,20 @@ addPrefix = (afterCode, buffer, ch) ->
   afterCode += ch
   return afterCode
 
-  
 inFunctionList = (word, functionList) ->
   for str in functionList
     if word == str
       return true
   return false
 
-  
 isIdentifier = (char) ->
   return (char >= 'a' && char <= 'z')||(char >= 'A' && char <= 'Z')\
   || (char == '_') || (char >= '0' && char <= '9')
 
-  
 inBranchOrLoop = (word) ->
   return (word == "for") || (word == "if") || (word == "while")
 
-  
 getIndent = (pos, code) ->
-  if code[pos] != '\n'
-    return ""
   indent = ""
   pos++
   while pos < code.length - 1 && (code[pos] == '\t' || code[pos] == ' ')
@@ -36,7 +30,6 @@ getIndent = (pos, code) ->
     pos++
   return indent
 
-  
 # Add new line after "->" if there's something
 ensureLineEnd = (pos, code) ->
   if !(code[pos] == '-' && code[pos+1] == '>')
@@ -54,14 +47,13 @@ ensureLineEnd = (pos, code) ->
   if flag
     j = pos
     while j >= 0
-      if code[j] = '\n' || j == 0
+      if code[j] = '\n'
         break
       j--
     indent = getIndent(j, code) + "  "
     code = code.substr(0, pos+3) + '\n' + indent + \
     code.substr(pos+3, code.length)
   return code
-
 
 # Find function name
 findFunctionName = (pos, code) ->
@@ -88,7 +80,6 @@ findFunctionName = (pos, code) ->
     j--
   return functionName
   
-
 # Check if the function is asyncable
 isAsyncable = (pos, code, functionList) ->
   if !(code[pos] == '-' && code[pos+1] == '>')
@@ -113,7 +104,7 @@ isAsyncable = (pos, code, functionList) ->
       j++
   return false
 
-
+# Find functions to asyncify
 scanAsyncableFunction = (code, functionList) ->
   i = 0
   while i < code.length
@@ -167,14 +158,31 @@ processHighlight = (code) ->
 # Add highlight/unhighlight function call for a single line
 # Incomplete
 processHighlightLine = (code, lineNumber) ->
-  indent = ""
+  firstWord = ""
   for ch in code
     if ch == ' ' || ch == '\t'
-      indent += ch
+      if firstWord != ""
+        break
     else
+      firstWord += ch
+  if inBranchOrLoop(firstWord)
+    return code
+  indent = getIndent(-1, code)
+  i = 0
+  while i < code.length
+    if code[i] == '-' && code[i+1] == '>'
+      j = i
+      while j < code.length
+        if code[j] == '\n'
+          break
+        if code[j] != ' '
+          code = ensureLineEnd(i, code)
+          break
+        j++
       break
+    i++
   return indent + "highlight(" + lineNumber + ")\n" + code\
-  + "unhighlight(" + lineNumber + ")\n"
+  + indent + "unhighlight(" + lineNumber + ")\n"
 
 # Second scan, to process user-defined functions
 processCallback = (code, functionList) ->
@@ -294,10 +302,13 @@ module.exports = (code) ->
 
   code += '\n'
   
+  # add new line to for/while/if subfixes
+  code = breakLine(code)
+  
   # @val functionList: stores functions needed to be done
   functionList = ["move", "turn", "turnTo"]
   
-  # First scan, find functions to asyncify
+  # First scan, find functions to asyncify, add to functionList
   functionList = scanAsyncableFunction(code,functionList)
   
   # Second scan, to process user-defined functions
