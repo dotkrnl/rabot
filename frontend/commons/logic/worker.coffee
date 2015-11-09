@@ -10,15 +10,16 @@ class UserCodeWorker
   # @param @game the game model
   # @param @code the user code
   constructor: (@game, @code) ->
-    asyncCode = asyncify(@code)
+    userAPIList = ['move', 'turn', 'turnTo']
+    asyncCode = asyncify(@code, userAPIList)
 
-    # set "runtime" to be inlined instead of node
     workerSpriteInitCode = """
 
     __rabot_add_game_sprites(#{JSON.stringify(@prepareWorkerGameObject())})
 
     """
 
+    # set "runtime" to be inlined instead of node
     jsCode = CoffeeScript.compile \
       @USERSPACE_API + workerSpriteInitCode + asyncCode + @USERSPACE_END,
       runtime: "inline"
