@@ -9,34 +9,21 @@ class LevelSelector extends View
   # @param topDom: the mixin dom provided by template.jade
   constructor: (topDom) ->
     super(topDom)
-    '''@getJQueryObject('cancel-dialog').click =>
-      @hide()
-    '''
     @contentDom = @getJQueryObject('ls-content')
     @maskDom = @getJQueryObject('ls-mask')
     @canvas = @createViewFromElement('ls-canvas', Snap)
-
-    @levelElems = []
-    @stageManager = new Stage()
-
-  updateLevelElems: (stageData) ->
-    levelElems = []
-    @canvas.clear();
-    @elem = @canvas.image(
-      '/public/images/level-selector/grassland.svg', 0, 0, 700, 400
+    @stagePackageBackground = @canvas.image(
+      @getImageAssetPath() + 'level-selector/grassland.svg', 0, 0, 700, 400
     )
     @prevButton = @canvas.image(
-      '/public/images/level-selector/button-previous.svg', 25, 175, 75, 75
+      @getImageAssetPath() + 'level-selector/button-previous.svg', 25, 175, 75, 75
     )
     @nextButton = @canvas.image(
-      '/public/images/level-selector/button-next.svg', 600, 175, 75, 75
+      @getImageAssetPath() + 'level-selector/button-next.svg', 600, 175, 75, 75
     )
     @closeButton = @canvas.image(
-      '/public/images/level-selector/button-close.svg', 625, 25, 50, 50
+      @getImageAssetPath() + '/level-selector/button-close.svg', 625, 25, 50, 50
     )
-
-    $(@closeButton.node).on 'click', =>
-      @hide()
 
     for elem in [@prevButton, @nextButton, @closeButton]
       do(elem) =>
@@ -44,6 +31,26 @@ class LevelSelector extends View
           elem.animate(transform:'t0,0s1.3', 200, mina.linear, ->)
         $(elem.node).on "mouseout", =>
           elem.animate(transform:'t0,0s1.0', 200, mina.linear, ->)
+
+    $(@closeButton.node).on 'click', => @hide()
+    $(@nextButton.node).on 'click', => @switchToNextStagePackage()
+    $(@prevButton.node).on 'click', => @switchToPreviousStagePackage()
+
+    @stagePackageNameText = @canvas.text(350, 50, "AAAAAAAA")
+
+    @canvasLevelElemGroup = @canvas.group()
+    @stagePackageNameText.attr
+      'text-anchor': 'middle'
+      'font-size': "14pt"
+      stroke: "#000"
+
+    @levelElems = []
+    @stageManager = new Stage()
+
+  updateLevelElems: (stageData) ->
+    levelElems = []
+    @canvasLevelElemGroup.clear();
+    console.log stageData
 
     # TODO: replace i with stage_id.
     centers = []
@@ -57,6 +64,7 @@ class LevelSelector extends View
       line.attr
         stroke: "#000",
         strokeWidth: 5
+      @canvasLevelElemGroup.add(line)
     i = 1
     for stage in stageData
       center = centers[i-1]
@@ -74,6 +82,7 @@ class LevelSelector extends View
           fill: "#222",
           "font-size": "12px"
       elem = @canvas.group(circle, text)
+      @canvasLevelElemGroup.add(elem, levelText)
       levelElems.push(elem)
       do(elem, stage) =>
         $(elem.node).on "mouseover", =>
@@ -92,6 +101,35 @@ class LevelSelector extends View
   show: ->
     @contentDom.fadeIn()
     @maskDom.fadeIn()
-    @stageManager.queryStageList @updateLevelElems.bind(@)
+    @stageManager.queryStagePackageList (result) =>
+      @stagePackageList = result
+      @stageManager.queryStageList @stagePackageList[0], (stageData) =>
+        @switchToStagePackage(0)
+        @updateLevelElems(stageData)
+
+  switchToStagePackage: (stagePackageIndex) ->
+    @currentPackageIndex = stagePackageIndex;
+    @prevButton.attr visibility: "hidden"
+    @nextButton.attr visibility: "hidden"
+    if stagePackageIndex > 0
+      @prevButton.attr visibility: "visible"
+    if stagePackageIndex < @stagePackageList.length - 1
+      @nextButton.attr visibility: "visible"
+
+    @stagePackageNameText.attr
+      text: @stagePackageList[@currentPackageIndex].name
+
+    @stagePackageBackground.attr
+      "xlink:href":
+        @getImageAssetPath() + 'level-selector/' +
+        @stagePackageList[@currentPackageIndex].background
+
+  switchToNextStagePackage : () ->
+    if @currentPackageIndex < @stagePackageList.length - 1
+      @switchToStagePackage(@currentPackageIndex + 1)
+
+  switchToPreviousStagePackage : () ->
+    if @currentPackageIndex > 0
+      @switchToStagePackage(@currentPackageIndex - 1)
 
 module.exports = LevelSelector

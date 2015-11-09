@@ -27,4 +27,13 @@ class View extends Emitter
   createViewFromElement: (cssClassName, classObject) ->
     new classObject(@getDOMElement(cssClassName))
 
+  getAssetPath: () ->
+    return '/public/'
+
+  getImageAssetPath: () ->
+    return @getAssetPath() + 'images/'
+
+  getAudioAssetPath: () ->
+    return @getAssetPath() + 'audios/'
+
 module.exports = View

@@ -59,6 +59,8 @@ class GameView extends View
       @stage.getStage stageId, (stageData) =>
         @game.loadStage stageData.info
 
+    @levelSelector.show()
+
     @gameOverDialog.on "replaystage", =>
       @game.restartStage()
     @gameOverDialog.on "nextstage", =>
