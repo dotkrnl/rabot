@@ -1,5 +1,7 @@
-class View
+Emitter = require('../commons/logic/emitter.coffee')
+class View extends Emitter
   constructor: (@topDom) ->
+    super()
 
   getDOMElement: (className) ->
     if typeof className != 'string'
@@ -11,11 +13,11 @@ class View
     domObjects = $(@topDom).find(className)
     if domObjects.length <= 0
       throw new Error(
-        "No element with class #{className} found in #{topDOM}"
+        "No element with class #{className} found in #{@topDom}"
       )
     if domObjects.length >= 2
       throw new Error(
-        "Multiple element with class #{className} found in #{topDOM}"
+        "Multiple element with class #{className} found in #{@topDom}"
       )
     return domObjects[0]
 

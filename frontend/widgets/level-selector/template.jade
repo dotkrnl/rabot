@@ -3,11 +3,5 @@ mixin level-selector()
     div
       div.ls-mask
       div.ls-content
-        div.panel.panel-default
-          div.panel-heading
-            button.close.cancel-dialog(type="button")
-              span(aria-hidden="true") &times;
-              span.sr-only Back
-            h5 Select Level
-          div.panel-body
-            svg.ls-canvas(viewBox="0 0 600 400")
+        div.ls-canvas-wrapper
+          svg.ls-canvas(viewBox="0 0 700 400")

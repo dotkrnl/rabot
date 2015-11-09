@@ -1,26 +1,50 @@
 Emitter = require('../../commons/logic/emitter.coffee')
 Stage = require('../../models/stage.coffee')
+View = require('../view.coffee')
+
 # a class to setup user friendly code editor
-class LevelSelector extends Emitter
+class LevelSelector extends View
 
   # Construct the level selector
   # @param topDom: the mixin dom provided by template.jade
   constructor: (topDom) ->
-    super()
-    @topDom = $(topDom)
-    @topDom.find(".cancel-dialog").click =>
+    super(topDom)
+    '''@getJQueryObject('cancel-dialog').click =>
       @hide()
-
-    @contentDom = $(topDom).find(".ls-content")
-    @maskDom = $(topDom).find(".ls-mask")
+    '''
+    @contentDom = @getJQueryObject('ls-content')
+    @maskDom = @getJQueryObject('ls-mask')
+    @canvas = @createViewFromElement('ls-canvas', Snap)
 
     @levelElems = []
-    @canvas = Snap(@topDom.find(".ls-canvas")[0])
     @stageManager = new Stage()
 
   updateLevelElems: (stageData) ->
     levelElems = []
     @canvas.clear();
+    @elem = @canvas.image(
+      '/public/images/level-selector/grassland.svg', 0, 0, 700, 400
+    )
+    @prevButton = @canvas.image(
+      '/public/images/level-selector/button-previous.svg', 25, 175, 75, 75
+    )
+    @nextButton = @canvas.image(
+      '/public/images/level-selector/button-next.svg', 600, 175, 75, 75
+    )
+    @closeButton = @canvas.image(
+      '/public/images/level-selector/button-close.svg', 625, 25, 50, 50
+    )
+
+    $(@closeButton.node).on 'click', =>
+      @hide()
+
+    for elem in [@prevButton, @nextButton, @closeButton]
+      do(elem) =>
+        $(elem.node).on "mouseover", =>
+          elem.animate(transform:'t0,0s1.3', 200, mina.linear, ->)
+        $(elem.node).on "mouseout", =>
+          elem.animate(transform:'t0,0s1.0', 200, mina.linear, ->)
+
     # TODO: replace i with stage_id.
     centers = []
     for i in [1..stageData.length]

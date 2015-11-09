@@ -1,6 +1,16 @@
 class Stage
+  queryStagePackageList: (handler) ->
+    # TODO : This is a stub function.
+    return {
+      'Beginner\' s gressland':
+        background: '123'
+      'Branch forest':
+        background: '456'
+      'Loop\'s river':
+        background: '789'
+    }
+
   queryStageList: (handler) ->
-    #TODO: Use Ajax to query server to acquire data
     $.ajax
       url: '/backend/stage/'
       data : ''
