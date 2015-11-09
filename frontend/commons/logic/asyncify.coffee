@@ -10,6 +10,7 @@ addPrefix = (afterCode, buffer, ch) ->
   return afterCode
 
 inFunctionList = (word, functionList) ->
+  word = peelFunctionName(word)
   for str in functionList
     if word == str
       return true
@@ -55,6 +56,16 @@ ensureLineEnd = (pos, code) ->
     code.substr(pos+3, code.length-pos-3)
   return code
 
+# Peels the real function name
+peelFunctionName = (word) ->
+  realName = ""
+  for ch in word
+    if ch == '.'
+      realName = ""
+    else
+      realName += ch
+  return realName
+
 # Find function name
 findFunctionName = (pos, code) ->
   if !(code[pos] == '-' && code[pos+1] == '>')
@@ -76,8 +87,8 @@ findFunctionName = (pos, code) ->
       if code[j] == '='
         nameFound = true
       else
-    
     j--
+  functionName = peelFunctionName(functionName)
   return functionName
   
 # Check if the function is asyncable
@@ -156,7 +167,6 @@ processHighlight = (code) ->
   return afterCode
 
 # Add highlight/unhighlight function call for a single line
-# Incomplete
 processHighlightLine = (code, lineNumber) ->
   firstWord = ""
   for ch in code
@@ -331,8 +341,11 @@ processAwaitDefer = (code, functionList) ->
       buffer = ""
     i++
   return afterCode
-  
-module.exports = (code) ->
+
+# Work as main function
+# @param code: code to be asyncified
+# @param functionList: stores functions needed to be done  
+module.exports = (code, functionList) ->
   # Add highlight/unhighlight function calls
   code = processHighlight(code)
 
@@ -340,9 +353,6 @@ module.exports = (code) ->
   
   # add new line to for/while/if subfixes
   code = processSubfixBranchLoop(code)
-  
-  # @val functionList: stores functions needed to be done
-  functionList = ["move", "turn", "turnTo"]
   
   # First scan, find functions to asyncify, add to functionList
   functionList = scanAsyncableFunction(code,functionList)
