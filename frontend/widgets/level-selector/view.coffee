@@ -1,5 +1,6 @@
 Emitter = require('../../commons/logic/emitter.coffee')
 Stage = require('../../models/stage.coffee')
+UserProgress = require('../../models/userprogress.coffee')
 View = require('../view.coffee')
 
 # a class to setup user friendly code editor
@@ -12,6 +13,7 @@ class LevelSelector extends View
     @contentDom = @getJQueryObject('ls-content')
     @maskDom = @getJQueryObject('ls-mask')
     @canvas = @createViewFromElement('ls-canvas', Snap)
+    @userProgress = new UserProgress
     @stagePackageBackground = @canvas.image(
       @getImageAssetPath() + 'level-selector/grassland.svg', 0, 0, 700, 400
     )
@@ -48,9 +50,10 @@ class LevelSelector extends View
     @stageManager = new Stage()
 
   updateLevelElems: (stageData) ->
+    userProgress = @userProgress.getUserProgress()
     levelElems = []
     @canvasLevelElemGroup.clear();
-    console.log stageData
+    console.log userProgress
 
     # TODO: replace i with stage_id.
     centers = []
@@ -81,8 +84,12 @@ class LevelSelector extends View
       levelText.attr
           fill: "#222",
           "font-size": "12px"
+      progressText = @canvas.text(
+        center.x - 30, center.y + 40, userProgress[i] + " stars"
+      )
+      userProgress
       elem = @canvas.group(circle, text)
-      @canvasLevelElemGroup.add(elem, levelText)
+      @canvasLevelElemGroup.add(elem, levelText, progressText)
       levelElems.push(elem)
       do(elem, stage) =>
         $(elem.node).on "mouseover", =>

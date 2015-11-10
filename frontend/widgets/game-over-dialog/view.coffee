@@ -1,4 +1,6 @@
 Emitter = require('../../commons/logic/emitter.coffee')
+UserProgress = require('../../models/userprogress.coffee')
+
 # a class to setup user friendly code editor
 class GameOverDialog extends Emitter
 
@@ -6,6 +8,7 @@ class GameOverDialog extends Emitter
   # @param topDom: the mixin dom provided by template.jade
   constructor: (topDom) ->
     super()
+    @userProgress = new UserProgress
     @topDom = $(topDom)
     @topDom.find(".btn-next").click =>
       @hide()

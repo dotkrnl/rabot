@@ -1,7 +1,7 @@
 class Stage
-  queryStagePackageList: (handler) ->
+  queryStagePackageList: (callback) ->
     # TODO : This is a stub function.
-    handler [
+    callback [
       {
         name: 'Beginner\' s gressland'
         background: 'grassland.svg'
@@ -16,19 +16,19 @@ class Stage
       }
     ]
 
-  queryStageList: (packageName, handler) ->
+  queryStageList: (packageName, callback) ->
     $.ajax
       url: '/backend/stage/'
       data : ''
       dataType: 'json'
-    .done handler
+    .done callback
 
 
-  getStage: (stageId, handler) ->
+  getStage: (stageId, callback) ->
     $.ajax
       url: '/backend/stage/' + stageId
       data : ''
       dataType: 'json'
-    .done handler
+    .done callback
 
 module.exports = Stage

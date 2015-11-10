@@ -1,6 +1,7 @@
 Game = require('../../models/game.coffee')
 Stage = require('../../models/stage.coffee')
 UserWorker = require('../../commons/logic/worker.coffee')
+UserProgress = require('../../models/userprogress.coffee')
 
 CodeEditor = require('../code-editor/view.coffee')
 GameScene = require('../game-scene/view.coffee')
@@ -99,6 +100,8 @@ class GameView extends View
     @game = game
     @game.register @gameScene
     @game.on 'win', =>
+      userProgress = new UserProgress
+      userProgress.updateUserProgress("", @currentSid, @game.carrotGot)
       @gameOverDialog.show(@game.carrotGot)
     @game.on 'lost', =>
       @gameOverDialog.show(-1)
