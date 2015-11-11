@@ -101,7 +101,7 @@ class GameView extends View
     @game.register @gameScene
     @game.on 'win', =>
       userProgress = new UserProgress
-      userProgress.updateUserProgress("", @currentSid, @game.carrotGot)
+      userProgress.updateUserProgress(101, @currentSid, @game.carrotGot)
       @gameOverDialog.show(@game.carrotGot)
     @game.on 'lost', =>
       @gameOverDialog.show(-1)

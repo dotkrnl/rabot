@@ -50,11 +50,10 @@ class LevelSelector extends View
     @stageManager = new Stage()
 
   updateLevelElems: (stageData) ->
-    userProgress = @userProgress.getUserProgress()
+    userProgress = @userProgress.getUserProgress(101)
     levelElems = []
-    @canvasLevelElemGroup.clear();
-    console.log userProgress
-
+    @canvasLevelElemGroup.clear()
+    
     # TODO: replace i with stage_id.
     centers = []
     for i in [1..stageData.length]
