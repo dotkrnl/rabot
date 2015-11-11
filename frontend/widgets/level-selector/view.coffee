@@ -18,13 +18,16 @@ class LevelSelector extends View
       @getImageAssetPath() + 'level-selector/grassland.svg', 0, 0, 700, 400
     )
     @prevButton = @canvas.image(
-      @getImageAssetPath() + 'level-selector/button-previous.svg', 25, 175, 75, 75
+      @getImageAssetPath() + 'level-selector/button-previous.svg',
+      25, 175, 75, 75
     )
     @nextButton = @canvas.image(
-      @getImageAssetPath() + 'level-selector/button-next.svg', 600, 175, 75, 75
+      @getImageAssetPath() + 'level-selector/button-next.svg',
+      600, 175, 75, 75
     )
     @closeButton = @canvas.image(
-      @getImageAssetPath() + '/level-selector/button-close.svg', 625, 25, 50, 50
+      @getImageAssetPath() + '/level-selector/button-close.svg',
+      625, 25, 50, 50
     )
 
     for elem in [@prevButton, @nextButton, @closeButton]
@@ -53,51 +56,67 @@ class LevelSelector extends View
     userProgress = @userProgress.getUserProgress(101)
     levelElems = []
     @canvasLevelElemGroup.clear()
-    
+
     # TODO: replace i with stage_id.
     centers = []
     for i in [1..stageData.length]
       centers.push
-        x : i * 70 + 25,
-        y : Math.random() * 200 + 100
-    for i in [0..centers.length-2]
-      line =
-        @canvas.line(centers[i].x, centers[i].y, centers[i+1].x, centers[i+1].y)
-      line.attr
-        stroke: "#000",
-        strokeWidth: 5
-      @canvasLevelElemGroup.add(line)
+        x : (i - 1) % 4 * 120 + 170,
+        y : Math.floor((i - 1) / 4 + 0.01) * 90 + 135
+
+    maxAvailStage = 0
+    for i in [1..stageData.length]
+      if userProgress[i] >= 0
+        maxAvailStage = i
+      else break
+    maxAvailStage++
+
     i = 1
     for stage in stageData
-      center = centers[i-1]
-      circle = @canvas.circle(center.x, center.y, 20)
+      center = centers[i - 1]
+      if i <= maxAvailStage
+        circle = @canvas.image \
+          @getImageAssetPath() + 'level-selector/circle-blue.svg',
+          center.x - 35, center.y - 35, 70, 70
+      else
+        circle = @canvas.image \
+          @getImageAssetPath() + 'level-selector/circle-grey.svg',
+          center.x - 35, center.y - 35, 70, 70
       circle.attr
         fill: "#daba55",
         stroke: "#000",
         strokeWidth: 2
-      text = @canvas.text(center.x - 5, center.y + 5, "" + i)
+      text = @canvas.text(center.x, center.y, "" + i)
       text.attr
-          fill: "#222",
-          "font-size": "20px"
-      levelText = @canvas.text(center.x - 30, center.y + 30, stage.name)
+        fill: '#222',
+        'font-size': '20px'
+        'text-anchor': 'middle'
+      for j in [0..2]
+        if j < userProgress[i]
+          @canvas.image \
+            @getImageAssetPath() + 'level-selector/star-gold.svg',
+            center.x - 10 + (j - 1) * 20, center.y + 5, 20, 20
+        else
+          @canvas.image \
+            @getImageAssetPath() + 'level-selector/star-grey.svg',
+            center.x - 10 + (j - 1) * 20, center.y + 5, 20, 20
+      levelText = @canvas.text(center.x, center.y + 50, stage.name)
       levelText.attr
-          fill: "#222",
-          "font-size": "12px"
-      progressText = @canvas.text(
-        center.x - 30, center.y + 40, userProgress[i] + " stars"
-      )
-      userProgress
+        fill: '#222',
+        'font-size': '16px'
+        'text-anchor': 'middle'
       elem = @canvas.group(circle, text)
-      @canvasLevelElemGroup.add(elem, levelText, progressText)
+      @canvasLevelElemGroup.add(elem, levelText)
       levelElems.push(elem)
       do(elem, stage) =>
-        $(elem.node).on "mouseover", =>
-          elem.animate(transform:'t0,0s1.3', 200, mina.linear, ->)
-        $(elem.node).on "mouseout", =>
-          elem.animate(transform:'t0,0s1.0', 200, mina.linear, ->)
-        $(elem.node).on "click", =>
-          @hide()
-          @trigger("levelselected", stage.sid)
+        if i <= maxAvailStage
+          $(elem.node).on "mouseover", ->
+            elem.animate(transform:'t0,0s1.3', 200, mina.linear, ->)
+          $(elem.node).on "mouseout", ->
+            elem.animate(transform:'t0,0s1.0', 200, mina.linear, ->)
+          $(elem.node).on "click", =>
+            @hide()
+            @trigger("levelselected", stage.sid)
       i++
 
   hide: ->
@@ -114,7 +133,7 @@ class LevelSelector extends View
         @updateLevelElems(stageData)
 
   switchToStagePackage: (stagePackageIndex) ->
-    @currentPackageIndex = stagePackageIndex;
+    @currentPackageIndex = stagePackageIndex
     @prevButton.attr visibility: "hidden"
     @nextButton.attr visibility: "hidden"
     if stagePackageIndex > 0
