@@ -55,9 +55,12 @@ class GameView extends View
 
     @bindGame(new Game)
 
-    @levelSelector.on "levelselected", (stageId) =>
-      @currentSid = parseInt(stageId)
-      @stage.getStage stageId, (stageData) =>
+    @levelSelector.on "levelselected", (packageId, stageIndex) =>
+      @currentPackage = packageId
+      packageData = @stage.getStagePackage(packageId).stages
+      @currentStageIndex = stageIndex
+      @currentSid = parseInt(packageData[stageIndex])
+      @stage.getStage @currentSid, (stageData) =>
         @game.loadStage stageData.info
 
     @levelSelector.show()
@@ -65,7 +68,10 @@ class GameView extends View
     @gameOverDialog.on "replaystage", =>
       @game.restartStage()
     @gameOverDialog.on "nextstage", =>
-      @currentSid++
+      packageData = @stage.getStagePackage(@currentPackage).stages
+      if @currentStageIndex < packageData.length - 1
+        @currentStageIndex++
+      @currentSid = parseInt(packageData[@currentStageIndex])
       @stage.getStage @currentSid, (stageData) =>
         @game.loadStage stageData.info
 
@@ -101,7 +107,9 @@ class GameView extends View
     @game.register @gameScene
     @game.on 'win', =>
       userProgress = new UserProgress
-      userProgress.updateUserProgress(101, @currentSid, @game.carrotGot)
+      userProgress.updateUserProgress(
+        @currentPackage, @currentStageIndex, @game.carrotGot
+      )
       @gameOverDialog.show(@game.carrotGot)
     @game.on 'lost', =>
       @gameOverDialog.show(-1)

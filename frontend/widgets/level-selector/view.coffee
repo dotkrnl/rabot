@@ -53,8 +53,10 @@ class LevelSelector extends View
     @levelElems = []
     @stageManager = new Stage()
 
-  updateLevelElems: (stageData) ->
-    userProgress = @userProgress.getUserProgress(101)
+  updateLevelElems: (packageId) ->
+    stageData = @stage.getStagePackage(packageId).stages
+    userProgress = @userProgress.getUserProgress(packageId)
+    console.log userProgress
     levelElems = []
     @canvasLevelElemGroup.clear()
 
@@ -65,12 +67,12 @@ class LevelSelector extends View
         x : (i - 1) % 4 * 120 + 170,
         y : Math.floor((i - 1) / 4 + 0.01) * 90 + 135
 
-    maxAvailStage = 0
-    for i in [1..stageData.length]
+    maxAvailStage = -1
+    for i in [0..stageData.length - 1]
       if userProgress[i] >= 0
         maxAvailStage = i
       else break
-    maxAvailStage++
+    maxAvailStage += 2
 
     i = 1
     for stageId in stageData
@@ -105,7 +107,7 @@ class LevelSelector extends View
 
       for j in [0..2]
         star = null
-        if j < userProgress[i]
+        if j < userProgress[i - 1]
           star = @canvas.image \
             @getImageAssetPath() + 'level-selector/star-gold.svg',
             center.x - 10 + (j - 1) * 20, center.y + 5, 20, 20
@@ -114,7 +116,7 @@ class LevelSelector extends View
             @getImageAssetPath() + 'level-selector/star-grey.svg',
             center.x - 10 + (j - 1) * 20, center.y + 5, 20, 20
         @canvasLevelElemGroup.add(star)
-      do(elem, stage) =>
+      do(i, elem, stage) =>
         if i <= maxAvailStage
           $(elem.node).on "mouseover", ->
             elem.animate(transform:'t0,0s1.3', 200, mina.linear, ->)
@@ -122,7 +124,7 @@ class LevelSelector extends View
             elem.animate(transform:'t0,0s1.0', 200, mina.linear, ->)
           $(elem.node).on "click", =>
             @hide()
-            @trigger("levelselected", stage.sid)
+            @trigger("levelselected", packageId, i - 1)
       i++
 
   hide: ->
@@ -156,7 +158,7 @@ class LevelSelector extends View
         @getImageAssetPath() + 'level-selector/' +
         @stagePackageList[@currentPackageIndex].background
 
-    @updateLevelElems(@stagePackageList[@currentPackageIndex].stages)
+    @updateLevelElems(@stagePackageList[@currentPackageIndex].id)
 
   switchToNextStagePackage : () ->
     if @currentPackageIndex < @stagePackageList.length - 1

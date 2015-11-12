@@ -21,7 +21,7 @@ class UserProgress
       if not userProgress[stagePackageId]?
         userProgress[stagePackageId] = []
       #TODO : This fixed length for stage count need to be replaced.
-      for stageIndex in [0..5]
+      for stageIndex in [0..elem.stages.length - 1]
         if not userProgress[stagePackageId][stageIndex]?
           userProgress[stagePackageId][stageIndex] = -1
     localStorage.setItem('userProgress', JSON.stringify(userProgress))
