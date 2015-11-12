@@ -152,7 +152,7 @@ class Game extends Emitter
         rabbit.x > elem.x - elem.region.width / 2 and
         rabbit.x < elem.x + elem.region.width / 2 and
         rabbit.y > elem.y - elem.region.height / 2 and
-        rabbit.y < elem.y + elem.region.height / 2 
+        rabbit.y < elem.y + elem.region.height / 2
           currentCollision.push(elem)
           collisionFlag = true
           ret =

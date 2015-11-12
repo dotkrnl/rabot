@@ -21,8 +21,8 @@ class GameView extends View
       instance = createjs.Sound.play("sound", "none", 0, 0, -1)
       instance.on("complete", this.handleComplete, this)
       instance.volume = 0.5)
-     , @);
-    createjs.Sound.registerSound("/public/audios/ambient-forest.mp3", "sound");
+     , @)
+    createjs.Sound.registerSound("/public/audios/ambient-forest.mp3", "sound")
     @game = new Game
     @stage = new Stage
     @userWorker = null

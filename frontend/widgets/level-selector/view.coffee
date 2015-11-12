@@ -14,6 +14,7 @@ class LevelSelector extends View
     @maskDom = @getJQueryObject('ls-mask')
     @canvas = @createViewFromElement('ls-canvas', Snap)
     @userProgress = new UserProgress
+    @stage = new Stage()
     @stagePackageBackground = @canvas.image(
       @getImageAssetPath() + 'level-selector/grassland.svg', 0, 0, 700, 400
     )
@@ -72,7 +73,8 @@ class LevelSelector extends View
     maxAvailStage++
 
     i = 1
-    for stage in stageData
+    for stageId in stageData
+      stage = @stage.getLocalStage(stageId)
       center = centers[i - 1]
       if i <= maxAvailStage
         circle = @canvas.image \
