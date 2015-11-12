@@ -37,12 +37,10 @@ def user_registration_view(request):
 
                 if result[:9] == 'Succeeded':
                     cur_user = manager.get_cur_user().to_dict()
-                    request.session['cur_user'] = cur_user
-                    request.session['logged_in'] = True
                     response_data = {
                         'result': 'succeeded',
                         'user': cur_user,
-                        'loggedin': True,
+                        'loggedin': False,
                     }
 
                 else:

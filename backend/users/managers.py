@@ -26,13 +26,18 @@ class UsersManager():
         mail_from_uname = 'project_rabot'
         mail_from_passwd = 'orz_rabot'
         mail_to = email
+
+        authentication_url = 'localhost:8000/authentication/' + str(uid)
         mail_content = """
             <h3> Welcome to Rabot -- Learn coding with a rabbit. </h3>
             <h5>Coding for fun? Is that a joke? No! </h5>
             <br>
             Thanks for your registration.<br>
-            Please click this <a href="localhost:8000/authentication/"""\
-        + str(uid) + '">link</a> to finish the registration. <br>'
+            Please click this <a href="%s">link</a> to finish the registration. <br>
+            <br>
+            If the link above is not available, please copy the following url address: <br>
+            %s<br>
+        """ % (authentication_url, authentication_url)
 
         message = MIMEText(mail_content, _subtype='html', _charset='utf-8')
         message['Subject'] = 'Welcome to Rabot -- Learn coding with a rabbit'
