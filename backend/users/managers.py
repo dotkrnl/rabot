@@ -1,4 +1,6 @@
 from users.models import UsersDao
+import smtplib
+from email.mime.text import MIMEText
 
 
 class UsersManager():
@@ -16,6 +18,32 @@ class UsersManager():
                 return False
 
         return True
+
+    def __send_authentication_email(self, email):
+        mail_host = 'smtp.sohu.com'
+        mail_host_port = 25
+        mail_from = 'Rabot Admin<project_rabot@sohu.com>'
+        mail_from_uname = 'project_rabot'
+        mail_from_passwd = 'orz_rabot'
+        mail_to = email
+        mail_content = """
+            <h3> Welcome to Rabot -- Learn coding with a rabbit. </h3>
+            Coding for fun? Is that a joke? No! <br>
+            <br>
+            Please click this <a href="localhost:9000/authentication">link</a> to finish the registration. <br>
+        """
+
+        message = MIMEText(mail_content, _subtype='html', _charset='utf-8')
+        message['Subject'] = 'Welcome to Rabot -- Learn coding with a rabbit'
+        message['From'] = mail_from
+        message['To'] = mail_to
+
+        server = smtplib.SMTP(mail_host, mail_host_port)
+        server.ehlo()
+
+        server.login(mail_from_uname, mail_from_passwd)
+        server.sendmail(mail_from, mail_to, message.as_string())
+        server.close()
 
     def get_cur_user(self):
         return self.cur_user
@@ -42,6 +70,8 @@ class UsersManager():
             uid = all_users[-1].uid + 1
         else:
             uid = 1
+
+        self.__send_authentication_email(email)
 
         self.dao.create_user(uid, uname, passwd, email)
         self.cur_user = self.dao.get_user_by_uid(uid)

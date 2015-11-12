@@ -18,10 +18,7 @@ class Users(models.Model):
         return {
             'uid': self.uid,
             'username': self.uname,
-            #'password': self.passwd,
             'email': self.email,
-            #'authenticated': self.authenticated,
-            #'logged_in': self.logged_in,
         }
 
     class Meta:
