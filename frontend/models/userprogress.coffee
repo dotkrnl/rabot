@@ -16,7 +16,7 @@ class UserProgress
     userProgress = JSON.parse(localStorage.getItem('userProgress'))
     if not userProgress?
       userProgress = {}
-    for elem in @stage.queryLocalStagePackageList()
+    for elem in @stage.queryStagePackageList()
       stagePackageId = elem.id
       if not userProgress[stagePackageId]?
         userProgress[stagePackageId] = []

@@ -91,23 +91,27 @@ class LevelSelector extends View
         fill: '#222',
         'font-size': '20px'
         'text-anchor': 'middle'
-      for j in [0..2]
-        if j < userProgress[i]
-          @canvas.image \
-            @getImageAssetPath() + 'level-selector/star-gold.svg',
-            center.x - 10 + (j - 1) * 20, center.y + 5, 20, 20
-        else
-          @canvas.image \
-            @getImageAssetPath() + 'level-selector/star-grey.svg',
-            center.x - 10 + (j - 1) * 20, center.y + 5, 20, 20
+
       levelText = @canvas.text(center.x, center.y + 50, stage.name)
       levelText.attr
         fill: '#222',
         'font-size': '16px'
         'text-anchor': 'middle'
+      levelElems.push(elem)
       elem = @canvas.group(circle, text)
       @canvasLevelElemGroup.add(elem, levelText)
-      levelElems.push(elem)
+
+      for j in [0..2]
+        star = null
+        if j < userProgress[i]
+          star = @canvas.image \
+            @getImageAssetPath() + 'level-selector/star-gold.svg',
+            center.x - 10 + (j - 1) * 20, center.y + 5, 20, 20
+        else
+          star = @canvas.image \
+            @getImageAssetPath() + 'level-selector/star-grey.svg',
+            center.x - 10 + (j - 1) * 20, center.y + 5, 20, 20
+        @canvasLevelElemGroup.add(star)
       do(elem, stage) =>
         if i <= maxAvailStage
           $(elem.node).on "mouseover", ->
@@ -126,11 +130,12 @@ class LevelSelector extends View
   show: ->
     @contentDom.fadeIn()
     @maskDom.fadeIn()
-    @stageManager.queryStagePackageList (result) =>
-      @stagePackageList = result
+
+    # This is a workaround due to unfinished and unstable stage API
+    @stageManager.queryStageList "", =>
+      @stagePackageList = @stageManager.queryStagePackageList()
       @stageManager.queryStageList @stagePackageList[0], (stageData) =>
         @switchToStagePackage(0)
-        @updateLevelElems(stageData)
 
   switchToStagePackage: (stagePackageIndex) ->
     @currentPackageIndex = stagePackageIndex
@@ -148,6 +153,8 @@ class LevelSelector extends View
       "xlink:href":
         @getImageAssetPath() + 'level-selector/' +
         @stagePackageList[@currentPackageIndex].background
+
+    @updateLevelElems(@stagePackageList[@currentPackageIndex].stages)
 
   switchToNextStagePackage : () ->
     if @currentPackageIndex < @stagePackageList.length - 1
