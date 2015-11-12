@@ -10,6 +10,7 @@ class Users(models.Model):
     email = models.EmailField(default='default@rabot', unique=True)
     authenticated = models.BooleanField(default=False)
     logged_in = models.BooleanField(default=False)
+    admin_auth = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.uname + ' (#' + str(self.uid) + ')'
@@ -33,6 +34,9 @@ class UsersDao():
 
     def get_all_active_users(self):
         return list(Users.objects.filter(logged_in=True))
+
+    def get_all_administrators(self):
+        return list(Users.objects.filter(admin_auth=1))
 
     def create_user(self, uid, uname, passwd, email):
         Users.objects.create(uid=uid, uname=uname, passwd=passwd, email=email)
@@ -65,6 +69,10 @@ class UsersDao():
     def update_email(self, cur_user, email):
         cur_user.email = email
         cur_user.save(update_fields=['email'])
+
+    def update_admin_auth(self, cur_user, admin_auth):
+        cur_user.admin_auth = admin_auth
+        cur_user.save(update_fields=['admin_auth'])
 
     def get_user_by_uid(self, uid):
         try:
