@@ -6,22 +6,22 @@ block content
         div.col-sm-6
           h1 Register
       div.row
-        form.form-horizontal
+        form.ra-form.form-horizontal
           div.form-group
             label.col-sm-2.control-label(for='input-text') Username
             div.col-sm-4
-              input.form-control.ra-username(type="text" placeholder="Username")
+              input.form-control.ra-username(type="text" placeholder="Username" required)
           div.form-group
             label.col-sm-2.control-label(for='input-password') Password
             div.col-sm-4
-              input.form-control.ra-password(type="password" placeholder="Password")
+              input.form-control.ra-password(type="password" placeholder="Password" required)
           div.form-group
             label.col-sm-2.control-label(for='input-password') Password Confirm
             div.col-sm-4
-              input.form-control.ra-confirm(type="password" placeholder="Password Confirm")
+              input.form-control.ra-confirm(type="password" placeholder="Password Confirm" required)
           div.form-group
             label.col-sm-2.control-label(for='input-email') Email
             div.col-sm-4
-              input.form-control.ra-email(type="email" placeholder="Email")
+              input.form-control.ra-email(type="email" placeholder="Email" required)
           div
-            button.btn.btn-primary.ra-submit(type='button') Submit
+            button.btn.btn-primary.ra-submit(type='submit') Submit

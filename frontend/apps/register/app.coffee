@@ -15,9 +15,11 @@ class RegisterApp
     @comfirm = $(topDom).find('.ra-confirm')
     @email = $(topDom).find('.ra-email')
 
-    $(topDom).find('.ra-submit').click(@register.bind(@))
+    $(topDom).find('.ra-form').on 'submit', =>
+      event.preventDefault()
+      @register()
 
-  register: ->
+  register: () ->
     if @password.val() != @comfirm.val()
       alert('Different password')
     else
@@ -26,7 +28,8 @@ class RegisterApp
           if err?
             alert(err)
           else
-            window.location.href = '/'
+            alert('Registration succeeded. Please check your email and confirm \
+            your registration.')
 
 
 # setup app on the page
