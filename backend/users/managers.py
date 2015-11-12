@@ -19,7 +19,7 @@ class UsersManager():
 
         return True
 
-    def __send_authentication_email(self, email):
+    def __send_authentication_email(self, uid, email):
         mail_host = 'smtp.sohu.com'
         mail_host_port = 25
         mail_from = 'Rabot Admin<project_rabot@sohu.com>'
@@ -28,10 +28,11 @@ class UsersManager():
         mail_to = email
         mail_content = """
             <h3> Welcome to Rabot -- Learn coding with a rabbit. </h3>
-            Coding for fun? Is that a joke? No! <br>
+            <h5>Coding for fun? Is that a joke? No! </h5>
             <br>
-            Please click this <a href="localhost:9000/authentication">link</a> to finish the registration. <br>
-        """
+            Thanks for your registration.<br>
+            Please click this <a href="localhost:8000/authentication/"""\
+        + str(uid) + '">link</a> to finish the registration. <br>'
 
         message = MIMEText(mail_content, _subtype='html', _charset='utf-8')
         message['Subject'] = 'Welcome to Rabot -- Learn coding with a rabbit'
@@ -71,13 +72,19 @@ class UsersManager():
         else:
             uid = 1
 
-        self.__send_authentication_email(email)
-
+        self.__send_authentication_email(uid, email)
         self.dao.create_user(uid, uname, passwd, email)
         self.cur_user = self.dao.get_user_by_uid(uid)
-        self.dao.log_in(self.cur_user)
 
         return 'Succeeded.'
+
+    def registration_authentication(self, uid):
+        cur_user = self.dao.get_user_by_uid(uid)
+        if cur_user:
+            self.dao.authenticate(cur_user)
+            return 'Succeeded.'
+        else:
+            return 'User does not exist.'
 
     def login(self, uname, passwd):
         cur_user = self.dao.get_user_by_uname(uname)
@@ -87,6 +94,8 @@ class UsersManager():
         elif cur_user.passwd == passwd:
             if self.dao.has_logged_in(cur_user):
                 return 'User has already logged in.'
+            elif not cur_user.authenticated:
+                return 'User has not authenticated yet, please check your email.'
             else:
                 self.dao.log_in(cur_user)
                 self.cur_user = cur_user

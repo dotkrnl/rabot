@@ -58,6 +58,28 @@ def user_registration_view(request):
 
 
 @csrf_exempt
+def user_authentication_view(request, uid):
+    manager = UsersManager()
+
+    if request.method == 'GET':
+        result = manager.registration_authentication(uid)
+        if result[:9] == 'Succeeded':
+            response_data = {
+                'result': 'succeeded',
+            }
+        else:
+            response_data = {
+                'result': 'failed',
+                'errorMessage': result,
+            }
+
+        return HttpResponse(json.dumps(response_data))
+
+    else:
+        raise Http404
+
+
+@csrf_exempt
 def user_login_view(request):
     manager = UsersManager()
 
