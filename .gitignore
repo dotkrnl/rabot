@@ -48,3 +48,5 @@ migrations
 #Idea config
 .idea
 
+# Files containing passwords
+secret.json

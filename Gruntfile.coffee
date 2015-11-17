@@ -131,6 +131,33 @@ module.exports = (grunt) ->
         options:
           logConcurrentOutput: true
 
+    secret: grunt.file.readJSON('secret.json'),
+
+    sftp:
+      deploy:
+        files:
+          "./": ["_site/**", "backend/**"]
+        options:
+          path: '/tmp/rabot',
+          createDirectories: 'true'
+          host: '<%= secret.host %>',
+          username: '<%= secret.username %>',
+          password: '<%= secret.password %>',
+          showProgress: true
+
+    sshexec:
+      precopy:
+        command: 'uptime',
+        options:
+          host: '<%= secret.host %>',
+          username: '<%= secret.username %>',
+          password: '<%= secret.password %>'
+      postcopy:
+        command: 'uptime',
+        options:
+          host: '<%= secret.host %>',
+          username: '<%= secret.username %>',
+          password: '<%= secret.password %>'
 
   grunt.loadNpmTasks 'grunt-contrib-sass'
   grunt.loadNpmTasks 'grunt-contrib-jade'
@@ -143,7 +170,9 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-concurrent'
   grunt.loadNpmTasks 'grunt-connect-proxy'
   grunt.loadNpmTasks 'grunt-shell'
+  grunt.loadNpmTasks 'grunt-ssh'
 
+  grunt.registerTask 'deploy', ['sshexec:precopy', 'sftp', 'sshexec:postcopy']
   grunt.registerTask 'compile', ['copy', 'jade', 'sass', 'bower', 'browserify']
   grunt.registerTask 'serve', [
     'compile', 'configureProxies:server', 'connect', 'concurrent:runserver']
