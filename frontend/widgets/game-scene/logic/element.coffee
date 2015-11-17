@@ -13,14 +13,24 @@ class GameElem
   # Construct the element on Snap.svg canvas with sprite
   # This element will immediately update with sprite
   constructor: (@scene, @canvas, @sprite, @label) ->
-    @elem = null
     knownSpriteTypes =
       ['staticimage','rabbit', 'carrot', 'key', 'river', 'door', 'rotator']
+
+    interactiveSpriteType =
+      ['rabbit', 'carrot', 'key', 'door', 'rotator']
+
     if @sprite.type not in knownSpriteTypes
       throw new Error("Unsupported sprite type #{@sprite.type}")
 
+    @elem = @canvas.group()
+    @elem.attr
+      cursor: 'pointer'
+    @imageElem = null
+
+    @initLabelElement()
+
     if @sprite.type != "staticimage" and @sprite.image
-      @elem = @canvas.image(
+      @imageElem = @canvas.image(
         "/public/images/game-scene/" + @sprite.image.name,
         -@sprite.image.width/2,
         -@sprite.image.height/2,
@@ -28,17 +38,8 @@ class GameElem
         @sprite.image.height
       )
 
-      $(@elem.node).on 'mouseover', =>
-        @scene.onMouseEnterSprite(@sprite, @label)
-
-      $(@elem.node).on 'mouseout', =>
-        @scene.onMouseLeaveSprite(@sprite, @label)
-
-      $(@elem.node).on 'click', =>
-        @scene.onMouseClickSprite(@sprite, @label)
-
     else if @sprite.type == "staticimage"
-      @elem = @canvas.image(
+      @imageElem = @canvas.image(
         "/public/images/game-scene/" + @sprite.image.name,
         @sprite.image.x,
         @sprite.image.y,
@@ -46,14 +47,41 @@ class GameElem
         @sprite.image.height
       )
 
-    @labelElem = @canvas.text(@sprite.x, @sprite.y, @label)
-    @labelElem.attr
-      background: "#ddd",
+    @elem.add(@imageElem, @labelElem)
+
+    $(@elem.node).on 'mouseover', =>
+      @labelElem.animate({opacity: 1.0}, 300, mina.linear)
+      @scene.onMouseEnterSprite(@sprite, @label)
+
+    $(@elem.node).on 'mouseout', =>
+      @labelElem.animate({opacity: 0.0}, 300, mina.linear)
+      @scene.onMouseLeaveSprite(@sprite, @label)
+
+    $(@elem.node).on 'click', =>
+      @scene.onMouseClickSprite(@sprite, @label)
+
+    @update(0)
+
+
+  initLabelElement: () ->
+    @labelBackgroundElem = @canvas.rect(
+      -60, -30, 120, 40, 10
+    )
+    @labelBackgroundElem.attr
+      fill: '#fff',
+      'fill-opacity': 0.5,
+      stroke: '#222',
+      strokeWidth: 3
+
+    @labelTextElem = @canvas.text(0, 0, @label)
+    @labelTextElem.attr
+      background: '#ddd',
       fill: '#222',
       'font-size': '30px'
       'text-anchor': 'middle'
 
-    @update(0)
+    @labelElem = @canvas.group(@labelBackgroundElem, @labelTextElem)
+    @labelElem.attr {opacity: 0.0}
 
   # Update the element with animation (if scale)
   # @param scale: This function will update the game scene with animation
