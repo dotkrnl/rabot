@@ -12,10 +12,21 @@ class GameScene extends View
   constructor: (topDom) ->
     super(topDom)
     @canvas = @createViewFromElement("gs-svg", Snap)
+    @canvasDom = @getJQueryObject("gs-svg")
     @ruler = @canvas.image(
       @getImageAssetPath() + 'game-scene/ruler.svg',
       10, 10, 60, 60
     )
+    @ruler.attr
+      cursor: 'pointer'
+
+    $(@ruler.node).on 'click', =>
+      if @rulerActivated
+        @deactiveRuler()
+      else
+        @activeRuler()
+
+
     @game = null
     @elems = []
 
@@ -111,8 +122,27 @@ class GameScene extends View
     #TODO: add handlers
 
   onMouseClickSprite: (sprite, label) ->
-    @trigger('spriteclicked', sprite, label)
-    #TODO: add handlers
+    if @rulerActivated
+      if not @rulerObject1
+        @rulerObject1 = sprite
+      else if not @rulerObject2
+        @rulerObject2 = sprite
+        alert \
+          '(' +
+          (@rulerObject1.x - @rulerObject2.x) + ',' +
+          (@rulerObject1.y - @rulerObject2.y) + ')'
+        @deactiveRuler()
+    else
+      @trigger('spriteclicked', sprite, label)
 
+  activeRuler: () ->
+    @rulerObject1 = null
+    @rulerObject2 = null
+    @rulerActivated = true
+
+  deactiveRuler: () ->
+    @rulerObject1 = null
+    @rulerObject2 = null
+    @rulerActivated = false
 
 module.exports = GameScene
