@@ -12,7 +12,7 @@ class GameElem
 
   # Construct the element on Snap.svg canvas with sprite
   # This element will immediately update with sprite
-  constructor: (@canvas, @sprite) ->
+  constructor: (@scene, @canvas, @sprite, @label) ->
     @elem = null
     knownSpriteTypes =
       ['staticimage','rabbit', 'carrot', 'key', 'river', 'door', 'rotator']
@@ -28,6 +28,15 @@ class GameElem
         @sprite.image.height
       )
 
+      $(@elem.node).on 'mouseover', =>
+        @scene.onMouseEnterSprite(@sprite, @label)
+
+      $(@elem.node).on 'mouseout', =>
+        @scene.onMouseLeaveSprite(@sprite, @label)
+
+      $(@elem.node).on 'click', =>
+        @scene.onMouseClickSprite(@sprite, @label)
+
     else if @sprite.type == "staticimage"
       @elem = @canvas.image(
         "/public/images/game-scene/" + @sprite.image.name,
@@ -36,6 +45,13 @@ class GameElem
         @sprite.image.width,
         @sprite.image.height
       )
+
+    @labelElem = @canvas.text(@sprite.x, @sprite.y, @label)
+    @labelElem.attr
+      background: "#ddd",
+      fill: '#222',
+      'font-size': '30px'
+      'text-anchor': 'middle'
 
     @update(0)
 

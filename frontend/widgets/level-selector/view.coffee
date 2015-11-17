@@ -56,7 +56,6 @@ class LevelSelector extends View
   updateLevelElems: (packageId) ->
     stageData = @stage.getStagePackage(packageId).stages
     userProgress = @userProgress.getUserProgress(packageId)
-    console.log userProgress
     levelElems = []
     @canvasLevelElemGroup.clear()
 

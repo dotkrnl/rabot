@@ -75,6 +75,9 @@ class GameView extends View
       @stage.getStage @currentSid, (stageData) =>
         @game.loadStage stageData.info
 
+    @gameScene.on 'spriteclicked', (sprite, label) =>
+      @codeEditor.insertCode(label)
+
     $(topDom).find('.select-level.btn').click =>
       @levelSelector.show()
 

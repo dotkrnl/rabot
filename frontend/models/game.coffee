@@ -37,7 +37,8 @@ class Game extends Emitter
     super()
 
   # Clone and add a sprite with the format defined in exampleStage.json
-  addSprite: (sprite) ->
+  # updateNow is a work-around for game element label initialization.
+  addSprite: (sprite, updateNow) ->
     sprite = cloned(sprite)
     throw new Error('no sprite type') unless sprite.type?
     sprite.x = 0 unless sprite.x?
@@ -46,7 +47,7 @@ class Game extends Emitter
     sprite.defunct = false unless sprite.defunct?
     sprite.uid = @sprites.length
     @sprites.push(sprite)
-    @update(0)
+    @update(0) if updateNow?
     return
 
   # Remove a sprite in the game scene
@@ -91,6 +92,7 @@ class Game extends Emitter
     @scene.clear() if @scene
     data = JSON.parse(@stageData)
     @addSprite(sprite) for sprite in data
+    @update(0)
     return
 
   # Resatrt the current stage.
@@ -246,9 +248,9 @@ class Game extends Emitter
       callback() if callback?
       return
     object = objects[0]
-    dx = object.x - rabbit.x;
-    dy = object.y - rabbit.y;
-    angle = normalizeAngle(toDeg(Math.atan2(dx, -dy)) - rabbit.angle);
+    dx = object.x - rabbit.x
+    dy = object.y - rabbit.y
+    angle = normalizeAngle(toDeg(Math.atan2(dx, -dy)) - rabbit.angle)
     @turn angle, callback
 
   # This function is called when the game is finished.

@@ -12,6 +12,10 @@ class GameScene extends View
   constructor: (topDom) ->
     super(topDom)
     @canvas = @createViewFromElement("gs-svg", Snap)
+    @ruler = @canvas.image(
+      @getImageAssetPath() + 'game-scene/ruler.svg',
+      10, 10, 60, 60
+    )
     @game = null
     @elems = []
 
@@ -50,8 +54,14 @@ class GameScene extends View
     # So @elems array can only be increased
     if @game.sprites.length > @elems.length
       for uid in [@elems.length..@game.sprites.length-1]
+        sprite = @game.sprites[uid]
         # create elem associated with new sprite
-        @elems[uid] = new GameElem(@canvas, @game.sprites[uid])
+        sameTypeSprites = @game.filterSprites
+          type : @game.sprites[uid].type
+        label = sprite.type
+        if sameTypeSprites.length > 1
+          label += "[#{sameTypeSprites.indexOf(sprite)}]"
+        @elems[uid] = new GameElem(@, @canvas, sprite, label)
 
     remaining = @elems.length
     # A helper function to record how many objects finished animation
@@ -90,6 +100,19 @@ class GameScene extends View
   collided: (sprite1, sprite2) ->
     @elems[sprite1.uid]? and @elems[sprite2.uid]? and
     @elems[sprite1.uid].collided(@elems[sprite2.uid])
+
+  getGameModel: () ->
+    return @game
+
+  onMouseEnterSprite: (sprite, label) ->
+    #TODO: add handlers
+
+  onMouseLeaveSprite: (sprite, label) ->
+    #TODO: add handlers
+
+  onMouseClickSprite: (sprite, label) ->
+    @trigger('spriteclicked', sprite, label)
+    #TODO: add handlers
 
 
 module.exports = GameScene
