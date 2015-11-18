@@ -31,14 +31,14 @@ class RegisterApp
     @submit.addClass('hidden')
     @submitting.removeClass('hidden')
     @user.register username, password, email, (err) =>
-        if err?
-          @submitting.addClass('hidden')
-          @submit.removeClass('hidden')
-          alert(err)
-        else
-          alert('Registration succeeded. Please check your email and confirm \
-          your registration.')
-          window.location.href = '/'
+      if err?
+        @submitting.addClass('hidden')
+        @submit.removeClass('hidden')
+        alert(err)
+      else
+        alert('Registration succeeded. Please check your email and confirm \
+        your registration.')
+        window.location.href = '/'
 
   validate: () ->
     has_err = false

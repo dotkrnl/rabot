@@ -2,26 +2,31 @@ extends /commons/template.jade
 
 block content
   div.container.update-app
-    div.row
-      div.col-sm-6
-        h1 Update
-    div.row
-      form.form-horizontal
+    h1 Edit Logins
+    div.ua-form-container.col-md-6
+      form.ua-form.form-horizontal
         div.form-group
-          label.col-sm-2.control-label(for='input-password') Old Password
-          div.col-sm-4
-            input.form-control.ua-password(type="password" placeholder="Required")
+          div.input-group
+            span.input-group-addon
+              i.glyphicon.glyphicon-lock
+            input.form-control.ua-password(type="password" placeholder="Current Password" required)
+            span.input-group-addon
+              i.glyphicon.glyphicon-asterisk
         div.form-group
-          label.col-sm-2.control-label(for='input-password') New Password
-          div.col-sm-4
-            input.form-control.ua-newpwd(type="password" placeholder="Left blank if not updating")
+          div.input-group
+            span.input-group-addon
+              i.glyphicon.glyphicon-pencil
+            input.form-control.ua-newpwd(type="password" placeholder="Change Password (optional)")
         div.form-group
-          label.col-sm-2.control-label(for='input-password') Password Confirm
-          div.col-sm-4
-            input.form-control.ua-confirm(type="password" placeholder="Left blank if not updating")
+          div.input-group
+            span.input-group-addon
+              i.glyphicon.glyphicon-hand-up
+            input.form-control.ua-confirm(type="password" placeholder="Repeat that")
         div.form-group
-          label.col-sm-2.control-label(for='input-email') New Email
-          div.col-sm-4
-            input.form-control.ua-email(type="email" placeholder="Left blank if not updating")
-        div
-          button.btn.btn-primary.ua-submit(type='button') Submit
+          div.input-group
+            span.input-group-addon
+              i.glyphicon.glyphicon-envelope
+            input.form-control.ua-email(type="email" placeholder="Change Email (optional)")
+        div.form-group
+          button.btn.btn-primary.ua-submit(type='submit') Submit
+          button.btn.btn-primary.ua-submitting.hidden(type='submit' disabled) Processing...
