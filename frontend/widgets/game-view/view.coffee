@@ -122,6 +122,13 @@ class GameView extends View
     @game.on 'finish', =>
       @stopGame()
       @gameControlBar.setGameRunning(false)
+      @codeEditor.clearHighlightLine()
+
+    @game.on 'workerhighlight', (lineNumber) =>
+      @codeEditor.pushHighlightLine(lineNumber - 1)
+
+    @game.on 'workerunhighlight', (lineNumber) =>
+      @codeEditor.popHighlightLine(lineNumber - 1)
 
   stopGame: ->
     @userWorker.terminate() if @userWorker?

@@ -47,6 +47,10 @@ class UserCodeWorker
         @game.turn(m.angle, @resume.bind(@))
       when "turnTo"
         @game.turnTo(m.uid, @resume.bind(@))
+      when "highlight"
+        @game.onWorkerHighlight(m.lineNumber)
+      when "unhighlight"
+        @game.onWorkerUnhighlight(m.lineNumber)
       when "finish"
         @game.finish()
 
@@ -92,10 +96,14 @@ class UserCodeWorker
         step: step
 
     highlight = (lineNumber) ->
-      #TODO : Stub, this function is reserved for callstack display.
+      @postMessage
+        action: 'highlight'
+        lineNumber: lineNumber
 
     unhighlight = (lineNumber) ->
-      #TODO : Stub, this function is reserved for callstack display.
+      @postMessage
+        action: 'unhighlight'
+        lineNumber: lineNumber
 
     turn = (angle, callback) ->
       __rabot_resume = ->

@@ -267,4 +267,11 @@ class Game extends Emitter
     @trigger('finish')
     return
 
+  onWorkerHighlight: (lineNumber) ->
+    @trigger('workerhighlight', lineNumber)
+
+  onWorkerUnhighlight: (lineNumber) ->
+    @trigger('workerunhighlight', lineNumber)
+
+
 module.exports = Game

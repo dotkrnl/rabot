@@ -11,7 +11,7 @@ class CodeEditor
     @highlightStack = []
 
     #This is reserved for automatically generating multiple highlight classes
-    @dynamicCss = $("<style>").prop("type", "text/css").appendTo("head");
+    @dynamicCss = $("<style>").prop("type", "text/css").appendTo("head")
 
     # setup code mirror
     if textAreaDom?
