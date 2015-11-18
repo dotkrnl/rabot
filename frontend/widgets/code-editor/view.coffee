@@ -49,7 +49,10 @@ class CodeEditor
     @updateHighlightLine()
 
   popHighlightLine: (lineNumber) ->
-    @highlightStack.pop(lineNumber)
+    return if @highlightStack.indexOf(lineNumber) == -1
+    while @highlightStack[@highlightStack.length - 1] != lineNumber
+      @highlightStack.pop()
+    @highlightStack.pop()
     @updateHighlightLine()
 
   clearHighlightLine: () ->
@@ -73,14 +76,18 @@ class CodeEditor
 
       """
     @dynamicCss.html(cssHtml)
-    for i in [0..@codebox.lineCount() - 1]
-      @codebox.removeLineClass(i, "background")
-    for i in [0..@highlightStack.length - 1]
-      @codebox.addLineClass(
-        @highlightStack[i],
-        "background",
-        "__codemirror_highlight_" + i
-      )
+
+    if @codebox.lineCount() > 0
+      for i in [0..@codebox.lineCount() - 1]
+        @codebox.removeLineClass(i, "background")
+
+    if @highlightStack.length > 0
+      for i in [0..@highlightStack.length - 1]
+        @codebox.addLineClass(
+          @highlightStack[i],
+          "background",
+          "__codemirror_highlight_" + i
+        )
 
 
 module.exports = CodeEditor
