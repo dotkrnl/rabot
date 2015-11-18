@@ -4,7 +4,7 @@ md5 = require('../../commons/logic/md5.coffee')
 # a class to setup user manage interface on navbar
 class NavUserManager
 
-  AVATAR_BASE: "http://www.gravatar.com/avatar/"
+  AVATAR_BASE: "https://secure.gravatar.com/avatar/"
 
   # Construct the navbar login / logout interface
   constructor: (topDom) ->
