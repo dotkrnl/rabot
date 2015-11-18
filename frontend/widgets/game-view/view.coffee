@@ -116,7 +116,7 @@ class GameView extends View
       userProgress.updateUserProgress(
         @currentPackage, @currentStageIndex, @game.carrotGot
       )
-      @gameOverDialog.show(@game.carrotGot)
+      @gameOverDialog.show(@game.carrotGot, @currentSid)
     @game.on 'lost', =>
       @gameOverDialog.show(-1)
     @game.on 'finish', =>

@@ -1,63 +1,112 @@
-Emitter = require('../../commons/logic/emitter.coffee')
+View = require('../view.coffee')
 UserProgress = require('../../models/userprogress.coffee')
+Stage = require('../../models/stage.coffee')
 
 # a class to setup user friendly code editor
-class GameOverDialog extends Emitter
+class GameOverDialog extends View
 
   # Construct the level selector
   # @param topDom: the mixin dom provided by template.jade
   constructor: (topDom) ->
     super()
+    @stage = new Stage
     @userProgress = new UserProgress
     @topDom = $(topDom)
-    @topDom.find(".btn-next").click =>
+
+    @contentDom = @getJQueryObject('content')
+    @maskDom = @getJQueryObject('mask')
+    @canvas = @createViewFromElement('canvas', Snap)
+
+    @backgroundImage = @canvas.image(
+      @getImageAssetPath() + 'game-over-dialog/background-victory.svg',
+      0, 0, 700, 400
+    )
+
+    @replayButton = @canvas.image(
+      @getImageAssetPath() + 'game-over-dialog/button-replay.svg',
+      500, 240, 180, 60
+    )
+
+    @nextButton = @canvas.image(
+      @getImageAssetPath() + 'game-over-dialog/button-next.svg',
+      500, 320, 180, 60
+    )
+
+    @nextButton.attr(cursor: 'pointer')
+    @replayButton.attr(cursor: 'pointer')
+
+    $(@nextButton.node).click =>
       @hide()
       @trigger("nextstage")
 
-    @topDom.find(".btn-replay").click =>
+    $(@replayButton.node).click =>
       @hide()
       @trigger("replaystage")
 
-    @contentDom = $(topDom).find(".god-content")
-    @maskDom = $(topDom).find(".god-mask")
-
-    @canvas = Snap(@topDom.find(".god-canvas")[0])
+    @stageNameText = @canvas.text(350, 36, '')
+    @stageNameText.attr
+      'text-anchor': 'middle'
+      'font-size': '20pt'
+    @variantElementGroup = @canvas.group()
     # Rank is how many stars you've got.
     @rank = -2
 
 
   update: (rank) ->
+    @variantElementGroup.clear()
     @rank = rank
-    @canvas.clear()
-    if rank < 0 or rank > 3
-      @topDom.find(".btn-next").hide()
-      circle = @canvas.circle(100, 200, 50)
-      circle.attr
-        fill: "#ba5555",
-        stroke: "#000",
-        strokeWidth: 5
-      text = @canvas.text(100, 100, "You failed.")
-      text.attr
-        fill: "#ba5555",
-        "font-size": "40px"
+    #@canvas.clear()
+    centers = [
+      {x: 270 - 30, y: 200},
+      {x: 350 - 30, y: 250},
+      {x: 430 - 30, y: 200}
+    ]
+    if rank >= 0 and rank <= 3
+      for j in [0..2]
+        center = centers[j]
+        star = null
+        if j < rank
+          star = @canvas.image \
+            @getImageAssetPath() + 'game-over-dialog/star-gold.svg',
+            center.x, center.y, 60, 60
+          @variantElementGroup.add star
+        else
+          star = @canvas.image \
+            @getImageAssetPath() + 'game-over-dialog/star-grey.svg',
+            center.x, center.y, 60, 60
+          @variantElementGroup.add star
+
+      @replayButton.attr
+        x: 250 - 90
+        y: 300
+
+      @nextButton.attr
+        x: 450 - 90
+        y: 300
+
     else
-      @topDom.find(".btn-next").show()
-      for i in [1..rank]
-        circle = @canvas.circle(100 + 200 * i, 200, 50)
-        circle.attr
-          fill: "#5555ba",
-          stroke: "#000",
-          strokeWidth: 5
-      text = @canvas.text(100, 100, "Victory!")
+      text = @canvas.text(350, 270, "Try again...")
       text.attr
-        fill: "#5555ba",
+        fill: "#181830",
         "font-size": "40px"
+        'text-anchor': 'middle'
+        'font-weight': 'bold'
+      @variantElementGroup.add text
+      @replayButton.attr
+        x: 350 - 90
+        y: 300
+
+      @nextButton.attr
+        x: -1000
+        y: -1000
 
   hide: ->
     @contentDom.fadeOut()
     @maskDom.fadeOut()
 
-  show: (rank) ->
+  show: (rank, stageId) ->
+    @stageNameText.attr
+      text: @stage.getLocalStage(stageId).name
     @contentDom.fadeIn()
     @maskDom.fadeIn()
     @update(rank)

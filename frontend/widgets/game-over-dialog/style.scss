@@ -1,25 +1,31 @@
 .game-over-dialog {
-  .god-full-screen {
+  .full-screen {
     position: fixed;
     top: 0px; bottom: 0px;
     left: 0px; right: 0px;
   }
-  .god-mask {
-    @extend .god-full-screen;
+  .mask {
+    @extend .full-screen;
     background: black;
     opacity: 0.8;
     z-index: 100;
     display: none;
   }
-  .god-content {
+  .content {
     position: absolute;
     z-index: 101;
     display: none;
-    top: 20%; bottom: 20%;
-    left: 20%; right: 20%;
-    .god-canvas {
+    top: 5%; bottom: 5%;
+    left: 15%; right: 15%;
+    .canvas {
       height: 100%;
-      width: 50%;
+      width: 100%;
+    }
+    .canvas-wrapper {
+      padding: 0;
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 0; right: 0;
     }
   }
 }

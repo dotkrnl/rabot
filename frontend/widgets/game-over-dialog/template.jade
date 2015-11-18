@@ -1,14 +1,7 @@
 mixin game-over-dialog()
   div.game-over-dialog(class!=attributes.class)
     div
-      div.god-mask
-      div.god-content
-        div.panel.panel-default
-          div.panel-heading
-            h5 Select Level
-          div.panel-body
-            svg.god-canvas(viewBox="0 0 600 400")
-          div.panel-footer
-            button.btn-next.btn.btn-primary(type="button") Next Level
-            button.btn-replay.btn.btn-primary(type="button") Replay
-            
+      div.mask
+      div.content
+        div.canvas-wrapper
+          svg.canvas(viewBox="0 0 700 400")
