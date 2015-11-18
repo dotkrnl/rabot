@@ -23,7 +23,7 @@ class Command(BaseCommand):
         name = 'Beginner\' s gressland'
         info = """
         {
-            "background": "grassland.svg",
+            "background": "grassland.png",
             "stages": [1001, 1002, 1003]
         }
         """
@@ -33,7 +33,7 @@ class Command(BaseCommand):
         name = 'Branch forest'
         info = """
         {
-            "background": "forest.svg",
+            "background": "forest.png",
             "stages": [2001, 2002, 2003, 2004]
         }
         """
@@ -43,7 +43,7 @@ class Command(BaseCommand):
         name = 'Loop river'
         info = """
         {
-            "background": "river.svg",
+            "background": "river.png",
             "stages": [3001, 3002, 3003, 3004, 3005]
         }
         """
@@ -51,7 +51,7 @@ class Command(BaseCommand):
 
         for i in range(0, 4):
             sid = 1000 * i + 1
-            name = "Level 1 - Basic"
+            name = "Welcome"
             info = """
             [
             	{
@@ -72,7 +72,7 @@ class Command(BaseCommand):
             manager.add_stage(sid, name, info)
 
             sid = 1000 * i + 2
-            name = "Level 2 - Carrot"
+            name = "Carrot"
             info = """
             [
             	{
@@ -100,7 +100,7 @@ class Command(BaseCommand):
             manager.add_stage(sid, name, info)
 
             sid = 1000 * i + 3
-            name = "Level 3 - River"
+            name = "River"
             info = """
             [
             	{
@@ -135,7 +135,7 @@ class Command(BaseCommand):
             manager.add_stage(sid, name, info)
 
             sid = 1000 * i + 4
-            name = "Level 4 - Key&Door"
+            name = "Key&Door"
             info = """
             [
             	{
@@ -180,7 +180,7 @@ class Command(BaseCommand):
             manager.add_stage(sid, name, info)
 
             sid = 1000 * i + 5
-            name = "Level 5"
+            name = "Future"
             info = """[
                 {"type":"river","x":0,"y":150,"width":400,"height":75},
                 {"type":"river","x":475,"y":150,"width":400,"height":75},

@@ -32,10 +32,10 @@ class LevelSelector extends View
     )
 
     for elem in [@prevButton, @nextButton, @closeButton]
-      do(elem) =>
-        $(elem.node).on "mouseover", =>
+      do(elem) ->
+        $(elem.node).on "mouseover", ->
           elem.animate(transform:'t0,0s1.3', 200, mina.linear, ->)
-        $(elem.node).on "mouseout", =>
+        $(elem.node).on "mouseout", ->
           elem.animate(transform:'t0,0s1.0', 200, mina.linear, ->)
 
     $(@closeButton.node).on 'click', => @hide()
@@ -47,8 +47,9 @@ class LevelSelector extends View
     @canvasLevelElemGroup = @canvas.group()
     @stagePackageNameText.attr
       'text-anchor': 'middle'
-      'font-size': "14pt"
-      stroke: "#000"
+      'font-size': "24pt"
+      stroke: "#DDD"
+      fill: "#DDD"
 
     @levelElems = []
     @stageManager = new Stage()
@@ -97,11 +98,13 @@ class LevelSelector extends View
 
       levelText = @canvas.text(center.x, center.y + 50, stage.name)
       levelText.attr
-        fill: '#222',
-        'font-size': '16px'
+        'font-size': '20px'
         'text-anchor': 'middle'
+        fill: "#DAA"
+
       levelElems.push(elem)
       elem = @canvas.group(circle, text)
+      elem.attr(cursor: 'pointer')
       @canvasLevelElemGroup.add(elem, levelText)
 
       for j in [0..2]
