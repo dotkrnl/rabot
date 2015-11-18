@@ -35,3 +35,6 @@ updateinfo:
   email: Change Email (optional)
   submit: Edit
   processing: Processing...
+
+game-over-dialog:
+  tryagain: Oops... Try again...

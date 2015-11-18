@@ -85,7 +85,7 @@ class GameOverDialog extends View
         y: 300
 
     else
-      text = @canvas.text(350, 270, "Try again...")
+      text = @canvas.text(350, 270, t('game-over-dialog.tryagain'))
       text.attr
         fill: "#181830",
         "font-size": "40px"
