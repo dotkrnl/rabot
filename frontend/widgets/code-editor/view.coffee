@@ -20,7 +20,7 @@ class CodeEditor
         lineNumbers: true
         mode: 'rabot-iced'
         indentWithTabs: false
-        styleActiveLine: false
+        styleActiveLine: true
         tabSize: 2
         matchBrackets: true
       @codebox.setOption \

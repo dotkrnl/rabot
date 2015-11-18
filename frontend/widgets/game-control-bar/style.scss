@@ -11,6 +11,7 @@
   bottom : $bottom;
   width : $total_width;
   right : $folded_width - $total_width;
+  z-index: 99;
   .button
   {
     background-repeat: no-repeat;

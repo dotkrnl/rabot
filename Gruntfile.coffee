@@ -77,6 +77,7 @@ module.exports = (grunt) ->
               keepExpandedHierarchy: false
               files: [
                 "lib/*"
+                "addon/selection/active-line.js"
               ]
             'iced-coffee-script':
               keepExpandedHierarchy: false
