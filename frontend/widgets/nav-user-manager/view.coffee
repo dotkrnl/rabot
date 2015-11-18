@@ -23,14 +23,24 @@ class NavUserManager
     @userViewUsername = $(topDom).find('.num-uv-username')
     @userImg = $(topDom).find('.num-userinfo')
 
+    @guestViewUsername.add(@guestViewPassword).keyup (e) =>
+      @login() if e.keyCode == 13 # is enter key
+
   login: ->
-    username = @guestViewUsername.val()
+    username = @guestViewUsername.val().trim()
     password = @guestViewPassword.val()
-    @user.login username, password, (err) =>
-      if err?
-        alert(err)
-      else
-        @topView.removeClass('open');
+    @validate(username, password)
+
+    if username != '' and password != ''
+      @user.login username, password, (err) =>
+        if err?
+          @guestViewUsername.add(@guestViewPassword).parent()
+            .addClass('has-error')
+          alert(err)
+        else
+          @guestViewUsername.add(@guestViewPassword).parent()
+            .removeClass('has-error')
+          @topView.removeClass('open');
 
   logout: ->
     @user.logout =>
@@ -48,6 +58,17 @@ class NavUserManager
       @userView.addClass('hidden')
       @guestView.removeClass('hidden')
       @userImg.attr('src', "#{@AVATAR_BASE}nobody?d=mm")
+
+  validate: (username, password) ->
+    if username == ''
+      @guestViewUsername.parent().addClass('has-error')
+    else
+      @guestViewUsername.parent().removeClass('has-error')
+
+    if password == ''
+      @guestViewPassword.parent().addClass('has-error')
+    else
+      @guestViewPassword.parent().removeClass('has-error')
 
 
 module.exports = NavUserManager
