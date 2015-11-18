@@ -5,8 +5,6 @@
 <style type="text/css">
 	.st0{fill:#EEB034;stroke:#000000;stroke-width:5;stroke-miterlimit:10;}
 	.st1{fill:#040000;}
-	.st2{font-family:'Consolas';}
-	.st3{font-size:144px;}
 </style>
 <path class="st0" d="M708.7,269.3h-567c-70.2,0-127.6-57.4-127.6-127.6l0,0c0-70.2,57.4-127.6,127.6-127.6h566.9
 	c70.2,0,127.6,57.4,127.6,127.6l0,0C836.2,211.9,778.8,269.3,708.7,269.3z"/>
@@ -24,5 +22,4 @@
 		<path id="XMLID_9_" class="st1" d="M218.8,170.5L244,185c4.9-10.3,8.1-21.5,9-33.4h-29.4C222.8,158.2,221.3,164.6,218.8,170.5z"/>
 	</g>
 </g>
-<text transform="matrix(1 0 0 1 299.5967 185.9955)" class="st2 st3">Replay</text>
 </svg>
