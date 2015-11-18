@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import check_password
 from users.models import UsersDao
 import smtplib
 from email.mime.text import MIMEText
@@ -96,7 +97,7 @@ class UsersManager():
 
         if not cur_user:
             return 'User does not exist.'
-        elif cur_user.passwd == passwd:
+        elif check_password(passwd, cur_user.passwd):
             if cur_user.authenticated:
                 self.cur_user = cur_user
                 return 'Succeeded.'
@@ -122,7 +123,7 @@ class UsersManager():
         if not cur_user:
             return 'User does not exist.'
 
-        if cur_user.passwd != old_passwd:
+        if not check_password(old_passwd, cur_user.passwd):
             return 'Old password is incorrect.'
 
         if len(new_passwd) > 0 and not self.__valid_passwd(new_passwd):

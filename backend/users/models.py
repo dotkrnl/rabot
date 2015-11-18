@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.hashers import make_password
 
 # Create your models here.
 
@@ -38,6 +39,7 @@ class UsersDao():
         return list(Users.objects.filter(admin_auth=1))
 
     def create_user(self, uid, uname, passwd, email):
+        passwd = make_password(passwd)
         Users.objects.create(uid=uid, uname=uname, passwd=passwd, email=email)
 
     def delete_user(self, cur_user):
@@ -51,7 +53,7 @@ class UsersDao():
         return cur_user.authenticated
 
     def update_passwd(self, cur_user, passwd):
-        cur_user.passwd = passwd
+        cur_user.passwd = make_password(passwd)
         cur_user.save(update_fields=['passwd'])
 
     def update_email(self, cur_user, email):
