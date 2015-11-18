@@ -113,11 +113,14 @@ class LevelSelector extends View
           star = @canvas.image \
             @getImageAssetPath() + 'level-selector/star-gold.svg',
             center.x - 10 + (j - 1) * 20, center.y + 5, 20, 20
+          elem.add star
         else
           star = @canvas.image \
             @getImageAssetPath() + 'level-selector/star-grey.svg',
             center.x - 10 + (j - 1) * 20, center.y + 5, 20, 20
-        @canvasLevelElemGroup.add(star)
+          elem.add star
+        #@canvasLevelElemGroup.add(star)
+
       do(i, elem, stage) =>
         if i <= maxAvailStage
           $(elem.node).on "mouseover", ->
