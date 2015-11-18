@@ -38,3 +38,7 @@ updateinfo:
 
 game-over-dialog:
   tryagain: 唔，请再试一次……
+
+game-control-bar:
+  run: 运行
+  stop: 停止
