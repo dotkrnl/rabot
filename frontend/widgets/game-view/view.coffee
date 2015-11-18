@@ -18,11 +18,14 @@ class GameView extends View
   constructor: (topDom) ->
     super(topDom)
     createjs.Sound.on("fileload", (->
-      instance = createjs.Sound.play("sound", "none", 0, 0, -1)
+      instance = createjs.Sound.play("ambient", {loop: -1})
       instance.on("complete", this.handleComplete, this)
       instance.volume = 0.5)
      , @)
-    createjs.Sound.registerSound("/public/audios/ambient-forest.mp3", "sound")
+    createjs.Sound.registerSound \
+      @getAudioAssetPath() + "ambient-forest.mp3", "ambient"
+    createjs.Sound.registerSound \
+      @getAudioAssetPath() + "item-get.mp3", "item-get"
     @game = new Game
     @stage = new Stage
     @userWorker = null

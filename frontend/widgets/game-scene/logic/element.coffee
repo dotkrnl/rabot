@@ -46,8 +46,8 @@ class GameElem
         @sprite.image.width,
         @sprite.image.height
       )
-
-    @elem.add(@imageElem, @labelElem)
+    @elem.add(@imageElem) if @imageElem?
+    @elem.add(@labelElem)
 
     $(@elem.node).on 'mouseover', =>
       @labelElem.animate({opacity: 1.0}, 300, mina.linear)
@@ -121,6 +121,5 @@ class GameElem
          box1.x2 < box2.x  or
          box1.y  > box2.y2 or
          box1.y2 < box2.y)
-
 
 module.exports = GameElem
