@@ -13,6 +13,9 @@ nav-user-manager:
   register: Register
   logout: Logout
 
+footer:
+  proudly: Proudly power by Rabot team.
+
 homepage:
   slogan: Learn coding with a rabbit
   details: Coding for fun? Is that a joke? No!

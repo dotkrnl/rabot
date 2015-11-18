@@ -13,6 +13,9 @@ nav-user-manager:
   register: 注册
   logout: 登出
 
+footer:
+  proudly: 由 Rabot 团队构建
+
 homepage:
   slogan: 和兔子一同学习编程
   details: 快乐编程？这并不是一个遥不可及的梦想！
