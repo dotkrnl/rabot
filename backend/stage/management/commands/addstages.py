@@ -20,7 +20,7 @@ class Command(BaseCommand):
         manager.add_stage(sid, name, info)
 
         sid = 101
-        name = 'Beginner\' s gressland'
+        name = 'Beginner\'s gressland'
         info = """
         {
             "background": "grassland.png",
@@ -135,7 +135,7 @@ class Command(BaseCommand):
             manager.add_stage(sid, name, info)
 
             sid = 1000 * i + 4
-            name = "Key&Door"
+            name = "Key & Door"
             info = """
             [
             	{
