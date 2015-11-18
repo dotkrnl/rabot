@@ -177,6 +177,7 @@ class Game extends Emitter
 
   collisionHandler: (collision, continueCallback, cancelCallback) ->
     if collision.type == "carrot"
+      createjs.Sound.play("item-get", {loop: 0})
       @removeSprite(collision.uid)
       @carrotGot++
       continueCallback() if continueCallback?
@@ -184,6 +185,7 @@ class Game extends Emitter
       @gameOverFlag = true
       continueCallback() if continueCallback?
     if collision.type == "key"
+      createjs.Sound.play("item-get", {loop: 0})
       @keysObtained.push(collision.keyId)
       @removeSprite(collision.uid)
       continueCallback() if continueCallback?
