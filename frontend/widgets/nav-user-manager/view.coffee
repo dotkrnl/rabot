@@ -22,20 +22,28 @@ class NavUserManager
     @userView = $(topDom).find('.num-user-view')
     @userViewUsername = $(topDom).find('.num-uv-username')
     @userImg = $(topDom).find('.num-userinfo')
+    @guestViewLogin = $(topDom).find('.num-gv-login')
+    @guestViewLoggingin = $(topDom).find('.num-gv-loggingin')
+
+    @disabled = false
 
     @guestViewUsername.add(@guestViewPassword).keyup (e) =>
       @login() if e.keyCode == 13 # is enter key
 
   login: ->
+    return if @disabled
     return if not @validate()
 
     username = @guestViewUsername.val().trim()
     password = @guestViewPassword.val()
+    @disable()
     @user.login username, password, (err) =>
+      @enable()
       @showError(@guestViewUsername.add(@guestViewPassword), err?)
       if err?
         alert(err)
       else
+        @guestViewPassword.val('')
         @topView.removeClass('open');
 
     return
@@ -77,6 +85,16 @@ class NavUserManager
       dom.parent().addClass('has-error')
     else
       dom.parent().removeClass('has-error')
+
+  disable: () ->
+    @disabled = true
+    @guestViewLogin.addClass('hidden')
+    @guestViewLoggingin.removeClass('hidden')
+
+  enable: () ->
+    @disabled = false
+    @guestViewLoggingin.addClass('hidden')
+    @guestViewLogin.removeClass('hidden')
 
 
 module.exports = NavUserManager

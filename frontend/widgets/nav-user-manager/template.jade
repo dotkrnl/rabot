@@ -5,11 +5,18 @@ mixin nav-user-manager()
     div.num-guest-view.dropdown-menu
       form.num-login-form
         div.num-container.form-group
-          input.form-control.num-gv-username(name="username", type="text", placeholder="Username")
+          div.input-group
+            span.input-group-addon
+              i.glyphicon.glyphicon-user
+            input.form-control.num-gv-username(name="username", type="text", placeholder="Username")
         div.num-container.form-group
-          input.form-control.num-gv-password(name="password", type="password", placeholder="Password")
+          div.input-group
+            span.input-group-addon
+              i.glyphicon.glyphicon-lock
+            input.form-control.num-gv-password(name="password", type="password", placeholder="Password")
         div.num-container
           a.btn.btn-primary.num-gv-login(href="#", role="button") Login
+          a.btn.btn-primary.num-gv-loggingin.hidden(href="#", role="button", disabled) Processing...
           a.btn.btn-default.num-gv-register(href="/register/", role="button") Register
     ul.num-user-view.dropdown-menu.hidden
       li

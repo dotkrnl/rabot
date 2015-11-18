@@ -10,7 +10,8 @@ block content
       form.ra-form.form-horizontal
         div.form-group
           div.input-group
-            span.input-group-addon @
+            span.input-group-addon
+              i.glyphicon.glyphicon-user
             input.form-control.ra-username(type="text" placeholder="Username" required)
         div.form-group
           div.input-group
@@ -28,5 +29,5 @@ block content
             input.form-control.ra-confirm(type="password" placeholder="Repeat that" required)
 
         div.form-group
-          button.btn.btn-primary.ra-submit(type='submit') Submit
-          button.btn.btn-primary.ra-submitting.hidden(type='submit' disabled) Submitting...
+          button.btn.btn-primary.ra-submit(type='submit') Register
+          button.btn.btn-primary.ra-submitting.hidden(type='submit' disabled) Processing...
