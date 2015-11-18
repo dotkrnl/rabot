@@ -1,7 +1,7 @@
 from archive.models import ArchiveDao
 
 
-class ArchiveManger():
+class ArchiveManager():
 
     def __init__(self):
         self.dao = ArchiveDao()

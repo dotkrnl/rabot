@@ -1,7 +1,7 @@
 from progress.models import ProgressDao
 
 
-class ArchiveManger():
+class ProgressManager():
 
     def __init__(self):
         self.dao = ProgressDao()
