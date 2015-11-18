@@ -13,20 +13,7 @@ class GameScene extends View
     super(topDom)
     @canvas = @createViewFromElement("gs-svg", Snap)
     @canvasDom = @getJQueryObject("gs-svg")
-    @ruler = @canvas.image(
-      @getImageAssetPath() + 'game-scene/ruler.svg',
-      10, 10, 60, 60
-    )
-    @ruler.attr
-      cursor: 'pointer'
-
-    $(@ruler.node).on 'click', =>
-      if @rulerActivated
-        @deactiveRuler()
-      else
-        @activeRuler()
-
-
+    @initRuler()
     @game = null
     @elems = []
 
@@ -125,12 +112,12 @@ class GameScene extends View
     if @rulerActivated
       if not @rulerObject1
         @rulerObject1 = sprite
+        @rulerLine.attr
+          x1: @rulerObject1.x
+          x2: @rulerObject1.x
+          y1: @rulerObject1.y
+          y2: @rulerObject1.y
       else if not @rulerObject2
-        @rulerObject2 = sprite
-        alert \
-          '(' +
-          (@rulerObject1.x - @rulerObject2.x) + ',' +
-          (@rulerObject1.y - @rulerObject2.y) + ')'
         @deactiveRuler()
     else
       @trigger('spriteclicked', sprite, label)
@@ -139,10 +126,91 @@ class GameScene extends View
     @rulerObject1 = null
     @rulerObject2 = null
     @rulerActivated = true
+    @ruler.attr({opacity: 0.5})
 
   deactiveRuler: () ->
     @rulerObject1 = null
     @rulerObject2 = null
     @rulerActivated = false
+    @ruler.attr({opacity: 1.0})
+    @rulerCursor.attr
+      x: -100
+      y: -100
+
+    @rulerLine.attr
+      x1: -100
+      x2: -100
+      y1: -100
+      y2: -100
+
+    @rulerLabel.attr
+      x: -100
+      y: -100
+
+  initRuler: () ->
+    @ruler = @canvas.image(
+      @getImageAssetPath() + 'game-scene/ruler.svg',
+      10, 10, 60, 60
+    )
+
+    @rulerCursor = @canvas.image(
+      @getImageAssetPath() + 'game-scene/ruler.svg',
+      -100, -100, 60, 60
+    )
+
+    @ruler.attr
+      cursor: 'pointer'
+
+    $(@ruler.node).on 'click', =>
+      if @rulerActivated
+        @deactiveRuler()
+      else
+        @activeRuler()
+
+    @rulerLine = @canvas.line(0,0,500,500)
+    @rulerLine.attr
+      stroke: '#000'
+      strokeWidth: 5
+      strokeLinecap: 'round'
+      'stroke-dasharray':'40,20'
+
+    @rulerLabel = @canvas.text(-100, -100, '')
+    @rulerLabel.attr
+      'text-anchor': 'middle'
+      'font-size': "24pt"
+      fill: "#224"
+
+    @deactiveRuler()
+    #@rulerLine.attr
+    #  'stroke-dasharray': '10,10'
+
+    @canvasDom.on 'mousemove', (event) =>
+      return if not @rulerActivated
+      offset = @canvasDom.offset()
+      x = event.pageX - offset.left
+      y = event.pageY - offset.top
+      ratio = Math.max(@canvasDom.width(), @canvasDom.height()) / 1000.0
+      x = x / ratio - 30
+      y = y / ratio - 30
+      @rulerCursor.attr
+        x: x
+        y: y
+      if @rulerObject1
+        for elem in @game.filterSprites('defunct': false)
+          continue if not elem.x? or not elem.y?
+          if Math.abs(x - elem.x) < 75 and Math.abs(y - elem.y) < 75
+            x = elem.x
+            y = elem.y
+            break
+        distance = Math.sqrt \
+          (x - @rulerObject1.x) * (x - @rulerObject1.x) +
+          (y - @rulerObject1.y) * (y - @rulerObject1.y)
+        @rulerLine.attr
+          x2: x
+          y2: y
+        @rulerLabel.attr
+          x: (x + @rulerObject1.x) / 2
+          y: (y + @rulerObject1.y) / 2
+          text: '' + distance
 
 module.exports = GameScene
