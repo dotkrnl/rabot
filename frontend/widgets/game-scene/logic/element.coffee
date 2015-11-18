@@ -23,11 +23,10 @@ class GameElem
       throw new Error("Unsupported sprite type #{@sprite.type}")
 
     @elem = @canvas.group()
-    @elem.attr
-      cursor: 'pointer'
+    if @sprite.type in interactiveSpriteType
+      @elem.attr
+        cursor: 'pointer'
     @imageElem = null
-
-    @initLabelElement()
 
     if @sprite.type != "staticimage" and @sprite.image
       @imageElem = @canvas.image(
@@ -47,18 +46,18 @@ class GameElem
         @sprite.image.height
       )
     @elem.add(@imageElem) if @imageElem?
-    @elem.add(@labelElem)
 
-    $(@elem.node).on 'mouseover', =>
-      @labelElem.animate({opacity: 1.0}, 300, mina.linear)
-      @scene.onMouseEnterSprite(@sprite, @label)
-
-    $(@elem.node).on 'mouseout', =>
-      @labelElem.animate({opacity: 0.0}, 300, mina.linear)
-      @scene.onMouseLeaveSprite(@sprite, @label)
-
-    $(@elem.node).on 'click', =>
-      @scene.onMouseClickSprite(@sprite, @label)
+    if @sprite.type in interactiveSpriteType
+      @initLabelElement()
+      @elem.add(@labelElem)
+      $(@elem.node).on 'mouseover', =>
+        @labelElem.animate({opacity: 1.0}, 300, mina.linear)
+        @scene.onMouseEnterSprite(@sprite, @label)
+      $(@elem.node).on 'mouseout', =>
+        @labelElem.animate({opacity: 0.0}, 300, mina.linear)
+        @scene.onMouseLeaveSprite(@sprite, @label)
+      $(@elem.node).on 'click', =>
+        @scene.onMouseClickSprite(@sprite, @label)
 
     @update(0)
 

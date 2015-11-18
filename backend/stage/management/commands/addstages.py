@@ -171,12 +171,16 @@ class Command(BaseCommand):
                     "region":{"width":100,"height":100},
             		"x":300,
             		"y":800
+            	},
+            	{
+            		"type":"door",
+                    "image":{"name":"door.svg","width":240,"height":240},
+                    "region":{"width":240,"height":240},
+            		"x":750,
+            		"y":400
             	}
             ]
             """
-            '''info = """[
-                {"type":"door","x":400,"y":150,"width":75,"height":75,"keyId":0}
-              ]"""'''
             manager.add_stage(sid, name, info)
 
             sid = 1000 * i + 5

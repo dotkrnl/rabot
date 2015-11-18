@@ -198,6 +198,7 @@ class GameScene extends View
       if @rulerObject1
         for elem in @game.filterSprites('defunct': false)
           continue if not elem.x? or not elem.y?
+          continue if elem.type == 'staticimage' or elem.type == 'river'
           if Math.abs(x - elem.x) < 75 and Math.abs(y - elem.y) < 75
             x = elem.x
             y = elem.y
