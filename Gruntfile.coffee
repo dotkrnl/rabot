@@ -28,6 +28,15 @@ module.exports = (grunt) ->
           ext: '.css'
         }]
 
+    yaml:
+      install:
+        files: [{
+          expand: true
+          cwd: './frontend/locales'
+          src: ['**/*.yml']
+          dest: './_site/locales'
+        }]
+
     copy:
       install:
         files: [{
@@ -74,10 +83,15 @@ module.exports = (grunt) ->
               files: [
                 "extras/iced-coffee-script-108.0.8-min.js"
               ]
-            SoundJS:
+            'SoundJS':
               keepExpandedHierarchy: false
               files: [
                 "lib/soundjs-0.6.1.min.js"
+              ]
+            'i18next':
+              keepExpandedHierarchy: false
+              files: [
+                "i18next.min.js"
               ]
 
     browserify:
@@ -121,6 +135,9 @@ module.exports = (grunt) ->
       sass:
         files: ['./frontend/**/*.scss']
         tasks: ['sass']
+      yaml:
+        files: ['./frontend/**/*.yml']
+        tasks: ['yaml']
       browserify:
         files: ['./frontend/**/*.coffee']
         tasks: ['browserify']
@@ -171,9 +188,10 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-connect-proxy'
   grunt.loadNpmTasks 'grunt-shell'
   grunt.loadNpmTasks 'grunt-ssh'
+  grunt.loadNpmTasks 'grunt-yaml'
 
   grunt.registerTask 'deploy', ['sshexec:precopy', 'sftp', 'sshexec:postcopy']
-  grunt.registerTask 'compile', ['copy', 'jade', 'sass', 'bower', 'browserify']
+  grunt.registerTask 'compile', ['copy', 'jade', 'sass', 'yaml', 'bower', 'browserify']
   grunt.registerTask 'serve', [
     'compile', 'configureProxies:server', 'connect', 'concurrent:runserver']
   grunt.registerTask 'dev', ['compile']

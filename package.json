@@ -22,7 +22,8 @@
     "grunt-contrib-copy": "^0.8.2",
     "grunt-contrib-jade": "^0.15.0",
     "grunt-contrib-sass": "gruntjs/grunt-contrib-sass",
-    "grunt-ssh": "^0.12.8"
+    "grunt-ssh": "^0.12.8",
+    "grunt-yaml": "^0.4.1"
   },
   "devDependencies": {
     "electron-prebuilt": "^0.35.0",

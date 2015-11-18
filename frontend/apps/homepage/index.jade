@@ -1,10 +1,9 @@
 extends /commons/template.jade
 
 block content
-  div.homepage-app.container(role='main')
+  div.homepage-app.container(role="main")
     div.jumbotron
-      h1 Learn coding with a rabbit
-      p.
-        Coding for fun? Is that a joke? No!
+      h1(data-i18n="homepage.slogan")
+      p(data-i18n="homepage.details")
       p
-        a.btn.btn-primary.btn-lg(href='/play/' role='button') Play Now
+        a.btn.btn-primary.btn-lg(href="/play/" role="button" data-i18n="homepage.playnow")
