@@ -1,8 +1,34 @@
 navbar:
   game: 游戏
 
+nav-user-manager:
+  username: 用户名
+  password: 密码
+  login: 登录
+  processing: 登录中...
+  register: 注册
+  logout: 登出
+
 homepage:
   slogan: 和兔子一同学习编程
   details: 快乐编程？这并不是一个遥不可及的梦想！
   playnow: 开始游戏
+
+register:
+  title: 注册
+  username: 用户名
+  email: 电子邮箱
+  password: 密码
+  repeat: 再输入一次
+  submit: 注册
+  processing: 注册中...
+
+updateinfo:
+  title: 修改登录信息
+  current: 当前密码
+  password: 修改密码为 (可选)
+  repeat: 再输入一次
+  email: 修改电子邮箱为 (可选)
+  submit: 修改信息
+  processing: 正在修改...
 

@@ -5,29 +5,29 @@ block title
 
 block content
   div.container.register-app
-    h1 Register
+    h1(data-i18n="register.title")
     div.ra-form-container.col-md-6
       form.ra-form.form-horizontal
         div.form-group
           div.input-group
             span.input-group-addon
               i.glyphicon.glyphicon-user
-            input.form-control.ra-username(type="text" placeholder="Username" required)
+            input.form-control.ra-username(type="text" data-i18n="[placeholder]register.username" required)
         div.form-group
           div.input-group
             span.input-group-addon
               i.glyphicon.glyphicon-envelope
-            input.form-control.ra-email(type="email" placeholder="Email" required)
+            input.form-control.ra-email(type="email" data-i18n="[placeholder]register.email" required)
         div.form-group
           div.input-group.col-md-6.ra-float-left
             span.input-group-addon
               i.glyphicon.glyphicon-lock
-            input.form-control.ra-password(type="password" placeholder="Password" required)
+            input.form-control.ra-password(type="password" data-i18n="[placeholder]register.password" required)
           div.input-group.col-md-6.ra-float-left
             span.input-group-addon
               i.glyphicon.glyphicon-hand-left
-            input.form-control.ra-confirm(type="password" placeholder="Repeat that" required)
+            input.form-control.ra-confirm(type="password" data-i18n="[placeholder]register.repeat" required)
 
         div.form-group
-          button.btn.btn-primary.ra-submit(type='submit') Register
-          button.btn.btn-primary.ra-submitting.hidden(type='submit' disabled) Processing...
+          button.btn.btn-primary.ra-submit(type='submit', data-i18n="register.submit")
+          button.btn.btn-primary.ra-submitting.hidden(type='submit', data-i18n="register.processing" disabled)

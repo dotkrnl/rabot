@@ -1,32 +1,35 @@
 extends /commons/template.jade
 
+block title
+  | Edit | Rabot
+
 block content
   div.container.update-app
-    h1 Edit Logins
+    h1(data-i18n="updateinfo.title")
     div.ua-form-container.col-md-6
       form.ua-form.form-horizontal
         div.form-group
           div.input-group
             span.input-group-addon
               i.glyphicon.glyphicon-lock
-            input.form-control.ua-password(type="password" placeholder="Current Password" required)
+            input.form-control.ua-password(type="password" data-i18n="[placeholder]updateinfo.current" required)
             span.input-group-addon
               i.glyphicon.glyphicon-asterisk
         div.form-group
           div.input-group
             span.input-group-addon
               i.glyphicon.glyphicon-pencil
-            input.form-control.ua-newpwd(type="password" placeholder="Change Password (optional)")
+            input.form-control.ua-newpwd(type="password" data-i18n="[placeholder]updateinfo.password")
         div.form-group
           div.input-group
             span.input-group-addon
               i.glyphicon.glyphicon-hand-up
-            input.form-control.ua-confirm(type="password" placeholder="Repeat that")
+            input.form-control.ua-confirm(type="password" data-i18n="[placeholder]updateinfo.repeat")
         div.form-group
           div.input-group
             span.input-group-addon
               i.glyphicon.glyphicon-envelope
-            input.form-control.ua-email(type="email" placeholder="Change Email (optional)")
+            input.form-control.ua-email(type="email" data-i18n="[placeholder]updateinfo.email")
         div.form-group
-          button.btn.btn-primary.ua-submit(type='submit') Submit
-          button.btn.btn-primary.ua-submitting.hidden(type='submit' disabled) Processing...
+          button.btn.btn-primary.ua-submit(type="submit", data-i18n="updateinfo.submit")
+          button.btn.btn-primary.ua-submitting.hidden(type="submit", data-i18n="updateinfo.processing" disabled)

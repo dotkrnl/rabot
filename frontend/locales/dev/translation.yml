@@ -1,7 +1,33 @@
 navbar:
   game: Game
 
+nav-user-manager:
+  username: Username
+  password: Password
+  login: Login
+  processing: Processing...
+  register: Register
+  logout: Logout
+
 homepage:
   slogan: Learn coding with a rabbit
   details: Coding for fun? Is that a joke? No!
   playnow: Play Now
+
+register:
+  title: Register
+  username: Username
+  email: Email
+  password: Password
+  repeat: Repeat that
+  submit: Register
+  processing: Processing...
+
+updateinfo:
+  title: Edit Logins
+  current: Current Password
+  password: Change Password (optional)
+  repeat: Repeat that
+  email: Change Email (optional)
+  submit: Edit
+  processing: Processing...
