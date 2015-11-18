@@ -78,7 +78,7 @@ class GameView extends View
     @gameScene.on 'spriteclicked', (sprite, label) =>
       @codeEditor.insertCode(label)
 
-    $(topDom).find('.select-level.btn').click =>
+    $('html').find('.nav-level-selector').click =>
       @levelSelector.show()
 
     @codeAssistanceDom = $(topDom).find(".gv-code-assistance")

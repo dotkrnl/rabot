@@ -5,3 +5,7 @@ extends /commons/template.jade
 block content
   div.play-app
     +game-view()(class="pa-game-view")
+
+block navbar-right-ext
+  ul.nav.navbar-nav.navbar-right
+    +nav-level-selector()

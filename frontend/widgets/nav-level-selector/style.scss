@@ -1,0 +1,11 @@
+.nav-level-selector {
+  $level-selector-button-height: 35px;
+  a.level-selector-button {
+    margin-top: ($navbar-height - $level-selector-button-height) / 2;
+    margin-bottom: ($navbar-height - $level-selector-button-height) / 2;
+    width: $level-selector-button-height;
+    height: $level-selector-button-height;
+    background-image: url(/public/images/nav-level-selector/map.png);
+    display: block;
+  }
+}
