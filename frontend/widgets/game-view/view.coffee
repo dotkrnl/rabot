@@ -118,7 +118,7 @@ class GameView extends View
       )
       @gameOverDialog.show(@game.carrotGot, @currentSid)
     @game.on 'lost', =>
-      @gameOverDialog.show(-1)
+      @gameOverDialog.show(-1, @currentSid)
     @game.on 'finish', =>
       @stopGame()
       @gameControlBar.setGameRunning(false)
