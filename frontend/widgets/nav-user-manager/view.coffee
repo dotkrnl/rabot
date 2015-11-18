@@ -27,20 +27,18 @@ class NavUserManager
       @login() if e.keyCode == 13 # is enter key
 
   login: ->
+    return if not @validate()
+
     username = @guestViewUsername.val().trim()
     password = @guestViewPassword.val()
-    @validate(username, password)
+    @user.login username, password, (err) =>
+      @showError(@guestViewUsername.add(@guestViewPassword), err?)
+      if err?
+        alert(err)
+      else
+        @topView.removeClass('open');
 
-    if username != '' and password != ''
-      @user.login username, password, (err) =>
-        if err?
-          @guestViewUsername.add(@guestViewPassword).parent()
-            .addClass('has-error')
-          alert(err)
-        else
-          @guestViewUsername.add(@guestViewPassword).parent()
-            .removeClass('has-error')
-          @topView.removeClass('open');
+    return
 
   logout: ->
     @user.logout =>
@@ -59,16 +57,26 @@ class NavUserManager
       @guestView.removeClass('hidden')
       @userImg.attr('src', "#{@AVATAR_BASE}nobody?d=mm")
 
-  validate: (username, password) ->
-    if username == ''
-      @guestViewUsername.parent().addClass('has-error')
-    else
-      @guestViewUsername.parent().removeClass('has-error')
+    return
 
-    if password == ''
-      @guestViewPassword.parent().addClass('has-error')
+  validate: () ->
+    has_err = false
+
+    err = @guestViewUsername.val().trim() == ''
+    @showError(@guestViewUsername, err)
+    has_err |= err
+
+    err = @guestViewPassword.val() == ''
+    @showError(@guestViewPassword, err)
+    has_err |= err
+
+    return not has_err
+
+  showError: (dom, isError) ->
+    if isError
+      dom.parent().addClass('has-error')
     else
-      @guestViewPassword.parent().removeClass('has-error')
+      dom.parent().removeClass('has-error')
 
 
 module.exports = NavUserManager

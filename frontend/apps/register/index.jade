@@ -1,27 +1,32 @@
 extends /commons/template.jade
 
+block title
+  | Register | Rabot
+
 block content
   div.container.register-app
-      div.row
-        div.col-sm-6
-          h1 Register
-      div.row
-        form.ra-form.form-horizontal
-          div.form-group
-            label.col-sm-2.control-label(for='input-text') Username
-            div.col-sm-4
-              input.form-control.ra-username(type="text" placeholder="Username" required)
-          div.form-group
-            label.col-sm-2.control-label(for='input-password') Password
-            div.col-sm-4
-              input.form-control.ra-password(type="password" placeholder="Password" required)
-          div.form-group
-            label.col-sm-2.control-label(for='input-password') Password Confirm
-            div.col-sm-4
-              input.form-control.ra-confirm(type="password" placeholder="Password Confirm" required)
-          div.form-group
-            label.col-sm-2.control-label(for='input-email') Email
-            div.col-sm-4
-              input.form-control.ra-email(type="email" placeholder="Email" required)
-          div
-            button.btn.btn-primary.ra-submit(type='submit') Submit
+    h1 Register
+    div.ra-form-container.col-md-6
+      form.ra-form.form-horizontal
+        div.form-group
+          div.input-group
+            span.input-group-addon @
+            input.form-control.ra-username(type="text" placeholder="Username" required)
+        div.form-group
+          div.input-group
+            span.input-group-addon
+              i.glyphicon.glyphicon-envelope
+            input.form-control.ra-email(type="email" placeholder="Email" required)
+        div.form-group
+          div.input-group.col-md-6.ra-float-left
+            span.input-group-addon
+              i.glyphicon.glyphicon-lock
+            input.form-control.ra-password(type="password" placeholder="Password" required)
+          div.input-group.col-md-6.ra-float-left
+            span.input-group-addon
+              i.glyphicon.glyphicon-hand-left
+            input.form-control.ra-confirm(type="password" placeholder="Repeat that" required)
+
+        div.form-group
+          button.btn.btn-primary.ra-submit(type='submit') Submit
+          button.btn.btn-primary.ra-submitting.hidden(type='submit' disabled) Submitting...
