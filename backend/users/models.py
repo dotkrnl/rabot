@@ -9,8 +9,7 @@ class Users(models.Model):
     passwd = models.TextField()
     email = models.EmailField(default='default@rabot', unique=True)
     authenticated = models.BooleanField(default=False)
-    logged_in = models.BooleanField(default=False)
-    admin_auth = models.IntegerField(default=0)
+    admin_authority = models.IntegerField(default=0)
 
     def __unicode__(self):
         return self.uname + ' (#' + str(self.uid) + ')'
@@ -48,19 +47,8 @@ class UsersDao():
         cur_user.authenticated = True
         cur_user.save(update_fields=['authenticated'])
 
-    def log_in(self, cur_user):
-        cur_user.logged_in = True
-        cur_user.save(update_fields=['logged_in'])
-
-    def log_out(self, cur_user):
-        cur_user.logged_in = False
-        cur_user.save(update_fields=['logged_in'])
-
     def is_authenticated(self, cur_user):
         return cur_user.authenticated
-
-    def has_logged_in(self, cur_user):
-        return cur_user.logged_in
 
     def update_passwd(self, cur_user, passwd):
         cur_user.passwd = passwd

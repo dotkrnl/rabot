@@ -97,14 +97,11 @@ class UsersManager():
         if not cur_user:
             return 'User does not exist.'
         elif cur_user.passwd == passwd:
-            if self.dao.has_logged_in(cur_user):
-                return 'User has already logged in.'
-            elif not cur_user.authenticated:
-                return 'User has not authenticated yet, please check your email.'
-            else:
-                self.dao.log_in(cur_user)
+            if cur_user.authenticated:
                 self.cur_user = cur_user
                 return 'Succeeded.'
+            else:
+                return 'User has not authenticated yet, please check your email.'
         else:
             return 'Password is incorrect.'
 
@@ -112,21 +109,18 @@ class UsersManager():
         if uid > 0:
             cur_user = self.dao.get_user_by_uid(uid)
             if not cur_user:
-                return 'User does not exist.'
-            elif self.dao.has_logged_in(cur_user):
-                self.dao.log_out(cur_user)
+                return 'User does not exist or has not logged in.'
+            else:
                 self.cur_user = cur_user
                 return 'Succeeded.'
-            else:
-                return 'User has not logged in.'
         else:
             self.cur_user = None
-            return 'User does not exist or log in now.'
+            return 'User does not exist.'
 
     def update(self, uid, old_passwd, new_passwd, new_email):
         cur_user = self.dao.get_user_by_uid(uid)
         if not cur_user:
-            return 'User does not exist or log in now.'
+            return 'User does not exist.'
 
         if cur_user.passwd != old_passwd:
             return 'Old password is incorrect.'

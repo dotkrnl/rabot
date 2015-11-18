@@ -11,14 +11,13 @@ def user_registration_view(request):
     manager = UsersManager()
 
     if request.method == 'POST':
-        logged_in = request.session.get('logged_in', False)
-        if logged_in:
-            cur_user = request.session.get('cur_user', {})
+        cur_user = request.session.get('cur_user', {})
+        if cur_user:
             response_data = {
                 'result': "failed",
                 'user': cur_user,
                 'loggedin': True,
-                'errorMessage': 'Please log out first.',
+                'errorMessage': 'A user has already logged in. Please log out first.',
             }
 
         else:
@@ -97,19 +96,15 @@ def user_login_view(request):
             if result[:9] == 'Succeeded':
                 response_data = {
                     'result': 'succeeded',
+                    'loggedin': True,
                 }
                 cur_user = manager.get_cur_user()
                 request.session['cur_user'] = cur_user.to_dict()
-                request.session['logged_in'] = True
 
-            elif result == 'User has already logged in.':
-                response_data = {
-                    'result': 'succeeded',
-                }
-                
             else:
                 response_data = {
                     'result': 'failed',
+                    'loggedin': False,
                     'errorMessage': result,
                 }
 
@@ -117,8 +112,7 @@ def user_login_view(request):
 
     elif request.method == 'GET':
         cur_user = request.session.get('cur_user', {})
-        logged_in = request.session.get('logged_in', False)
-        if logged_in:
+        if cur_user:
             response_data = {
                 'result': 'succeeded',
                 'user': cur_user,
@@ -141,19 +135,15 @@ def user_logout_view(request):
     manager = UsersManager()
 
     if request.method == 'GET':
-        logged_in = request.session.get('logged_in', False)
-        if logged_in:
-            cur_user = request.session.get('cur_user', None)
-            if cur_user:
-                uid = cur_user['uid']
-            else:
-                uid = -1073741823
+        cur_user = request.session.get('cur_user', {})
+        if cur_user:
+            uid = cur_user['uid']
         else:
             uid = -1073741823
 
         result = manager.logout(uid)
         if result[:9] == 'Succeeded':
-            request.session['logged_in'] = False
+            del request.session['cur_user']
             response_data = {
                 'result': 'succeeded',
                 'user': manager.get_cur_user().to_dict(),
@@ -186,13 +176,9 @@ def user_info_update(request):
                 'errorMessage': 'KeyError',
             }
         else:
-            cur_user = request.session.get('cur_user', None)
+            cur_user = request.session.get('cur_user', {})
             if cur_user:
-                logged_in = request.session.get('logged_in', False)
-                if logged_in:
-                    uid = cur_user['uid']
-                else:
-                    uid = -1073741823
+                uid = cur_user['uid']
             else:
                 uid = -1073741823
 
