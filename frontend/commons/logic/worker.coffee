@@ -127,7 +127,7 @@ class UserCodeWorker
       return Math.sqrt(
         (obj1.x - obj2.x) * (obj1.x - obj2.x) +
         (obj1.y - obj2.y) * (obj1.y - obj2.y)
-      )
+      ) / 50
 
     __rabot_finished = ->
       @postMessage
