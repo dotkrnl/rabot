@@ -186,15 +186,11 @@ class GameScene extends View
 
     @canvasDom.on 'mousemove', (event) =>
       return if not @rulerActivated
-      offset = @canvasDom.offset()
-      x = event.pageX - offset.left
-      y = event.pageY - offset.top
-      ratio = Math.max(@canvasDom.width(), @canvasDom.height()) / 1000.0
-      x = x / ratio - 30
-      y = y / ratio - 30
-      @rulerCursor.attr
-        x: x
-        y: y
+      pt = @canvasDom[0].createSVGPoint()
+      [pt.x, pt.y] = [event.clientX, event.clientY]
+      pt = pt.matrixTransform(@canvasDom[0].getScreenCTM().inverse())
+      [x, y] = [pt.x, pt.y]
+      @rulerCursor.attr x: x, y: y
       if @rulerObject1
         for elem in @game.filterSprites('defunct': false)
           continue if not elem.x? or not elem.y?
@@ -206,9 +202,7 @@ class GameScene extends View
         distance = Math.sqrt \
           (x - @rulerObject1.x) * (x - @rulerObject1.x) +
           (y - @rulerObject1.y) * (y - @rulerObject1.y)
-        @rulerLine.attr
-          x2: x
-          y2: y
+        @rulerLine.attr x2: x, y2: y
         @rulerLabel.attr
           x: (x + @rulerObject1.x) / 2
           y: (y + @rulerObject1.y) / 2
