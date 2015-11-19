@@ -1,6 +1,7 @@
 from django.contrib.auth.hashers import check_password
 from users.models import UsersDao
 import smtplib
+import threading
 from email.mime.text import MIMEText
 
 
@@ -34,10 +35,10 @@ class UsersManager():
             <h5>Coding for fun? Is that a joke? No! </h5>
             <br>
             Thanks for your registration.<br>
-            Please click this <a href="%s">link</a> to finish the registration. <br>
-            <br>
-            If the link above is not available, please copy the following url address: <br>
-            %s<br>
+            Please click this <a href="%s">link</a> to finish the registration.
+            <br> <br>
+            If the link above is not available, please copy the following url
+            address: <br> %s<br>
         """ % (authentication_url, authentication_url)
 
         message = MIMEText(mail_content, _subtype='html', _charset='utf-8')
@@ -78,7 +79,9 @@ class UsersManager():
         else:
             uid = 1
 
-        self.__send_authentication_email(uid, email)
+        t = threading.Thread(target=self.__send_authentication_email,
+                             args=(uid, email))
+        t.start()
         self.dao.create_user(uid, uname, passwd, email)
         self.cur_user = self.dao.get_user_by_uid(uid)
 
@@ -102,7 +105,7 @@ class UsersManager():
                 self.cur_user = cur_user
                 return 'Succeeded.'
             else:
-                return 'User has not authenticated yet, please check your email.'
+                return 'User has not authenticated, please check your email.'
         else:
             return 'Password is incorrect.'
 
@@ -134,7 +137,9 @@ class UsersManager():
             if target:
                 return 'Email is already used.'
 
-        if len(new_passwd) > 0: self.dao.update_passwd(cur_user, new_passwd)
-        if len(new_email) > 0: self.dao.update_email(cur_user, new_email)
+        if len(new_passwd) > 0:
+            self.dao.update_passwd(cur_user, new_passwd)
+        if len(new_email) > 0:
+            self.dao.update_email(cur_user, new_email)
         self.cur_user = cur_user
         return 'Succeeded.'
