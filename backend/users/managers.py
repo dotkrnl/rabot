@@ -97,13 +97,16 @@ class UsersManager():
     def registration_authentication(self, uid, token):
         cur_user = self.dao.get_user_by_uid(uid)
         if cur_user:
-            text = ('\1'.join([str(cur_user.uname), str(cur_user.email), str(cur_user.passwd), self.salt])).encode('utf-8')
-            tmp_token = hashlib.sha1(text).hexdigest()
-            if tmp_token == token:
-                self.dao.authenticate(cur_user)
-                return 'Succeeded.'
+            if self.dao.is_authenticated(cur_user):
+                return 'User has been authenticated already.'
             else:
-                return 'Authentication failure(Incorrect token).'
+                text = ('\1'.join([str(cur_user.uname), str(cur_user.email), str(cur_user.passwd), self.salt])).encode('utf-8')
+                tmp_token = hashlib.sha1(text).hexdigest()
+                if tmp_token == token:
+                    self.dao.authenticate(cur_user)
+                    return 'Succeeded.'
+                else:
+                    return 'Authentication failure(Incorrect token).'
         else:
             return 'User does not exist.'
 
