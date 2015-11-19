@@ -117,8 +117,8 @@ class GameScene extends View
           x2: @rulerObject1.x
           y1: @rulerObject1.y
           y2: @rulerObject1.y
-      else if not @rulerObject2
-        @deactiveRuler()
+      else
+        @rulerObject1 = null # Line remained
     else
       @trigger('spriteclicked', sprite, label)
 
@@ -127,6 +127,7 @@ class GameScene extends View
     @rulerObject2 = null
     @rulerActivated = true
     @ruler.attr({opacity: 0.5})
+    @ruler.appendTo(@ruler.paper)
 
   deactiveRuler: () ->
     @rulerObject1 = null
@@ -150,22 +151,20 @@ class GameScene extends View
   initRuler: () ->
     @ruler = @canvas.image(
       @getImageAssetPath() + 'game-scene/ruler.svg',
-      10, 10, 60, 60
+      30, 30, 80, 80
     )
-
-    @rulerCursor = @canvas.image(
-      @getImageAssetPath() + 'game-scene/ruler.svg',
-      -100, -100, 60, 60
-    )
-
     @ruler.attr
       cursor: 'pointer'
-
     $(@ruler.node).on 'click', =>
       if @rulerActivated
         @deactiveRuler()
       else
         @activeRuler()
+
+    @rulerCursor = @canvas.image(
+      @getImageAssetPath() + 'game-scene/ruler.svg',
+      -100, -100, 80, 80
+    )
 
     @rulerLine = @canvas.line(0,0,500,500)
     @rulerLine.attr
@@ -177,35 +176,35 @@ class GameScene extends View
     @rulerLabel = @canvas.text(-100, -100, '')
     @rulerLabel.attr
       'text-anchor': 'middle'
-      'font-size': "24pt"
+      'font-size': "36pt"
       fill: "#224"
 
     @deactiveRuler()
-    #@rulerLine.attr
-    #  'stroke-dasharray': '10,10'
 
     @canvasDom.on 'mousemove', (event) =>
       return if not @rulerActivated
+
       pt = @canvasDom[0].createSVGPoint()
       [pt.x, pt.y] = [event.clientX, event.clientY]
       pt = pt.matrixTransform(@canvasDom[0].getScreenCTM().inverse())
       [x, y] = [pt.x, pt.y]
+
       @rulerCursor.attr x: x, y: y
-      if @rulerObject1
-        for elem in @game.filterSprites('defunct': false)
-          continue if not elem.x? or not elem.y?
-          continue if elem.type == 'staticimage' or elem.type == 'river'
-          if Math.abs(x - elem.x) < 75 and Math.abs(y - elem.y) < 75
-            x = elem.x
-            y = elem.y
-            break
-        distance = Math.sqrt \
-          (x - @rulerObject1.x) * (x - @rulerObject1.x) +
-          (y - @rulerObject1.y) * (y - @rulerObject1.y)
-        @rulerLine.attr x2: x, y2: y
-        @rulerLabel.attr
-          x: (x + @rulerObject1.x) / 2
-          y: (y + @rulerObject1.y) / 2
-          text: '' + distance
+
+      return if not @rulerObject1
+      for elem in @game.filterSprites('defunct': false)
+        continue if not elem.x? or not elem.y?
+        continue if elem.type == 'staticimage' or elem.type == 'river'
+        if Math.abs(x - elem.x) < 75 and Math.abs(y - elem.y) < 75
+          x = elem.x
+          y = elem.y
+          break
+      distance = Math.sqrt \
+        (x - @rulerObject1.x) * (x - @rulerObject1.x) +
+        (y - @rulerObject1.y) * (y - @rulerObject1.y)
+      @rulerLine.attr x2: x, y2: y
+      @rulerLabel.attr x: x + 100, y: y, text: '' + Math.ceil(distance)
+      @rulerLabel.appendTo(@rulerLabel.paper) # bring to front
+
 
 module.exports = GameScene
