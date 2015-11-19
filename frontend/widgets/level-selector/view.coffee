@@ -16,7 +16,7 @@ class LevelSelector extends View
     @userProgress = new UserProgress
     @stage = new Stage()
     @stagePackageBackground = @canvas.image(
-      @getImageAssetPath() + 'level-selector/grassland.svg', 0, 0, 700, 400
+      @getImageAssetPath() + 'level-selector/grassland.png', 1, 0, 700, 400
     )
     @prevButton = @canvas.image(
       @getImageAssetPath() + 'level-selector/button-previous.svg',
@@ -65,7 +65,7 @@ class LevelSelector extends View
     for i in [1..stageData.length]
       centers.push
         x : (i - 1) % 4 * 120 + 170,
-        y : Math.floor((i - 1) / 4 + 0.01) * 90 + 135
+        y : Math.floor((i - 1) / 4 + 0.01) * 120 + 140
 
     maxAvailStage = -1
     for i in [0..stageData.length - 1]
@@ -94,13 +94,15 @@ class LevelSelector extends View
       text.attr
         fill: '#222',
         'font-size': '20px'
+        'font-weight': 'bold'
         'text-anchor': 'middle'
 
       levelText = @canvas.text(center.x, center.y + 50, stage.name)
       levelText.attr
-        'font-size': '20px'
+        fill: "#DDD"
+        'font-size': '15px'
+        'font-weight': 'light'
         'text-anchor': 'middle'
-        fill: "#DAA"
 
       levelElems.push(elem)
       elem = @canvas.group(circle, text)
