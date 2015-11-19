@@ -48,6 +48,8 @@ class GameView extends View
     @gameControlBar.on 'runcode', =>
       code = @codeEditor.getCode()
       @userWorker = new UserWorker @game, code
+      @expanded = not @expanded if @expanded
+      $(topDom).removeClass('expand')
 
     @gameControlBar.on 'stopcode', =>
       @stopGame()
