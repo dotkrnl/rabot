@@ -5,35 +5,67 @@
   @import "../game-over-dialog/style";
   @import "../game-control-bar/style";
 
-  $game_scene_width : 45%;
+  $game_scene_width: 45%;
+  $toggle_height: 30px;
+  $assistance_height: 40px;
 
-  .gv-game-scene {
-    position: absolute;
-    top: 0; bottom: 0;
-    left: 0; right: 100% - $game_scene_width;
+  @media screen and (min-width: $screen-sm-min) {
+    .gv-game-scene {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 0; right: 100% - $game_scene_width;
+    }
+    .gv-code-editor {
+      position: absolute;
+      top: 0;
+      bottom: $assistance_height;
+      left: $game_scene_width;
+      right: 0;
+    }
+    .gv-code-assistance {
+      position: absolute;
+      left: $game_scene_width;
+      right: 0;
+      bottom: 0;
+    }
   }
-  .gv-code-editor {
-    position: absolute;
-    top: 0;
-    bottom: 40px;
-    left: $game_scene_width;
-    right: 0;
+  @media screen and (max-width: $screen-xs-max) {
+    .gv-game-scene {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 0; right: 0;
+    }
+    .gv-code-editor {
+      position: absolute;
+      top: 100%; bottom: $assistance_height;
+      left: 0; right: 0;
+    }
+    .gv-code-assistance {
+      position: absolute;
+      bottom: 2000%;
+      left: 0; right: 0;
+    }
+    &.expand {
+      .gv-code-editor {
+        top: $toggle_height;
+      }
+      .gv-code-assistance {
+        bottom: 0;
+      }
+    }
   }
   .gv-code-assistance {
+    $margin: 5px;
     background-color: #1b4049;
-    position: absolute;
-    left: $game_scene_width;
-    right: 0;
-    height: 40px;
-    bottom: 0;
+    height: $assistance_height;
     .btn {
       font-family: monospace;
       font-size: 12px;
-      margin-left: 5px;
-      margin-top: 5px;
+      margin-left: $margin;
+      margin-top: $margin;
       width: 80px;
-      height: 30px;
-      line-height: 30px;
+      height: $assistance_height - 2*$margin;
+      line-height: $assistance_height - 2*$margin;
       padding: 0;
     }
   }
