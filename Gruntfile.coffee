@@ -55,13 +55,12 @@ module.exports = (grunt) ->
         fonts_dest: './_site/fonts'
         options:
           packageSpecific:
-            bootstrap:
+            "bootswatch-dist":
               keepExpandedHierarchy: false
               files: [
-                "dist/js/bootstrap.min.js"
-                "dist/css/bootstrap.min.css"
-                "dist/css/bootstrap-theme.min.css"
-                "dist/fonts/*"
+                "js/bootstrap.min.js"
+                "css/bootstrap.min.css"
+                "fonts/*"
               ]
             jquery:
               keepExpandedHierarchy: false

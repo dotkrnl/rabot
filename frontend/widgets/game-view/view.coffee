@@ -98,8 +98,8 @@ class GameView extends View
     codeAssistanceHTML = ''
     for userAPI of availableFunctions
       codeAssistanceHTML += """
-        <button class=\"btn-code-assistance-#{userAPI} btn btn-primary\"
-        type=\"submit\">
+        <button class=\"btn-code-assistance-#{userAPI} btn btn-success\"
+        type=\"button\">
           #{userAPI}
         </button>
       """
