@@ -1,3 +1,5 @@
 mixin nav-level-selector()
-  div.nav-level-selector(class!=attributes.class)
+  li.nav-level-selector(class!=attributes.class)
     a.level-selector-button(href="#")
+      img.nls-icon.hidden-xs(src="/public/images/nav-level-selector/map.png")
+      span.hidden-sm.hidden-md.hidden-lg(data-i18n="nav-level-selector.choose", href="#")

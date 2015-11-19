@@ -6,12 +6,16 @@ navbar:
   game: Game
 
 nav-user-manager:
+  user: User
   username: Username
   password: Password
   login: Login
   processing: Processing...
   register: Register
   logout: Logout
+
+nav-level-selector:
+  choose: Choose Level
 
 footer:
   proudly: Proudly power by Rabot team.
