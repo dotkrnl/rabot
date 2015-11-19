@@ -12,8 +12,8 @@ class NavUserManager
     @user.on('update', @update.bind(@))
     @user.sync()
 
-    $(topDom).find('.num-gv-login').click(@login.bind(@))
-    $(topDom).find('.num-uv-logout').click(@logout.bind(@))
+    $(topDom).find('.num-gv-login').on 'click touch', @login.bind(@)
+    $(topDom).find('.num-uv-logout').on 'click touch', @logout.bind(@)
 
     @topView = $(topDom)
     @guestView = $(topDom).find('.num-guest-view')

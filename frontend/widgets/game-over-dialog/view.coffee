@@ -35,11 +35,11 @@ class GameOverDialog extends View
     @nextButton.attr(cursor: 'pointer')
     @replayButton.attr(cursor: 'pointer')
 
-    $(@nextButton.node).click =>
+    $(@nextButton.node).on 'click touch', =>
       @hide()
       @trigger("nextstage")
 
-    $(@replayButton.node).click =>
+    $(@replayButton.node).on 'click touch', =>
       @hide()
       @trigger("replaystage")
 

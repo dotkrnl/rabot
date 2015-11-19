@@ -85,7 +85,7 @@ class GameView extends View
     @gameScene.on 'spriteclicked', (sprite, label) =>
       @codeEditor.insertCode(label)
 
-    $('html').find('.nav-level-selector').click =>
+    $('html').find('.nav-level-selector').on 'click touch', =>
       @levelSelector.show()
 
     @codeAssistanceDom = $(topDom).find(".gv-code-assistance")
@@ -107,10 +107,19 @@ class GameView extends View
     @codeAssistanceDom.html(codeAssistanceHTML)
     for userAPI, code of availableFunctions
       do(userAPI, code) =>
-        $(".btn-code-assistance-" + userAPI).click =>
+        $(".btn-code-assistance-" + userAPI).on 'click touch', =>
           event.preventDefault()
           @codeEditor.insertCode(code)
           @codeEditor.focus()
+
+    @expanded = false
+    $(topDom).find('.gv-toggle-expand').on 'click touch', =>
+      @expanded = not @expanded
+      if @expanded
+        $(topDom).addClass('expand')
+      else
+        $(topDom).removeClass('expand')
+
 
   bindGame: (game) ->
     @game = game
