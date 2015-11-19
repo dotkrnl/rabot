@@ -43,6 +43,9 @@ updateinfo:
   submit: 修改信息
   processing: 正在修改...
 
+game-view:
+  code: 写代码
+
 game-over-dialog:
   tryagain: 唔，请再试一次……
 

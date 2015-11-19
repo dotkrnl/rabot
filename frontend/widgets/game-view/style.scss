@@ -6,7 +6,7 @@
   @import "../game-control-bar/style";
 
   $game_scene_width: 45%;
-  $toggle_height: 30px;
+  $toggle_height: 40px;
   $assistance_height: 40px;
 
   @media screen and (min-width: $screen-sm-min) {
@@ -67,6 +67,30 @@
       height: $assistance_height - 2*$margin;
       line-height: $assistance_height - 2*$margin;
       padding: 0;
+    }
+  }
+  .gv-toggle-expand {
+    background-color: rgba(7, 54, 66, 0.99);
+    height: $toggle_height;
+    width: 100px;
+    position: absolute;
+    bottom: 0; left: 20px;
+    text-align: center;
+    @include border-radius4($toggle_height / 2, $toggle_height / 2, 0, 0);
+    a {
+      font-family: monospace;
+      color: white;
+      line-height: $toggle_height + 5px;
+      text-decoration: none;
+    }
+  }
+  &.expand {
+    .gv-toggle-expand {
+      bottom: auto;
+      top: 0;
+    }
+    .game-control-bar {
+      bottom: $assistance_height + 5px;
     }
   }
 }

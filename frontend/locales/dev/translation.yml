@@ -43,6 +43,9 @@ updateinfo:
   submit: Edit
   processing: Processing...
 
+game-view:
+  code: Code
+
 game-over-dialog:
   tryagain: Oops... Try again...
 

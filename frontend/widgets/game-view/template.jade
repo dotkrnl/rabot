@@ -11,5 +11,6 @@ mixin game-view()
     +game-control-bar()(class="gv-game-control-bar")
     +level-selector()(class="gv-level-selector")
     +game-over-dialog()(class="gv-game-over-dialog")
-
     div.gv-code-assistance
+    div.gv-toggle-expand.hidden-sm.hidden-md.hidden-lg
+      a(href="#", data-i18n="game-view.code")

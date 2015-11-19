@@ -55,7 +55,7 @@
     background-image : url(/public/images/game-control-bar/button-settings.png);
   }
   @media screen and (max-width: $screen-xs-max) {
-    bottom: $bottom / 2;
+    bottom: 10px;
     width: $total_width / 2;
     right: ($folded_width - $total_width) / 2;
     .button-xs {
