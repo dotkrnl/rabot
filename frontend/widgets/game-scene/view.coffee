@@ -207,7 +207,7 @@ class GameScene extends View
         (x - @rulerObject1.x) * (x - @rulerObject1.x) +
         (y - @rulerObject1.y) * (y - @rulerObject1.y)
       @rulerLine.attr x2: x, y2: y
-      @rulerLabel.attr x: x + 100, y: y, text: '' + Math.ceil(distance)
+      @rulerLabel.attr x: x + 100, y: y, text: '' + Math.ceil(distance / 50)
       @rulerLabel.appendTo(@rulerLabel.paper) # bring to front
 
 

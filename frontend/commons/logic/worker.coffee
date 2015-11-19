@@ -93,7 +93,7 @@ class UserCodeWorker
         callback()
       @postMessage
         action: 'move'
-        step: step
+        step: step * 50
 
     highlight = (lineNumber) ->
       @postMessage

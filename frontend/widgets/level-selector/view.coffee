@@ -42,7 +42,7 @@ class LevelSelector extends View
     $(@nextButton.node).on 'click', => @switchToNextStagePackage()
     $(@prevButton.node).on 'click', => @switchToPreviousStagePackage()
 
-    @stagePackageNameText = @canvas.text(350, 50, "AAAAAAAA")
+    @stagePackageNameText = @canvas.text(350, 50, "Connection Lost")
 
     @canvasLevelElemGroup = @canvas.group()
     @stagePackageNameText.attr
