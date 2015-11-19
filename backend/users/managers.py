@@ -31,7 +31,10 @@ class UsersManager():
         mail_from_passwd = 'orz_rabot'
         mail_to = email
 
-        authentication_url = 'localhost:8000/authentication/%s/%s' % (str(uid), token)
+        authentication_url = \
+            'http://127.0.0.1:9000/accountactivation/?uid=%s&token=%s' % \
+            (str(uid), token)
+
         mail_content = """
             <h3> Welcome to Rabot -- Learn coding with a rabbit. </h3>
             <h5>Coding for fun? Is that a joke? No! </h5>

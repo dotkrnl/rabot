@@ -1,0 +1,13 @@
+extends /commons/template.jade
+
+block title
+  | Edit | Rabot
+
+block content
+  div.container.accountactivation-app
+    h1(data-i18n="accountactivation.title")
+    div.alert.alert-info(role="alert" data-i18n="accountactivation.activating")
+    div.alert.alert-danger(role="alert" data-i18n="accountactivation.activationerror") 
+    div.alert.alert-success(role="alert" data-i18n="accountactivation.activationsuccess") 
+    div.ua-form-container.col-md-6
+      a.btn.btn-primary.ua-submit(href="/" type="submit", data-i18n="accountactivation.backtohome")

@@ -40,7 +40,7 @@ class User extends Emitter
       cb
 
   # Register a new user
-  # @param username: username of the user 
+  # @param username: username of the user
   # @param password: password of the user
   # @param email: email address of the user
   # @param cb: cb(err), to call after registered
@@ -108,5 +108,17 @@ class User extends Emitter
   update: ->
     @trigger('update')
 
+  # Activation
+  activateAccount: (uid, token, cb) ->
+    $.ajax
+      url : '/backend/authentication/' + uid + '/' + token
+      type : 'GET'
+      dataType: 'json'
+    .done (result) =>
+      if result.result == 'succeeded'
+        cb() if cb?
+      else
+        cb(result.errorMessage) if cb?
+      @update()
 
 module.exports = User

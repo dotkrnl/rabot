@@ -49,6 +49,19 @@ class UserProgress
     #TODO : This is a stub function
 
   sync: () ->
-    #TODO: sync with backend
+    $.ajax
+      url : '/backend/login/'
+      type : 'GET'
+      dataType: 'json'
+    .done (result) =>
+      if result.result == 'succeeded'
+        @loggedin = result.loggedin
+        @user = result.user
+        cb() if cb?
+      else
+        @loggedin = false
+        @user = {}
+        cb(result.errorMessage) if cb?
+      @update()
 
 module.exports = UserProgress

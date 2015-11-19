@@ -46,6 +46,13 @@ updateinfo:
 game-view:
   code: Code
 
+accountactivation:
+  title: Account activation
+  backtohome: Back to Home
+  activating: Please wait, we are trying to activate your account...
+  activationerror: Sorry, an error occured while trying to activate your account.
+  activationsuccess: Done! Activation succeeded.
+
 game-over-dialog:
   tryagain: Oops... Try again...
 
