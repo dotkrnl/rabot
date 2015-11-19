@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from stage.managers import StageManager
 
 
@@ -20,7 +20,7 @@ class Command(BaseCommand):
         manager.add_stage(sid, name, info)
 
         sid = 101
-        name = 'Beginner\'s gressland'
+        name = 'Beginner\'s Gressland'
         info = """
         {
             "background": "grassland.png",
@@ -30,7 +30,7 @@ class Command(BaseCommand):
         manager.add_stage(sid, name, info)
 
         sid = 102
-        name = 'Branch forest'
+        name = 'Branch Forest'
         info = """
         {
             "background": "forest.png",
@@ -40,7 +40,7 @@ class Command(BaseCommand):
         manager.add_stage(sid, name, info)
 
         sid = 103
-        name = 'Loop river'
+        name = 'Loop River'
         info = """
         {
             "background": "river.png",
@@ -51,140 +51,140 @@ class Command(BaseCommand):
 
         for i in range(0, 4):
             sid = 1000 * i + 1
-            name = "Welcome"
+            name = "welcome"
             info = """
             [
-            	{
-            		"type":"carrot",
-            		"region":{"radius":40},
-            		"image":{"name":"carrot.svg","width":160,"height":160},
-            		"x":500,
-            		"y":100
-            	},
-            	{
-            		"type":"rabbit",
-            		"image":{"name":"rabbit.svg","width":160,"height":160},
-            		"x":500,
-            		"y":700
-            	}
+                {
+                    "type":"carrot",
+                    "region":{"radius":40},
+                    "image":{"name":"carrot.svg","width":160,"height":160},
+                    "x":500,
+                    "y":100
+                },
+                {
+                    "type":"rabbit",
+                    "image":{"name":"rabbit.svg","width":160,"height":160},
+                    "x":500,
+                    "y":700
+                }
             ]
             """
             manager.add_stage(sid, name, info)
 
             sid = 1000 * i + 2
-            name = "Carrot"
+            name = "carrot"
             info = """
             [
-            	{
-            		"type":"carrot",
-            		"region":{"radius":40},
-            		"image":{"name":"carrot.svg","width":160,"height":160},
-            		"x":500,
-            		"y":100
-            	},
-            	{
-            		"type":"carrot",
-            		"region":{"radius":40},
-            		"image":{"name":"carrot.svg","width":160,"height":160},
-            		"x":500,
-            		"y":400
-            	},
-            	{
-            		"type":"rabbit",
-            		"image":{"name":"rabbit.svg","width":160,"height":160},
-            		"x":500,
-            		"y":700
-            	}
+                {
+                    "type":"carrot",
+                    "region":{"radius":40},
+                    "image":{"name":"carrot.svg","width":160,"height":160},
+                    "x":500,
+                    "y":100
+                },
+                {
+                    "type":"carrot",
+                    "region":{"radius":40},
+                    "image":{"name":"carrot.svg","width":160,"height":160},
+                    "x":500,
+                    "y":400
+                },
+                {
+                    "type":"rabbit",
+                    "image":{"name":"rabbit.svg","width":160,"height":160},
+                    "x":500,
+                    "y":700
+                }
             ]
             """
             manager.add_stage(sid, name, info)
 
             sid = 1000 * i + 3
-            name = "River"
+            name = "river"
             info = """
             [
-            	{
-            		"type":"carrot",
-            		"region":{"radius":40},
-            		"image":{"name":"carrot.svg","width":160,"height":160},
-            		"x":500,
-            		"y":100
-            	},
-            	{
-            		"type":"staticimage",
-            		"image":{"name":"river.svg","x":0,"y":300,"width":1000,"height":200}
-            	},
-            	{
-            		"type":"staticimage",
-            		"image":{"name":"bridge.png","x":600,"y":260,"width":280,"height":280}
-            	},
-            	{
-            		"type":"rabbit",
-            		"image":{"name":"rabbit.svg","width":160,"height":160},
-            		"x":500,
-            		"y":700
-            	},
-            	{
-            		"type":"river",
+                {
+                    "type":"carrot",
+                    "region":{"radius":40},
+                    "image":{"name":"carrot.svg","width":160,"height":160},
+                    "x":500,
+                    "y":100
+                },
+                {
+                    "type":"staticimage",
+                    "image":{"name":"river.svg","x":0,"y":300,"width":1000,"height":200}
+                },
+                {
+                    "type":"staticimage",
+                    "image":{"name":"bridge.png","x":600,"y":260,"width":280,"height":280}
+                },
+                {
+                    "type":"rabbit",
+                    "image":{"name":"rabbit.svg","width":160,"height":160},
+                    "x":500,
+                    "y":700
+                },
+                {
+                    "type":"river",
                     "region":{"width":600,"height":200},
-            		"x":300,
-            		"y":400
-            	}
+                    "x":300,
+                    "y":400
+                }
             ]
             """
             manager.add_stage(sid, name, info)
 
             sid = 1000 * i + 4
-            name = "Key & Door"
+            name = "key & door"
             info = """
             [
-            	{
-            		"type":"carrot",
-            		"region":{"radius":40},
-            		"image":{"name":"carrot.svg","width":160,"height":160},
-            		"x":500,
-            		"y":100
-            	},
-            	{
-            		"type":"staticimage",
-            		"image":{"name":"river.svg","x":0,"y":300,"width":1000,"height":200}
-            	},
-            	{
-            		"type":"staticimage",
-            		"image":{"name":"bridge.png","x":600,"y":260,"width":280,"height":280}
-            	},
-            	{
-            		"type":"rabbit",
-            		"image":{"name":"rabbit.svg","width":160,"height":160},
-            		"x":500,
-            		"y":700
-            	},
-            	{
-            		"type":"river",
+                {
+                    "type":"carrot",
+                    "region":{"radius":40},
+                    "image":{"name":"carrot.svg","width":160,"height":160},
+                    "x":500,
+                    "y":100
+                },
+                {
+                    "type":"staticimage",
+                    "image":{"name":"river.svg","x":0,"y":300,"width":1000,"height":200}
+                },
+                {
+                    "type":"staticimage",
+                    "image":{"name":"bridge.png","x":600,"y":260,"width":280,"height":280}
+                },
+                {
+                    "type":"rabbit",
+                    "image":{"name":"rabbit.svg","width":160,"height":160},
+                    "x":500,
+                    "y":700
+                },
+                {
+                    "type":"river",
                     "region":{"width":600,"height":200},
-            		"x":300,
-            		"y":400
-            	},
-            	{
-            		"type":"key",
+                    "x":300,
+                    "y":400
+                },
+                {
+                    "type":"key",
                     "image":{"name":"key.svg","width":100,"height":100},
                     "region":{"width":100,"height":100},
-            		"x":300,
-            		"y":800
-            	},
-            	{
-            		"type":"door",
+                    "x":300,
+                    "y":800
+                },
+                {
+                    "type":"door",
                     "image":{"name":"door.svg","width":240,"height":240},
                     "region":{"width":240,"height":240},
-            		"x":750,
-            		"y":400
-            	}
+                    "x":750,
+                    "y":400
+                }
             ]
             """
             manager.add_stage(sid, name, info)
 
             sid = 1000 * i + 5
-            name = "Future"
+            name = "future"
             info = """[
                 {"type":"river","x":0,"y":150,"width":400,"height":75},
                 {"type":"river","x":475,"y":150,"width":400,"height":75},
