@@ -56,6 +56,9 @@ class GameView extends View
       @bindGame(new Game)
       @game.loadStage(stageData)
 
+    @gameControlBar.on 'resetcode',
+      @codeEditor.clearCode.bind(@codeEditor)
+
     @bindGame(new Game)
 
     @levelSelector.on "levelselected", (packageId, stageIndex) =>
@@ -126,7 +129,6 @@ class GameView extends View
 
     @game.on 'workerhighlight', (lineNumber) =>
       @codeEditor.pushHighlightLine(lineNumber - 1)
-
     @game.on 'workerunhighlight', (lineNumber) =>
       @codeEditor.popHighlightLine(lineNumber - 1)
 

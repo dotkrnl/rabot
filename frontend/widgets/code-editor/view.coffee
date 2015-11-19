@@ -38,6 +38,9 @@ class CodeEditor
   setCode: (code) ->
     @codebox.setValue(code)
 
+  clearCode: () ->
+    @setCode('')
+
   insertCode: (code) ->
     @codebox.replaceSelection(code)
 
