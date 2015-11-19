@@ -12,6 +12,7 @@ class GameScene extends View
   constructor: (topDom) ->
     super(topDom)
     @canvas = @createViewFromElement("gs-svg", Snap)
+    @shadowFilter = @canvas.filter(Snap.filter.shadow(0, 2, 3))
     @canvasDom = @getJQueryObject("gs-svg")
     @initRuler()
     @game = null
@@ -60,6 +61,7 @@ class GameScene extends View
         if sameTypeSprites.length > 1
           label += "[#{sameTypeSprites.indexOf(sprite)}]"
         @elems[uid] = new GameElem(@, @canvas, sprite, label)
+        @elems[uid].imageElem.attr filter: @shadowFilter
 
     remaining = @elems.length
     # A helper function to record how many objects finished animation
@@ -160,11 +162,13 @@ class GameScene extends View
         @deactiveRuler()
       else
         @activeRuler()
+    @ruler.attr filter: @shadowFilter
 
     @rulerCursor = @canvas.image(
       @getImageAssetPath() + 'game-scene/ruler.svg',
       -100, -100, 80, 80
     )
+    @rulerCursor.attr filter: @shadowFilter
 
     @rulerLine = @canvas.line(0,0,500,500)
     @rulerLine.attr
