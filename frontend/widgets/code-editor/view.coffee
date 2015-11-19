@@ -23,6 +23,7 @@ class CodeEditor
         styleActiveLine: true
         tabSize: 2
         matchBrackets: true
+        theme: 'solarized dark'
       @codebox.setOption \
         'extraKeys',
         Tab: (cm) ->

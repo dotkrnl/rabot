@@ -78,6 +78,7 @@ module.exports = (grunt) ->
               files: [
                 "lib/*"
                 "addon/selection/active-line.js"
+                "theme/solarized.css"
               ]
             'iced-coffee-script':
               keepExpandedHierarchy: false
