@@ -11,6 +11,7 @@ class UsersManager():
     def __init__(self):
         self.dao = UsersDao()
         self.cur_user = None
+        self.salt = 'gwrqifboi'
 
     def __valid_passwd(self, passwd):
         if not 4 <= len(passwd) <= 24:
@@ -83,7 +84,8 @@ class UsersManager():
         self.dao.create_user(uid, uname, passwd, email)
         self.cur_user = self.dao.get_user_by_uid(uid)
 
-        token = hashlib.sha1('\1'.join([str(self.cur_user.uname), str(self.cur_user.email), str(self.cur_user.passwd), 'gwrqifboi'])).hexdigest()
+        text = ('\1'.join([str(self.cur_user.uname), str(self.cur_user.email), str(self.cur_user.passwd), self.salt])).encode('utf-8')
+        token = hashlib.sha1(text).hexdigest()
         t = threading.Thread(target=self.__send_authentication_email, args=(uid, email, token))
         t.start()
 
@@ -92,7 +94,8 @@ class UsersManager():
     def registration_authentication(self, uid, token):
         cur_user = self.dao.get_user_by_uid(uid)
         if cur_user:
-            tmp_token = hashlib.sha1('\1'.join([str(cur_user.uname), str(cur_user.email), str(cur_user.passwd), 'gwrqifboi'])).hexdigest()
+            text = ('\1'.join([str(cur_user.uname), str(cur_user.email), str(cur_user.passwd), self.salt])).encode('utf-8')
+            tmp_token = hashlib.sha1(text).hexdigest()
             if tmp_token == token:
                 self.dao.authenticate(cur_user)
                 return 'Succeeded.'
