@@ -53,6 +53,7 @@ class GameView extends View
       @stopGame()
       stageData = @game.stageData
       @game.unregister()
+      console.log 'New Game!!'
       @bindGame(new Game)
       @game.loadStage(stageData)
 
@@ -127,6 +128,7 @@ class GameView extends View
       @gameControlBar.setGameRunning(false)
       @codeEditor.clearHighlightLine()
 
+    @codeEditor.clearHighlightLine()
     @game.on 'workerhighlight', (lineNumber) =>
       @codeEditor.pushHighlightLine(lineNumber - 1)
     @game.on 'workerunhighlight', (lineNumber) =>

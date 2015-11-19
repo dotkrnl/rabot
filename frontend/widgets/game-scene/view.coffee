@@ -12,6 +12,9 @@ class GameScene extends View
   constructor: (topDom) ->
     super(topDom)
     @canvas = @createViewFromElement("gs-svg", Snap)
+    @init()
+
+  init: () ->
     @shadowFilter = @canvas.filter(Snap.filter.shadow(0, 2, 3))
     @canvasDom = @getJQueryObject("gs-svg")
     @initRuler()
@@ -24,6 +27,7 @@ class GameScene extends View
   # See game.register(gamescene) for details
   # @param game The game model to bind.
   _register: (game) ->
+    @init()
     @game = game
     @update(0)
     return
