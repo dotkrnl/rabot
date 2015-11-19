@@ -47,5 +47,5 @@ game-over-dialog:
   tryagain: Oops... Try again...
 
 game-control-bar:
-  run: RUN!
-  stop: STOP
+  run: Run
+  stop: Stop
