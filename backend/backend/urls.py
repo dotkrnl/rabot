@@ -24,6 +24,6 @@ urlpatterns = [
     url(r'^backend/login', 'users.views.user_login_view'),
     url(r'^backend/logout', 'users.views.user_logout_view'),
     url(r'^backend/registration', 'users.views.user_registration_view'),
-    url(r'^authentication/(?P<uid>\d+)/$', 'users.views.user_authentication_view'),
+    url(r'^authentication/(?P<uid>\d+)/(?P<token>[0-9a-f]+)$', 'users.views.user_authentication_view'),
     url(r'^backend/updateinfo', 'users.views.user_info_update'),
 ]

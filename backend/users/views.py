@@ -55,11 +55,11 @@ def user_registration_view(request):
 
 
 @csrf_exempt
-def user_authentication_view(request, uid):
+def user_authentication_view(request, uid, token):
     manager = UsersManager()
 
     if request.method == 'GET':
-        result = manager.registration_authentication(uid)
+        result = manager.registration_authentication(uid, token)
         if result[:9] == 'Succeeded':
             response_data = {
                 'result': 'succeeded',

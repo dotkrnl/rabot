@@ -1,5 +1,6 @@
 from django.contrib.auth.hashers import check_password
 from users.models import UsersDao
+import hashlib
 import smtplib
 import threading
 from email.mime.text import MIMEText
@@ -21,7 +22,7 @@ class UsersManager():
 
         return True
 
-    def __send_authentication_email(self, uid, email):
+    def __send_authentication_email(self, uid, email, token):
         mail_host = 'smtp.sohu.com'
         mail_host_port = 25
         mail_from = 'Rabot Admin<project_rabot@sohu.com>'
@@ -29,7 +30,7 @@ class UsersManager():
         mail_from_passwd = 'orz_rabot'
         mail_to = email
 
-        authentication_url = 'localhost:8000/authentication/' + str(uid)
+        authentication_url = 'localhost:8000/authentication/%s/%s' % (str(uid), token)
         mail_content = """
             <h3> Welcome to Rabot -- Learn coding with a rabbit. </h3>
             <h5>Coding for fun? Is that a joke? No! </h5>
@@ -79,19 +80,24 @@ class UsersManager():
         else:
             uid = 1
 
-        t = threading.Thread(target=self.__send_authentication_email,
-                             args=(uid, email))
-        t.start()
         self.dao.create_user(uid, uname, passwd, email)
         self.cur_user = self.dao.get_user_by_uid(uid)
 
+        token = hashlib.sha1('\1'.join([str(self.cur_user.uname), str(self.cur_user.email), str(self.cur_user.passwd), 'gwrqifboi'])).hexdigest()
+        t = threading.Thread(target=self.__send_authentication_email, args=(uid, email, token))
+        t.start()
+
         return 'Succeeded.'
 
-    def registration_authentication(self, uid):
+    def registration_authentication(self, uid, token):
         cur_user = self.dao.get_user_by_uid(uid)
         if cur_user:
-            self.dao.authenticate(cur_user)
-            return 'Succeeded.'
+            tmp_token = hashlib.sha1('\1'.join([str(cur_user.uname), str(cur_user.email), str(cur_user.passwd), 'gwrqifboi'])).hexdigest()
+            if tmp_token == token:
+                self.dao.authenticate(cur_user)
+                return 'Succeeded.'
+            else:
+                return 'Authentication failure(Incorrect token).'
         else:
             return 'User does not exist.'
 
