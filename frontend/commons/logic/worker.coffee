@@ -10,8 +10,9 @@ class UserCodeWorker
   # @param @game the game model
   # @param @code the user code
   constructor: (@game, @code) ->
-    userAPIList = ['move', 'turn', 'turnTo']
-    asyncCode = asyncify(@code, userAPIList)
+    userAsyncAPIList = ['move', 'turn', 'turnTo']
+    userAllAPIList = ['move', 'turn', 'turnTo', 'distance']
+    asyncCode = asyncify(@code, userAsyncAPIList, userAllAPIList)
 
     workerSpriteInitCode = """
 
