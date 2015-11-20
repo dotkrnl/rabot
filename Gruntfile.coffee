@@ -154,7 +154,7 @@ module.exports = (grunt) ->
     sftp:
       deploy:
         files:
-          "./": ["_site/**", "backend/**"]
+          './': ['_site/**', 'backend/**', 'deploy/**']
         options:
           path: '/tmp/rabot',
           createDirectories: 'true'
@@ -164,14 +164,22 @@ module.exports = (grunt) ->
           showProgress: true
 
     sshexec:
+
       precopy:
-        command: 'uptime',
+        command: [
+          'rm -rf /tmp/rabot/_site',
+        ],
         options:
           host: '<%= secret.host %>',
           username: '<%= secret.username %>',
           password: '<%= secret.password %>'
+
       postcopy:
-        command: 'uptime',
+        command: [
+          'rm -rf /var/www/rabot/_site',
+          'cp -R /tmp/rabot/_site /var/www/rabot/_site',
+          'rm -rf /tmp/rabot'
+        ],
         options:
           host: '<%= secret.host %>',
           username: '<%= secret.username %>',
@@ -192,7 +200,8 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-yaml'
 
   grunt.registerTask 'deploy', ['sshexec:precopy', 'sftp', 'sshexec:postcopy']
-  grunt.registerTask 'compile', ['copy', 'jade', 'sass', 'yaml', 'bower', 'browserify']
+  grunt.registerTask 'compile',
+    ['copy', 'jade', 'sass', 'yaml', 'bower', 'browserify']
   grunt.registerTask 'serve', [
     'compile', 'configureProxies:server', 'connect', 'concurrent:runserver']
   grunt.registerTask 'dev', ['compile']
