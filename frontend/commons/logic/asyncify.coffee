@@ -115,6 +115,18 @@ isAsyncable = (pos, code, functionList) ->
       j++
   return false
 
+# Find functions
+scanFunction = (code, functionList) ->
+  i = 0
+  while i < code.length
+    if code[i] == '-' && code[i+1] == '>'
+      if !inFunctionList(findFunctionName(i, code), functionList)
+        functionList.push(findFunctionName(i, code))
+        i = 0
+        continue
+    i++
+  return functionList
+
 # Find functions to asyncify
 scanAsyncableFunction = (code, functionList) ->
   i = 0
@@ -127,6 +139,44 @@ scanAsyncableFunction = (code, functionList) ->
           continue
     i++
   return functionList
+
+# Add brankets to function calls
+addBranketsToFunctions = (code, functionList) ->
+  i = 0
+  afterCode = ""
+  buffer = ""
+  bracketCount = 0
+  while i < code.length
+    if code[i] == '\n' || code[i] == ';'
+      afterCode += buffer
+      while bracketCount > 0
+        afterCode += ')'
+        bracketCount--
+      afterCode += code[i]
+      buffer = ""
+    else if isIdentifier(code[i])
+      buffer += code[i]
+    else if code[i] = ' '
+      if inFunctionList(buffer, functionList)
+        j = i
+        notDefineOrParam = true
+        while j < code.length-1 && code[j] != '\n' && code[j] != ';'
+          if (code[j] == '-' && code[j+1] == '>') || code[j] == ','
+            notDefineOrParam = false
+            break
+          j++
+        if notDefineOrParam
+          afterCode += buffer
+          afterCode += '('
+          bracketCount++
+          buffer = ""
+      else
+        afterCode += buffer
+        afterCode += code[i]
+        buffer = ""
+    
+    i++
+  return afterCode
 
 # Add callback to end of the function
 addCallbackAtEnd = (pos, code) ->
@@ -247,7 +297,6 @@ processCallback = (code, functionList) ->
     i++
   return code
 
-
 # Third scan, add "await" & "defer param"
 processAwaitDefer = (code, functionList) ->
   # @val detected: counter of key function that is found and not done with.
@@ -345,7 +394,7 @@ processAwaitDefer = (code, functionList) ->
 # Work as main function
 # @param code: code to be asyncified
 # @param functionList: stores functions needed to be done  
-module.exports = (code, functionList) ->
+module.exports = (code, asyncFunctionList, functionList) ->
   # Add highlight/unhighlight function calls
   code = processHighlight(code)
 
@@ -354,13 +403,19 @@ module.exports = (code, functionList) ->
   # add new line to for/while/if subfixes
   code = processSubfixBranchLoop(code)
   
-  # First scan, find functions to asyncify, add to functionList
-  functionList = scanAsyncableFunction(code,functionList)
+  # Find functions
+  functionList = scanFunction(code, functionList)
   
-  # Second scan, to process user-defined functions
-  code = processCallback(code, functionList)
+  # Find functions to asyncify, add to functionList
+  asyncFunctionList = scanAsyncableFunction(code, asyncFunctionList)
   
-  # Third scan, add "await" & "defer param"
-  code = processAwaitDefer(code, functionList)
+  # Add brankets to function calls
+  code = addBranketsToFunctions(code, functionList)
+  
+  # Process user-defined functions
+  code = processCallback(code, asyncFunctionList)
+  
+  # Add "await" & "defer param"
+  code = processAwaitDefer(code, asyncFunctionList)
 
   return code
