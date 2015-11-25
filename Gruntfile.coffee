@@ -149,7 +149,10 @@ module.exports = (grunt) ->
         options:
           logConcurrentOutput: true
 
-    secret: grunt.file.readJSON('secret.json'),
+    secret: \
+      if grunt.file.exists('secret.json') \
+        then grunt.file.readJSON('secret.json') \
+        else grunt.file.readJSON('secret.json.example')
 
     sftp:
       deploy:
