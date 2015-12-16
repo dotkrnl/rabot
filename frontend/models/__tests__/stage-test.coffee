@@ -44,9 +44,9 @@ describe 'Stage.constructs', ->
     expect(stage1 == stage2).toBe(true)
 
 describe 'Stage.queryStageList', ->
-  # TODO : Need to mock jQuery
-  stage = new Stage
   it 'can load stage from the server', ->
+    stageManager = new Stage
+    # TODO : Need to mock jQuery
 
 describe 'Stage.getLocalStage', ->
   it 'can find existing stage', ->
