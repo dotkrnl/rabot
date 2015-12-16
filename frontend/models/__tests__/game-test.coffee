@@ -34,34 +34,20 @@ describe 'Game.addSprite', ->
       expect(sprites[i].defunct).toBe true
       expect(sprites[i].uid).toBe i
 
-  it 'adds default values when not provided', ->
-    game = new Game
-
-    game.addSprite type: 'carrot'
-    sprites = game.filterSprites()
-    expect(sprites[0].type).toBe 'carrot'
-    expect(sprites[0].x).toBe 0
-    expect(sprites[0].y).toBe 0
-    expect(sprites[0].angle).toBe 0
-    expect(sprites[0].lethal).toBe false
-    expect(sprites[0].passable).toBe true
-    expect(sprites[0].defunct).toBe false
-    expect(sprites[0].uid).toBe 0
-
   it 'throws error when adding sprite without type', ->
     game = new Game
     expect ->
       game.addSprite {}
     .toThrow()
 
-  it 'calls update once pre adding', ->
+  it 'calls update once pre adding if update required', ->
     game = new Game
 
     game.update = jest.genMockFunction()
 
-    game.addSprite type: 'rabbit'
+    game.addSprite type: 'rabbit', true
     expect(game.update.mock.calls.length).toBe 1
-    game.addSprite type: 'carrot'
+    game.addSprite type: 'carrot', true
     expect(game.update.mock.calls.length).toBe 2
 
 
@@ -151,20 +137,36 @@ describe 'Game.loadStage', ->
     game = new Game
 
     game.addSprite = jest.genMockFunction()
+    game.update = jest.genMockFunction()
 
     game.loadStage """[
-      {"type": "carrot", "x": 1, "y": 2},
-      {"lethal": true}]"""
+        {
+            "type":"carrot",
+            "region":{"radius":40},
+            "image":{"name":"carrot.svg","width":160,"height":160},
+            "x":500,
+            "y":100
+        },
+        {
+            "type":"rabbit",
+            "image":{"name":"rabbit.svg","width":160,"height":160},
+            "x":500,
+            "y":700
+        }
+    ]"""
     spritesToAdd = game.addSprite.mock.calls
     expect(spritesToAdd.length).toBe 2
     expect(spritesToAdd[0][0].type).toBe "carrot"
-    expect(spritesToAdd[0][0].x).toBe 1
-    expect(spritesToAdd[0][0].y).toBe 2
-    expect(spritesToAdd[1][0].type).toBeUndefined()
-    expect(spritesToAdd[1][0].lethal).toBe true
+    expect(spritesToAdd[0][0].x).toBe 500
+    expect(spritesToAdd[0][0].y).toBe 100
+    expect(spritesToAdd[1][0].type).toBe "rabbit"
+    expect(spritesToAdd[1][0].x).toBe 500
+    expect(spritesToAdd[1][0].y).toBe 700
+    expect(game.update.mock.calls.length).toBe 1
 
   it 'resets carrotGot and scene', ->
     game = new Game
+    game.update = jest.genMockFunction()
     game.carrotGot = 1234
 
     game.scene = clear: jest.genMockFunction()
