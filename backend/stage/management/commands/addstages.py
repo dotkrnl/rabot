@@ -12,6 +12,14 @@ class Command(BaseCommand):
         manager = StageManager()
         manager.clear()
 
+        nameArray = [
+            ["welcome", "carrot", "river", "key & door", "path"],
+            ["welcome", "carrot", "river", "key & door", "path"],
+            ["leaf", "frog", "ice", "rain", "spring"],
+            ["cake", "apple", "pear", "new carrot", "strawberry"],
+            ["cake", "apple", "pear", "new carrot", "strawberry"]
+        ]
+
         sid = 10
         name = '__meta_all_stage_packages'
         info = """
@@ -24,7 +32,7 @@ class Command(BaseCommand):
         info = """
         {
             "background": "grassland.png",
-            "stages": [1001, 1002, 1003]
+            "stages": [1001, 1002, 1003, 1004, 1005]
         }
         """
         manager.add_stage(sid, name, info)
@@ -34,7 +42,7 @@ class Command(BaseCommand):
         info = """
         {
             "background": "forest.png",
-            "stages": [2001, 2002, 2003, 2004]
+            "stages": [2001, 2002, 2003, 2004, 2005]
         }
         """
         manager.add_stage(sid, name, info)
@@ -51,7 +59,7 @@ class Command(BaseCommand):
 
         for i in range(0, 4):
             sid = 1000 * i + 1
-            name = "welcome"
+            name = nameArray[i][0]
             info = """
             [
                 {
@@ -72,7 +80,7 @@ class Command(BaseCommand):
             manager.add_stage(sid, name, info)
 
             sid = 1000 * i + 2
-            name = "carrot"
+            name = nameArray[i][1]
             info = """
             [
                 {
@@ -100,7 +108,7 @@ class Command(BaseCommand):
             manager.add_stage(sid, name, info)
 
             sid = 1000 * i + 3
-            name = "river"
+            name = nameArray[i][2]
             info = """
             [
                 {
@@ -135,7 +143,7 @@ class Command(BaseCommand):
             manager.add_stage(sid, name, info)
 
             sid = 1000 * i + 4
-            name = "key & door"
+            name = nameArray[i][3]
             info = """
             [
                 {
@@ -184,7 +192,7 @@ class Command(BaseCommand):
             manager.add_stage(sid, name, info)
 
             sid = 1000 * i + 5
-            name = "future"
+            name = nameArray[i][4]
             info = """[
                 {"type":"river","x":0,"y":150,"width":400,"height":75},
                 {"type":"river","x":475,"y":150,"width":400,"height":75},
