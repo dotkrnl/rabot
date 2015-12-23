@@ -174,8 +174,8 @@ class Command(BaseCommand):
                 },
                 {
                     "type":"door",
-                    "image":{"name":"door.svg","width":240,"height":240},
-                    "region":{"width":240,"height":240},
+                    "image":{"name":"door.svg","width":200,"height":200},
+                    "region":{"width":200,"height":200},
                     "x":750,
                     "y":400
                 }

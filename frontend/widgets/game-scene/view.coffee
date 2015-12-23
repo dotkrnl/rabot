@@ -65,7 +65,8 @@ class GameScene extends View
         if sameTypeSprites.length > 1
           label += "[#{sameTypeSprites.indexOf(sprite)}]"
         @elems[uid] = new GameElem(@, @canvas, sprite, label)
-        @elems[uid].imageElem.attr filter: @shadowFilter
+        if @elems[uid].imageElem
+          @elems[uid].imageElem.attr filter: @shadowFilter
 
     remaining = @elems.length
     # A helper function to record how many objects finished animation
