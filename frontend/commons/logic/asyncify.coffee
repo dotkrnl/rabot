@@ -19,9 +19,8 @@ inFunctionList = (word, functionList) ->
 isIdentifier = (char) ->
   return (char >= 'a' && char <= 'z')||(char >= 'A' && char <= 'Z')\
   || (char == '_') || (char >= '0' && char <= '9')
-
 inBranchOrLoop = (word) ->
-  return (word == "for") || (word == "if") || (word == "while")
+  return (word == "for") || (word == "if") || (word == "while")|| (word == "else")
 
 getIndent = (pos, code) ->
   indent = ""
@@ -245,7 +244,7 @@ processHighlight = (code) ->
 processHighlightLine = (code, lineNumber) ->
   firstWord = ""
   for ch in code
-    if ch == ' ' || ch == '\t'
+    if ch == ' ' || ch == '\t' || ch == '\n'
       if firstWord != ""
         break
     else
