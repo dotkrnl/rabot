@@ -154,10 +154,10 @@ addBranketsToFunctions = (code, functionList) ->
         bracketCount--
       afterCode += code[i]
       buffer = ""
-		else if code[i] == '('
-			bracketCount++
-		else if code[i] == ')'
-			bracketCount--
+    else if code[i] == '('
+      bracketCount++
+    else if code[i] == ')'
+      bracketCount--
     else if isIdentifier(code[i])
       buffer += code[i]
     else if code[i] = ' '
