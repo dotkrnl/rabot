@@ -143,6 +143,17 @@ scanAsyncableFunction = (code, functionList) ->
 # Add brankets to function calls
 addBranketsToFunctions = (code, functionList) ->
   i = 0
+  while i < code.length
+    if code[i] == '='
+      j = i + 1
+      while code[j] == ' '
+        if code[j+1] == '-' && code[j+2] == '>'
+          code = code.substr(0,i+1) + '()' + code.substr(i+1, code.length-i-1)
+          break
+        j++
+    i++
+
+  i = 0
   afterCode = ""
   buffer = ""
   bracketCount = 0
@@ -156,11 +167,13 @@ addBranketsToFunctions = (code, functionList) ->
       buffer = ""
     else if code[i] == '('
       bracketCount++
+      buffer += code[i]
     else if code[i] == ')'
       bracketCount--
+      buffer += code[i]
     else if isIdentifier(code[i])
       buffer += code[i]
-    else if code[i] = ' '
+    else if code[i] == ' '
       if inFunctionList(buffer, functionList)
         j = i
         notDefineOrParam = true
@@ -174,10 +187,18 @@ addBranketsToFunctions = (code, functionList) ->
           afterCode += '('
           bracketCount++
           buffer = ""
+        else
+          afterCode += buffer
+          afterCode += code[i]
+          buffer = ""
       else
         afterCode += buffer
         afterCode += code[i]
         buffer = ""
+    else
+      afterCode += buffer
+      afterCode += code[i]
+      buffer = ""
     
     i++
   return afterCode
