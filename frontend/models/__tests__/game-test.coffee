@@ -214,6 +214,19 @@ describe 'Game.register', ->
     expect(scene._register).lastCalledWith game
 
 
+describe 'Game.register', ->
+  it '_unregister game from it', ->
+    game = new Game
+
+    scene =
+      _register: jest.genMockFunction()
+      _unregister: jest.genMockFunction()
+
+    game.register(scene)
+    game.unregister()
+    expect(scene._unregister).toBeCalled()
+
+
 describe 'Game.update', ->
   it 'triggers one update event', ->
     game = new Game
@@ -243,6 +256,99 @@ describe 'Game.update', ->
 
     game.update 1234, dummyCallback
     expect(dummyCallback.mock.calls.length).toBe 1
+
+
+describe 'Game.movePredict', ->
+  it 'runs with radius', ->
+    game = new Game
+    game.addSprite type: 'rabbit', x: 1, y: 2
+    game.addSprite
+      type: 'carrot', x: 5, y: 2
+      region:
+        radius: 1
+    game.movePredict(10)
+
+  it 'runs with width', ->
+    game = new Game
+    game.addSprite type: 'rabbit', x: 1, y: 2
+    game.addSprite
+      type: 'river', x: 3, y: 2
+      region:
+        width: 1
+        height: 1
+    game.movePredict(10)
+
+  it 'runs when nothing', ->
+    game = new Game
+    game.addSprite type: 'rabbit', x: 1, y: 2
+    game.movePredict(10)
+
+
+describe 'Game.collisionHandler', ->
+  it 'gots carrots', ->
+    game = new Game
+    window.createjs = { Sound: { play: jest.genMockFunction() } }
+    game.addSprite type: 'rabbit', x: 1, y: 2
+    game.addSprite type: 'carrot', x: 1, y: 2
+    game.collisionHandler
+      type: 'carrot', uid: game.filterSprites(type: 'carrot')[0].uid
+    expect(game.carrotGot).toBe(1)
+
+  it 'dies with river', ->
+    game = new Game
+    game.addSprite type: 'rabbit', x: 1, y: 2
+    game.collisionHandler type: 'river'
+    expect(game.gameOverFlag).toBeTruthy()
+
+  it 'gets keys', ->
+    game = new Game
+    game.addSprite type: 'rabbit', x: 1, y: 2
+    game.addSprite type: 'key', x: 1, y: 2
+    game.addSprite type: 'door', x: 1, y: 2
+    id = game.filterSprites(type: 'key')[0].uid
+    game.collisionHandler
+      type: 'key', keyId: id, uid: id
+    expect(game.keysObtained.length).toBe(1)
+    game.collisionHandler
+      type: 'door', keyId: id, uid: game.filterSprites(type: 'door')[0].uid
+
+  it 'hits doors', ->
+    game = new Game
+    game.addSprite type: 'rabbit', x: 1, y: 2
+    game.addSprite type: 'door', x: 1, y: 2
+    game.collisionHandler
+      type: 'door', keyId: 0, uid: game.filterSprites(type: 'door')[0].uid
+
+  it 'cancels action', ->
+    game = new Game
+    game.addSprite type: 'rabbit', x: 1, y: 2
+    game.addSprite type: 'door', x: 1, y: 2
+    callback = jest.genMockFunction()
+    game.collisionHandler(
+      { type: 'door', keyId: 0,
+      uid: game.filterSprites(type: 'door')[0].uid },
+      null, callback)
+    expect(callback).toBeCalled()
+    game.collisionHandler
+      type: 'door', keyId: 0, uid: game.filterSprites(type: 'door')[0].uid
+
+  it 'acts on rotator', ->
+    game = new Game
+    game.addSprite type: 'rabbit', x: 1, y: 2
+    callback = jest.genMockFunction()
+    game.collisionHandler
+      type: 'rotator'
+
+  it 'calls continue callback', ->
+    game = new Game
+    window.createjs = { Sound: { play: jest.genMockFunction() } }
+    game.addSprite type: 'rabbit', x: 1, y: 2
+    game.addSprite type: 'carrot', x: 1, y: 2
+    callback = jest.genMockFunction()
+    game.collisionHandler(
+      { type: 'carrot', uid: game.filterSprites(type: 'carrot')[0].uid },
+      callback)
+    expect(callback).toBeCalled()
 
 
 describe 'Game.move', ->
@@ -315,6 +421,22 @@ describe 'Game.*actions*', ->
         expect(callback.mock.calls.length).toBe 1
 
 
+describe 'Game.turnTo', ->
+  it 'turn to an object', ->
+    game = new Game
+    game.addSprite type: 'rabbit', x: 1, y: 2
+    game.addSprite type: 'carrot', x: 1, y: 3
+    game.turnTo(game.filterSprites(type: 'carrot')[0].uid)
+    expect(game.getRabbit().angle).toBe(180)
+
+  it 'calls callback when nothing', ->
+    game = new Game
+    game.addSprite type: 'rabbit', x: 1, y: 2
+    cb = jest.genMockFunction()
+    game.turnTo(1212, cb)
+    expect(cb).toBeCalled()
+
+
 describe 'Game.finish', ->
   it 'triggers one finish event', ->
     game = new Game
@@ -343,3 +465,25 @@ describe 'Game.finish', ->
     game.finish()
     expect(game.trigger).toBeCalledWith 'lost'
     expect(game.trigger).not.toBeCalledWith 'win'
+
+describe 'Game.onWorkerHighlight', ->
+  it 'triggers workerhighlight', ->
+    game = new Game
+    game.carrotGot = 0
+
+    game.trigger.mockClear()
+
+    game.onWorkerHighlight(1)
+    expect(game.trigger.mock.calls[0][0]).toBe('workerhighlight')
+    expect(game.trigger.mock.calls[0][1]).toBe(1)
+
+describe 'Game.onWorkerUnhighlight', ->
+  it 'triggers workerunhighlight', ->
+    game = new Game
+    game.carrotGot = 0
+
+    game.trigger.mockClear()
+
+    game.onWorkerUnhighlight(1)
+    expect(game.trigger.mock.calls[0][0]).toBe('workerunhighlight')
+    expect(game.trigger.mock.calls[0][1]).toBe(1)

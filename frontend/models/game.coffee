@@ -33,6 +33,7 @@ class Game extends Emitter
     @scene = null
     @carrotGot = 0
     @stageData = ''
+    @keysObtained = []
     super()
 
   # Clone and add a sprite with the format defined in exampleStage.json
@@ -179,23 +180,22 @@ class Game extends Emitter
       createjs.Sound.play("item-get", {loop: 0})
       @removeSprite(collision.uid)
       @carrotGot++
-      continueCallback() if continueCallback?
-    if collision.type == "river"
+    else if collision.type == "river"
       @gameOverFlag = true
-      continueCallback() if continueCallback?
-    if collision.type == "key"
+    else if collision.type == "key"
       createjs.Sound.play("item-get", {loop: 0})
       @keysObtained.push(collision.keyId)
       @removeSprite(collision.uid)
-      continueCallback() if continueCallback?
-    if collision.type == "door"
+    else if collision.type == "door"
       if @keysObtained.indexOf(collision.keyId) == -1
         cancelCallback() if cancelCallback?
+        return
       else
         @removeSprite(collision.uid)
-        continueCallback() if continueCallback?
-    if collision.type == "rotator"
+    else if collision.type == "rotator"
       @turn(collision.rotation, continueCallback)
+      return
+    continueCallback() if continueCallback?
 
   # Move the rabbit along the direction of its current orientation.
   # This function will call @update, producing animation in the game scene.
