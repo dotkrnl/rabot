@@ -56,7 +56,6 @@
       "frontend/commons/logic/bootstrap.coffee" : true,
       "frontend/commons/logic/emitter.coffee" : true,
       "frontend/commons/logic/md5.coffee" : true,
-      "frontend/commons/logic/minicg.coffee" : true,
       "frontend/commons/logic/worker.coffee" : true,
       "frontend/commons/view.coffee" : true,
       "frontend/models/game.coffee" : true,

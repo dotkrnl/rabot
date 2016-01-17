@@ -1,5 +1,4 @@
 Emitter = require('../commons/logic/emitter.coffee')
-MiniCG = require('../commons/logic/minicg.coffee')
 
 # A helper function to coverent angle in degree to rad.
 toRad = (degrees) ->

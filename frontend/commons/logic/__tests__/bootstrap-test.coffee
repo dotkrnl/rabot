@@ -10,7 +10,7 @@ window.$ = (fn) ->
 
 
 describe 'bootstrap', ->
-  it 'do nothing if nothing', ->
+  it 'does nothing if nothing', ->
     class cl
       @AUTO_CONFIGURE_SELECTOR = 'nothing'
       @tester = jest.genMockFunction()
@@ -19,7 +19,7 @@ describe 'bootstrap', ->
     bootstrap(cl)
     expect(window.apps).toBeUndefined()
 
-  it 'construct apps', ->
+  it 'constructs apps', ->
     class cl
       @AUTO_CONFIGURE_SELECTOR = 'test'
       @tester = jest.genMockFunction()
