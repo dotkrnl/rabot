@@ -23,7 +23,7 @@ describe 'Emitter.on', ->
     emitter.on 'test1', ->
     expect(emitter.cbs['test1'].add.mock.calls.length).toBe 2
 
-  it 'add mutiple callbacks with space', ->
+  it 'adds mutiple callbacks with space', ->
     emitter = new Emitter
     emitter.on 'test1 test2', ->
     expect(emitter.cbs['test1']).toBeDefined()
@@ -32,20 +32,20 @@ describe 'Emitter.on', ->
     expect(emitter.cbs['test2'].add).toBeCalled()
 
 describe 'Emitter.off', ->
-  it 'remove nothing if nothing', ->
+  it 'removes nothing if nothing', ->
     emitter = new Emitter
     tester = ->
     emitter.off 'test1', tester
     expect(emitter.cbs['test1']).toBeUndefined()
 
-  it 'remove callbacks', ->
+  it 'removes callbacks', ->
     emitter = new Emitter
     tester = ->
     emitter.on 'test1', tester
     emitter.off 'test1', tester
     expect(emitter.cbs['test1'].remove).toBeCalledWith tester
 
-  it 'remove mutiple callbacks', ->
+  it 'removes mutiple callbacks', ->
     emitter = new Emitter
     tester = ->
     emitter.on 'test1', tester
@@ -55,19 +55,19 @@ describe 'Emitter.off', ->
     expect(emitter.cbs['test2'].remove).toBeCalledWith tester
 
 describe 'Emitter.trigger', ->
-  it 'do nothing if nothing', ->
+  it 'does nothing if nothing', ->
     emitter = new Emitter
     emitter.trigger 'nothing'
     expect(emitter.cbs['nothing']).toBeUndefined()
 
-  it 'trigger callbacks and pass args', ->
+  it 'triggers callbacks and pass args', ->
     emitter = new Emitter
     tester = ->
     emitter.on 'test1', tester
     emitter.trigger 'test1', 1234
     expect(emitter.cbs['test1'].fire).toBeCalledWith 1234
 
-  it 'trigger multiple callbacks', ->
+  it 'triggers multiple callbacks', ->
     emitter = new Emitter
     tester = ->
     emitter.on 'test1', tester
