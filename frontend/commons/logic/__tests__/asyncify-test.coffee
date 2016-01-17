@@ -69,3 +69,14 @@ a.b.sum(1, 2)
 sum = (a, b) -> a + b
 test = sum 1, 2
       """, [''], [])).toContain 'sum'
+  it 'add highlight/unhilight calls', ->
+    expect(asyncify("""
+f = (a) ->
+  move a
+f 1
+      """)).toContain'highlight'
+    expect(asyncify("""
+f = (a) ->
+  move a
+f 1
+      """)).toContain'unhighlight'
