@@ -6,6 +6,9 @@ logs
 log
 *.log
 
+# coverage report
+coverage
+
 # Runtime data
 pids
 *.pid

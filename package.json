@@ -32,11 +32,12 @@
     "grunt-contrib-connect": "^0.11.2",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-shell": "^1.1.2",
-    "jest-cli": "^0.6.0"
+    "jest-cli": "^0.8.2"
   },
   "jest": {
     "verbose": "true",
     "scriptPreprocessor": "jestcoffee.js",
+    "collectCoverage": true,
     "testFileExtensions": [
       "coffee",
       "js"
@@ -44,6 +45,35 @@
     "moduleFileExtensions": [
       "coffee",
       "js"
-    ]
+    ],
+    "collectCoverageOnlyFrom": {
+      "frontend/apps/accountactivation/app.coffee" : true,
+      "frontend/apps/commons/app.coffee" : true,
+      "frontend/apps/play/app.coffee" : true,
+      "frontend/apps/register/app.coffee" : true,
+      "frontend/apps/updateinfo/app.coffee" : true,
+      "frontend/commons/logic/asyncify.coffee" : true,
+      "frontend/commons/logic/bootstrap.coffee" : true,
+      "frontend/commons/logic/emitter.coffee" : true,
+      "frontend/commons/logic/md5.coffee" : true,
+      "frontend/commons/logic/minicg.coffee" : true,
+      "frontend/commons/logic/worker.coffee" : true,
+      "frontend/commons/view.coffee" : true,
+      "frontend/models/game.coffee" : true,
+      "frontend/models/stage.coffee" : true,
+      "frontend/models/user.coffee" : true,
+      "frontend/models/userprogress.coffee" : true,
+      "frontend/widgets/code-editor/logic/rabot-iced.coffee" : true,
+      "frontend/widgets/code-editor/view.coffee" : true,
+      "frontend/widgets/game-control-bar/view.coffee" : true,
+      "frontend/widgets/game-over-dialog/view.coffee" : true,
+      "frontend/widgets/game-scene/logic/element.coffee" : true,
+      "frontend/widgets/game-scene/view.coffee" : true,
+      "frontend/widgets/game-view/view.coffee" : true,
+      "frontend/widgets/level-selector/view.coffee" : true,
+      "frontend/widgets/nav-level-selector/view.coffee" : true,
+      "frontend/widgets/nav-user-manager/view.coffee" : true,
+      "frontend/widgets/view.coffee" : true
+    }
   }
 }
